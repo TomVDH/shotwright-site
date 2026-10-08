@@ -2127,7 +2127,7 @@ footer .logo {
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">31d0f8a</span>
+<span class="build build--top" aria-label="Build">0cacf24</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2789,9 +2789,10 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     requestAnimationFrame(lensTick)
   }
   const planHost = document.getElementById('plan-live')
+  let planLive = null
   if (window.THREE && window.ShotwrightPlan) {
     try {
-      ShotwrightPlan.mount(planHost)
+      planLive = ShotwrightPlan.mount(planHost)
       planHost.classList.add('on')
     } catch (e) {}
   }
@@ -2935,6 +2936,43 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     resume()
   }
   document.getElementById('deck-play').addEventListener('click', activate)
+  const idleReset = (el, reset) => {
+    let timer = 0
+    el.addEventListener('pointerleave', () => {
+      clearTimeout(timer)
+      timer = setTimeout(reset, 2500)
+    })
+    el.addEventListener('pointerenter', () => clearTimeout(timer))
+  }
+  idleReset(heroFrame, () => {
+    heroActive = false
+    heroFrame.classList.remove('live')
+    heroMon.pause()
+    heroMon.currentTime = 0
+    const pick2 = document.querySelector('#scene-pick [aria-pressed="true"]')
+    if (pick2) loadHero(pick2.dataset.scene, +pick2.dataset.end)
+    heroTick()
+  })
+  idleReset(deck, () => {
+    active = false
+    deck.classList.remove('live')
+    video.pause()
+    if (voiceOn) voiceBtn.click()
+    synth?.cancel()
+    stage?.drift(false)
+    stage?.snap(-0.9, 0.62)
+    video.currentTime = POSTER_T
+    show(POSTER_T)
+  })
+  idleReset(planHost, () => {
+    if (!planLive) return
+    planLive.dispose()
+    try {
+      planLive = ShotwrightPlan.mount(planHost)
+    } catch (e) {
+      planLive = null
+    }
+  })
   show(POSTER_T)
   video.addEventListener(
     'loadedmetadata',
@@ -3421,6 +3459,11 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   addEventListener('resize', railEnds)
   railEnds()
   const reel = document.getElementById('reel')
+  idleReset(reel, () => {
+    reelGoal = null
+    reel.scrollTo({ left: 0, behavior: reduce ? 'auto' : 'smooth' })
+    for (const st of reel.querySelectorAll('.depth')) st.classList.remove('depth')
+  })
   let reelGoal = null
   reel.addEventListener('pointermove', (e) => {
     if (e.pointerType !== 'mouse') return
