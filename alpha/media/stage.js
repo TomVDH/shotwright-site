@@ -178,6 +178,23 @@
     }
     az = Array.from({ length: 16 }, (_, i) => -0.9 + (i % 2 ? 1 : -1) * Math.ceil(i / 2) * (Math.PI / 8))
       .reduce((best, a) => (blocked(a) < blocked(best) ? a : best), -0.9)
+    // A top start looks straight down on the first cut's aim point: the action.
+    if (opts.top) {
+      const cam0 = ev0.cameras.find((c) => c.id === scene.cuts[0]?.camId)
+      if (cam0) {
+        // The cast near the aim point makes the frame; the aim alone stands in for an empty frame.
+        const aim = cam0.pose.aim
+        const cast = ev0.actors.map((x) => x.pos).filter((q) => Math.hypot(q[0] - aim[0], q[1] - aim[1]) < 12)
+        const near = cast.length ? cast : [aim]
+        const xs = near.map((q) => q[0]), ys = near.map((q) => q[1])
+        const cx = (Math.min(...xs) + Math.max(...xs)) / 2, cy = (Math.min(...ys) + Math.max(...ys)) / 2
+        const span = Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys))
+        target.copy(v3([cx, cy, 0]))
+        dist = Math.min(28, Math.max(14, span * 1.5 + 8))
+      }
+      az = 0
+      el = 1.45
+    }
     let snapTo = null
     let drifting = opts.drift !== false
     // Snaps ease the orbit to a preset view, the way the app's gizmo does.
