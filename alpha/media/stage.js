@@ -66,6 +66,11 @@
     // Iso-on-dialogue: the first cut whose action quotes a speaker turns the view isometric.
     const talkCut = opts.isoOnDialogue ? scene.cuts.find((c) => /[A-Z][a-z]+: "/.test(c.action || '')) : null
     let isoNow = false
+    // A shot plan: timed views (top, iso, cam, persp), each aimed at an actor, the pair, or the live subject.
+    const plan = opts.plan || null
+    let seg = null, camMode = false, distGoal = null
+    const camPos = new THREE.Vector3(), camAim = new THREE.Vector3(), lookAt = new THREE.Vector3()
+    let camFov = 35
     // Boxes, actors, lights and cameras move; each gets a node to update.
     const boxMat = new THREE.MeshLambertMaterial({ color: '#d9c8ad' })
     // Huge flat boxes are ground, such as water; they read darker so set pieces stand out.
@@ -125,6 +130,27 @@
       t = time
       const ev = ShotwrightCore.evaluate(project, scene, t)
       const liveCam = scene.cuts[ev.cutIndex]?.camId
+      if (plan) {
+        const s1 = [...plan].reverse().find((p) => t >= p.t) || plan[0]
+        const pos = (id) => ev.actors.find((a) => a.id === id)?.pos
+        const at = s1.on === 'pair' ? ev.actors.map((a) => a.pos).reduce((m, q, i, all) => [m[0] + q[0] / all.length, m[1] + q[1] / all.length], [0, 0]) : pos(s1.on)
+        if (at) follow.copy(v3([at[0], at[1], 0]))
+        const live = ev.cameras.find((x) => x.id === liveCam)
+        if (live) {
+          camPos.copy(v3(live.pose.pos))
+          camAim.copy(v3(live.pose.aim))
+          const hf = 2 * Math.atan(FILM_MM / 2 / live.pose.focal)
+          camFov = (2 * Math.atan(Math.tan(hf / 2) / view.aspect) * 180) / Math.PI
+        }
+        if (s1 !== seg) {
+          seg = s1
+          camMode = s1.view === 'cam'
+          if (!camMode) {
+            snap(s1.az ?? 0, s1.view === 'top' ? 1.45 : s1.view === 'iso' ? 0.6155 : s1.el ?? 0.35)
+            distGoal = s1.dist ?? null
+          }
+        }
+      }
       if (talkCut) {
         const iso = t >= talkCut.start
         if (iso !== isoNow) {
@@ -302,10 +328,23 @@
         if (k === 1) snapTo = null
       } else if (!dragging && !reduce && idle > 1.5 && drifting) az += dt * 0.05
       // The orbit glides toward the followed subject, about a second to settle.
-      if ((opts.follow || opts.chase || talkCut) && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
+      if ((opts.follow || opts.chase || talkCut || plan) && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
+      if (plan && distGoal) dist += (distGoal - dist) * (reduce ? 1 : 1 - Math.exp(-dt * 2))
       if (opts.chase) dist += ((chasing ? 45 : homeDist) - dist) * (reduce ? 1 : 1 - Math.exp(-dt * 2))
       if (opts.play) update((now / 1000) % END_OF(scene))
-      place()
+      if (camMode) {
+        // Cam mode rides the live camera, as the monitor sees it.
+        const k = reduce ? 1 : 1 - Math.exp(-dt * 4)
+        view.position.lerp(camPos, k)
+        lookAt.lerp(camAim, k)
+        view.lookAt(lookAt)
+        view.fov += (camFov - view.fov) * k
+        view.updateProjectionMatrix()
+      } else {
+        if (plan && Math.abs(view.fov - 35) > 0.01) { view.fov += (35 - view.fov) * Math.min(1, dt * 4); view.updateProjectionMatrix() }
+        place()
+        lookAt.copy(target)
+      }
       if (gizmo) gizmo.draw()
       renderer.render(world, view)
     }
