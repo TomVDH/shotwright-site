@@ -2127,7 +2127,7 @@ footer .logo {
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">5beeeb0</span>
+<span class="build build--top" aria-label="Build">31d0f8a</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2397,26 +2397,6 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
             </div>
           </div>
         </article>
-      </div>
-    </section>
-
-    <section aria-labelledby="spec">
-      <div class="head">
-        <h2 id="spec">In the box</h2>
-      </div>
-      <div class="kit" id="kit">
-        <div class="kit-words" role="tablist" aria-label="In the box">
-          <button type="button" role="tab" id="kit-0" aria-selected="true" aria-controls="kit-panel">Cameras</button>
-          <button type="button" role="tab" id="kit-1" aria-selected="false" aria-controls="kit-panel">Monitor</button>
-          <button type="button" role="tab" id="kit-2" aria-selected="false" aria-controls="kit-panel">Coverage</button>
-          <button type="button" role="tab" id="kit-3" aria-selected="false" aria-controls="kit-panel">Views</button>
-          <button type="button" role="tab" id="kit-4" aria-selected="false" aria-controls="kit-panel">Brief</button>
-          <button type="button" role="tab" id="kit-5" aria-selected="false" aria-controls="kit-panel">Samples</button>
-        </div>
-        <figure class="kit-panel" id="kit-panel" role="tabpanel">
-          <img class="kit-pic" id="kit-pic" src="media/box/cameras.webp" width="1246" height="898" alt="Cameras in the Shotwright app" loading="lazy" decoding="async">
-          <figcaption id="kit-line">Crane, dolly, drone, handheld and tripod. Lenses from 18 to 135 mm, moves keyed on marks.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -2808,35 +2788,6 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     }
     requestAnimationFrame(lensTick)
   }
-  const KIT = [
-    ['cameras', 1246, 898, 'Crane, dolly, drone, handheld and tripod. Lenses from 18 to 135 mm, moves keyed on marks.', 'Cameras'],
-    ['monitor', 1246, 742, 'Each cut through its own lens, with thirds and a shot read.', 'Monitor'],
-    ['coverage', 1200, 228, 'An edit track with a cheat per cut and a flag at the 180° line.', 'Coverage'],
-    ['views', 1200, 942, 'Top, front, side, iso and perspective on 7, 1, 3 and 5.', 'Views'],
-    ['brief', 1246, 1206, 'The prompt for Seedance and Higgsfield, written shot by shot.', 'Brief'],
-    ['samples', 1200, 808, 'Six sample scenes ship with the app.', 'Samples']
-  ]
-  const kitTabs = [...document.querySelectorAll('#kit [role="tab"]')]
-  const kitPic = document.getElementById('kit-pic'),
-    kitLine = document.getElementById('kit-line')
-  let kitAt = 0
-  for (const [f] of KIT) new Image().src = `media/box/${f}.webp`
-  const kitShow = (i) => {
-    if (i === kitAt) return
-    kitAt = i
-    kitTabs.forEach((b, j) => b.setAttribute('aria-selected', String(j === i)))
-    const [f, w, h, l, n] = KIT[i]
-    kitPic.classList.add('out')
-    setTimeout(() => {
-      Object.assign(kitPic, { src: `media/box/${f}.webp`, width: w, height: h, alt: `${n} in the Shotwright app` })
-      kitLine.textContent = l
-      kitPic.classList.remove('out')
-    }, 200)
-  }
-  kitTabs.forEach((b, i) => {
-    b.addEventListener('click', () => kitShow(i))
-    b.addEventListener('pointerenter', () => kitShow(i))
-  })
   const planHost = document.getElementById('plan-live')
   if (window.THREE && window.ShotwrightPlan) {
     try {
