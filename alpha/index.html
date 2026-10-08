@@ -335,7 +335,6 @@ kbd {
 
 /* Spec sheet: what alpha-1 does, beside the camera monitor. */
 .spec-unused { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(20px, 4vw, 56px); align-items: start; }
-.spec-pics { display: grid; gap: 20px; order: 2; }
 .spec dl { order: 1; }
 .spec dl { margin: 0; border-top: 2px solid var(--ink); }
 .spec dl div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 4px 20px; padding: 12px 0 13px; border-bottom: 1px solid var(--rule); }
@@ -420,15 +419,18 @@ canvas.psx.classic { image-rendering: pixelated; }
 .packet-col li { display: grid; gap: 2px; padding: 9px 0 10px; border-bottom: 1px solid var(--rule); }
 .packet-col li span { font-weight: 650; font-variant-numeric: tabular-nums; }
 .packet-col li em { font-style: normal; color: var(--ink-2); font-size: 0.92rem; }
-/* In the box: two columns of facts, two pictures under them. */
-.specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 4vw, 56px); margin: 0; }
-.specs div { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 4px 16px; padding: 13px 0 14px; border-top: 1px solid var(--rule); }
-.specs dt { font-weight: 650; }
-.specs dd { margin: 0; color: var(--ink-2); }
-.spec-pics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin-top: clamp(28px, 4vw, 48px); }
-.spec-pics figure { margin: 0; display: grid; gap: 8px; }
-.spec-pics .pic { aspect-ratio: 16 / 10; object-fit: cover; object-position: center top; }
-.spec-pics figcaption { font-size: 0.86rem; color: var(--ink-2); }
+/* In the box: a row of words; the chosen one opens its line below. */
+.kit { display: grid; gap: clamp(18px, 2.4vw, 28px); }
+.kit-words { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px clamp(18px, 2.6vw, 36px); }
+.kit-words button { padding: 0; border: 0; background: none; color: color-mix(in srgb, var(--ink) 28%, transparent); font: 800 clamp(2rem, 5.2vw, 4.2rem)/1 var(--display); font-stretch: 62%; cursor: pointer; transition: color 0.35s var(--ease); }
+.kit-words button:hover { color: color-mix(in srgb, var(--ink) 60%, transparent); }
+.kit-words button[aria-selected="true"] { color: var(--ink); }
+.kit-words button[aria-selected="true"]::after { content: ""; display: block; height: 3px; margin-top: 8px; background: var(--tape); animation: kit-bar 0.5s var(--ease) both; transform-origin: left; }
+@keyframes kit-bar { from { transform: scaleX(0); } }
+.kit-panel { min-height: 3.2em; max-width: 40em; margin: 0; color: var(--ink-2); font-size: clamp(1.05rem, 1.6vw, 1.25rem); }
+.kit-panel.swap { animation: kit-in 0.45s var(--ease) both; }
+@keyframes kit-in { from { opacity: 0; filter: blur(6px); translate: 0 6px; } }
+.kit-panel kbd.hit { background: var(--tape); color: var(--tape-ink); border-color: var(--tape); }
 /* Footer lockup: ZenaSoft in pixels, the two-face mark in soft blue-white. */
 .zs-pixel { font: 400 0.95rem/1 "Silkscreen", "Courier New", monospace; letter-spacing: 0.02em; color: var(--ink); }
 .two-face { filter: grayscale(1) sepia(0.2) hue-rotate(180deg) saturate(1.6) brightness(1.25); opacity: 0; transition: opacity 1.4s var(--ease) 0.4s; }
@@ -488,10 +490,9 @@ footer .logo { width: 100%; height: auto; }
 @media (max-width: 800px) {
   .panes { grid-template-columns: minmax(0, 1fr); }
   .monwrap { border-left: 0; border-top: 1px solid #2a2a2e; }
-  .step, .step--flip, .step--wide .copy, .spec, .hero, .head, .specs, .spec-pics, .packet { grid-template-columns: minmax(0, 1fr); }
+  .step, .step--flip, .step--wide .copy, .spec, .hero, .head, .packet { grid-template-columns: minmax(0, 1fr); }
   .renders { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .step--flip .copy { order: 0; }
-  .spec-pics { order: 2; }
   .tall { justify-self: center; }
   .tall + .hint { text-align: center; }
   .state { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -506,10 +507,10 @@ footer .logo { width: 100%; height: auto; }
 }
 /* Entrance: each block comes into focus once, staggered. */
 @media (prefers-reduced-motion: no-preference) {
-  .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .spec-pics, .spec dl > div, .state > div, .rail, .rail-nav, footer):not(.in) {
+  .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer):not(.in) {
     opacity: 0; filter: blur(12px); transform: translateY(10px);
   }
-  .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .spec-pics, .spec dl > div, .state > div, .rail, .rail-nav, footer) {
+  .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer) {
     transition: opacity 0.9s var(--ease), filter 1.1s var(--ease), transform 1.1s var(--ease);
     transition-delay: calc(var(--i, 0) * 80ms);
   }
@@ -531,7 +532,7 @@ footer .logo { width: 100%; height: auto; }
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">b31a421</span>
+<span class="build build--top" aria-label="Build">230bff1</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -676,21 +677,18 @@ footer .logo { width: 100%; height: auto; }
     <section aria-labelledby="spec">
       <div class="head">
         <h2 id="spec">In the box</h2>
+        <p class="lede">The kit grows with every build. A full list is on its way, hopefully soon.</p>
       </div>
-      <dl class="specs">
-          <div><dt>Cameras</dt><dd>Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, with moves keyed on marks.</dd></div>
-          <div><dt>Monitor</dt><dd>Every cut through its own lens, with thirds and a shot read: MCU, OTS, 2S.</dd></div>
-          <div><dt>Coverage</dt><dd>An edit track, a cheat per cut, and a polite alarm at the 180° line.</dd></div>
-          <div><dt>Set</dt><dd>Walls with doors and windows, set pieces, lights on marks, and a cast of GLB stand-ins.</dd></div>
-          <div><dt>Views</dt><dd>Top, front, side, iso and perspective on <kbd>7</kbd> <kbd>1</kbd> <kbd>3</kbd> <kbd>5</kbd>. Your numpad already knows.</dd></div>
-          <div><dt>Brief</dt><dd>Stills, an animatic and a prompt for Seedance and Higgsfield. Timecode optional.</dd></div>
-          <div><dt>Samples</dt><dd>Six worked scenes in the box, so day one starts with something to break.</dd></div>
-        </dl>
-      <div class="spec-pics">
-        <figure><img class="pic" src="media/monitor.webp" width="740" height="470" loading="lazy" decoding="async"
-          alt="The camera monitor on CAM 5, a 50 mm medium close-up on Dex, with thirds guides and the cut time."><figcaption>The monitor</figcaption></figure>
-        <figure><img class="pic" src="media/warehouse.webp" width="1200" height="878" loading="lazy" decoding="async"
-          alt="The Warehouse reveal scene from an iso view: walls with a doorway, pallet racks, the cast and the cameras around them."><figcaption>An iso view of the warehouse</figcaption></figure>
+      <div class="kit" id="kit">
+        <div class="kit-words" role="tablist" aria-label="In the box">
+        <button type="button" role="tab" id="kit-0" aria-selected="true" aria-controls="kit-panel">Cameras</button>
+        <button type="button" role="tab" id="kit-1" aria-selected="false" aria-controls="kit-panel">Monitor</button>
+        <button type="button" role="tab" id="kit-2" aria-selected="false" aria-controls="kit-panel">Coverage</button>
+        <button type="button" role="tab" id="kit-3" aria-selected="false" aria-controls="kit-panel">Views</button>
+        <button type="button" role="tab" id="kit-4" aria-selected="false" aria-controls="kit-panel">Brief</button>
+        <button type="button" role="tab" id="kit-5" aria-selected="false" aria-controls="kit-panel">Samples</button>
+        </div>
+        <p class="kit-panel" id="kit-panel" role="tabpanel" aria-live="polite">Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.</p>
       </div>
     </section>
 
@@ -1027,7 +1025,7 @@ footer .logo { width: 100%; height: auto; }
   })
 
   // Entrance: blocks come into focus as they enter; siblings stagger.
-  const blocks = document.querySelectorAll('.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .spec-pics, .spec dl > div, .state > div, .rail, .rail-nav, footer')
+  const blocks = document.querySelectorAll('.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer')
   const groups = new Map()
   for (const el of blocks) {
     const n = groups.get(el.parentElement) ?? 0
@@ -1192,6 +1190,28 @@ footer .logo { width: 100%; height: auto; }
   addEventListener('scroll', gridFade, { passive: true })
   gridFade()
   for (const cv of document.querySelectorAll('.epics canvas.psx')) window.PSX?.spin(cv, `media/chimes/${cv.dataset.chime}.glb`, { tilt: 0.25 })
+  // In the box: words switch the line below; it cycles while in view and unhovered.
+  const KIT = ["Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.", "Every cut through its own lens, with thirds and a shot read: MCU, OTS, 2S.", "An edit track, a cheat per cut, and a polite alarm at the 180° line.", "Top, front, side, iso and perspective on <kbd data-k=\"7\">7</kbd> <kbd data-k=\"1\">1</kbd> <kbd data-k=\"3\">3</kbd> <kbd data-k=\"5\">5</kbd>. Try them.", "Stills, an animatic and a prompt for Seedance and Higgsfield. Timecode optional.", "Six worked scenes, so day one starts with something to break."]
+  const kit = document.getElementById('kit'), kitPanel = document.getElementById('kit-panel')
+  const kitTabs = [...kit.querySelectorAll('[role="tab"]')]
+  let kitAt = 0, kitHold = false, kitSeen = false
+  const kitShow = (i) => {
+    kitAt = i
+    kitTabs.forEach((b, j) => b.setAttribute('aria-selected', String(j === i)))
+    kitPanel.innerHTML = KIT[i]
+    kitPanel.classList.remove('swap'); void kitPanel.offsetWidth; kitPanel.classList.add('swap')
+  }
+  kitTabs.forEach((b, i) => b.addEventListener('click', () => { kitShow(i); kitHold = true }))
+  kit.addEventListener('pointerenter', () => { kitHold = true })
+  kit.addEventListener('pointerleave', () => { kitHold = false })
+  new IntersectionObserver(([e]) => { kitSeen = e.isIntersecting }, { threshold: 0.4 }).observe(kit)
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { if (kitSeen && !kitHold) kitShow((kitAt + 1) % KIT.length) }, 3800)
+  // On Views, pressing 7, 1, 3 or 5 lights its key.
+  addEventListener('keydown', (e) => {
+    const k = kitPanel.querySelector(`kbd[data-k="${e.key}"]`)
+    if (!k || !kitSeen) return
+    k.classList.add('hit'); setTimeout(() => k.classList.remove('hit'), 300)
+  })
   // The rail arrows page by the visible width and hide at either end.
   const rail = document.getElementById('epics'), prev = document.getElementById('rail-prev'), next = document.getElementById('rail-next')
   const bar = document.getElementById('rail-bar')
