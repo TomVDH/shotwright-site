@@ -2123,11 +2123,144 @@ footer .logo {
   font-weight: 300;
   color: var(--ink-2);
 }
+.compare {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-top: clamp(8px, 1.6vw, 20px);
+  overflow: hidden;
+  border-radius: 6px;
+  background: #000;
+  box-shadow:
+    0 0 0 1px var(--edge),
+    0 30px 60px -36px rgb(var(--shadow) / 0.6);
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+.compare video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.cmp-previs {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 calc(100% - var(--x)) 0 0);
+}
+.cmp-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--x);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--tape);
+  pointer-events: none;
+}
+.cmp-tag {
+  position: absolute;
+  top: 14px;
+  color: #fafafa;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.7);
+  pointer-events: none;
+}
+.cmp-l {
+  left: 16px;
+}
+.cmp-r {
+  right: 16px;
+}
+.cmp-sound {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: 1.5px solid #f4f4f5;
+  border-radius: 3px;
+  background: rgb(20 20 24 / 0.72);
+  color: #f4f4f5;
+  cursor: pointer;
+}
+.cmp-sound span {
+  font-family: "Material Symbols Outlined";
+  font-size: 17px;
+  line-height: 1;
+  font-feature-settings: "liga";
+}
+.cmp-sound[aria-pressed="true"] {
+  background: var(--tape);
+  border-color: var(--tape);
+  color: var(--tape-ink);
+}
+html:not(.js) .cmp-sound {
+  display: none;
+}
+.nw-shots {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px) clamp(12px, 1.4vw, 20px);
+  margin: clamp(20px, 2.6vw, 32px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.nw-shots li {
+  display: grid;
+  gap: 8px;
+}
+.nw-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 4px;
+  background: #111;
+  cursor: pointer;
+}
+.nw-shot img,
+.nw-shot video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.nw-shot video {
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.nw-shot.on video {
+  opacity: 1;
+}
+.nw-shot.now {
+  box-shadow: 0 0 0 2px var(--tape);
+}
+.nw-shots li > span {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+}
+.nw-shots .rn {
+  font-size: 1em;
+  margin-right: 0.45em;
+}
+@media (max-width: 800px) {
+  .nw-shots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 </style>
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">0cacf24</span>
+<span class="build build--top" aria-label="Build">13c097c</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2398,6 +2531,32 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
           </div>
         </article>
       </div>
+    </section>
+
+    <section aria-labelledby="results">
+      <div class="head">
+        <h2 id="results">Early results</h2>
+        <p class="lede">Night walk, one of the sample scenes, taken from greybox previs to a finished black-and-white noir. Ten shots, 39 seconds. The animatic set the motion, the cut timing and the framing.</p>
+      </div>
+      <div class="compare" id="compare" style="--x: 50%">
+        <video class="cmp-film" id="cmp-film" src="media/results/film.mp4" poster="media/results/film-poster.webp" muted playsinline preload="none" aria-label="The finished Night walk scene"></video>
+        <div class="cmp-previs"><video id="cmp-previs" src="media/results/previs.mp4" poster="media/results/previs-poster.webp" muted playsinline preload="none" aria-label="The Night walk previs animatic"></video></div>
+        <i class="cmp-bar" aria-hidden="true"></i>
+        <span class="cmp-tag cmp-l" aria-hidden="true">Previs</span><span class="cmp-tag cmp-r" aria-hidden="true">Film</span>
+        <button type="button" class="cmp-sound" id="cmp-sound" aria-pressed="false" aria-label="Sound"><span aria-hidden="true">volume_off</span></button>
+      </div>
+      <ol class="nw-shots">
+          <li><button type="button" class="nw-shot" data-i="0" aria-label="Play shot 1 in the comparison"><img src="media/results/previz-01.webp" alt="Previs frame of shot 1" width="640" height="360" loading="lazy"><video src="media/results/shot-01.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">I</span>70 mm tripod</span></li>
+          <li><button type="button" class="nw-shot" data-i="1" aria-label="Play shot 2 in the comparison"><img src="media/results/previz-02.webp" alt="Previs frame of shot 2" width="640" height="360" loading="lazy"><video src="media/results/shot-02.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">II</span>40 mm dolly out, handheld</span></li>
+          <li><button type="button" class="nw-shot" data-i="2" aria-label="Play shot 3 in the comparison"><img src="media/results/previz-03.webp" alt="Previs frame of shot 3" width="640" height="360" loading="lazy"><video src="media/results/shot-03.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">III</span>40 mm dolly right</span></li>
+          <li><button type="button" class="nw-shot" data-i="3" aria-label="Play shot 4 in the comparison"><img src="media/results/previz-04.webp" alt="Previs frame of shot 4" width="640" height="360" loading="lazy"><video src="media/results/shot-04.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">IV</span>40 mm tripod</span></li>
+          <li><button type="button" class="nw-shot" data-i="4" aria-label="Play shot 5 in the comparison"><img src="media/results/previz-05.webp" alt="Previs frame of shot 5" width="640" height="360" loading="lazy"><video src="media/results/shot-05.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">V</span>40 mm tripod</span></li>
+          <li><button type="button" class="nw-shot" data-i="5" aria-label="Play shot 6 in the comparison"><img src="media/results/previz-06.webp" alt="Previs frame of shot 6" width="640" height="360" loading="lazy"><video src="media/results/shot-06.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">VI</span>135 mm tripod</span></li>
+          <li><button type="button" class="nw-shot" data-i="6" aria-label="Play shot 7 in the comparison"><img src="media/results/previz-07.webp" alt="Previs frame of shot 7" width="640" height="360" loading="lazy"><video src="media/results/shot-07.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">VII</span>40 mm handheld</span></li>
+          <li><button type="button" class="nw-shot" data-i="7" aria-label="Play shot 8 in the comparison"><img src="media/results/previz-08.webp" alt="Previs frame of shot 8" width="640" height="360" loading="lazy"><video src="media/results/shot-08.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">VIII</span>32 mm dolly out, crane up</span></li>
+          <li><button type="button" class="nw-shot" data-i="8" aria-label="Play shot 9 in the comparison"><img src="media/results/previz-09.webp" alt="Previs frame of shot 9" width="640" height="360" loading="lazy"><video src="media/results/shot-09.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">IX</span>60 mm tripod</span></li>
+          <li><button type="button" class="nw-shot" data-i="9" aria-label="Play shot 10 in the comparison"><img src="media/results/previz-10.webp" alt="Previs frame of shot 10" width="640" height="360" loading="lazy"><video src="media/results/shot-10.mp4" muted loop playsinline preload="none" aria-hidden="true"></video></button><span><span class="rn">X</span>40 mm dolly out, handheld</span></li>
+      </ol>
     </section>
 
     <section aria-labelledby="alpha">
@@ -3458,6 +3617,109 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   rail.addEventListener('scroll', railEnds, { passive: true })
   addEventListener('resize', railEnds)
   railEnds()
+  const NW = [
+    [5, 4.88],
+    [6, 6.12],
+    [4.5, 4.54],
+    [4.5, 2.71],
+    [2.5, 3.92],
+    [2, 2.33],
+    [2.5, 2.54],
+    [4, 4],
+    [4, 5.36],
+    [4, 2.6]
+  ]
+  const nwFilmAt = NW.reduce((a, [, r], i) => (a.push(i ? a[i - 1] + NW[i - 1][1] : 0), a), [])
+  const nwPlanAt = NW.reduce((a, [p], i) => (a.push(i ? a[i - 1] + NW[i - 1][0] : 0), a), [])
+  const cmp = document.getElementById('compare')
+  const film = document.getElementById('cmp-film'),
+    previs = document.getElementById('cmp-previs')
+  const cmpSound = document.getElementById('cmp-sound')
+  const nwTiles = [...document.querySelectorAll('.nw-shot')]
+  const shotAt = (t) => nwFilmAt.reduce((k, a, i) => (t >= a ? i : k), 0)
+  const planOf = (t) => {
+    const i = shotAt(t)
+    return nwPlanAt[i] + ((t - nwFilmAt[i]) / NW[i][1]) * NW[i][0]
+  }
+  const cmpSync = () => {
+    const t = film.currentTime,
+      i = shotAt(t),
+      want = planOf(t)
+    previs.playbackRate = Math.min(4, Math.max(0.25, NW[i][0] / NW[i][1]))
+    if (Math.abs(previs.currentTime - want) > 0.15) previs.currentTime = want
+    nwTiles.forEach((b, j) => b.classList.toggle('now', !film.paused && j === i))
+    if (!film.paused) requestAnimationFrame(cmpSync)
+  }
+  film.addEventListener('play', () => {
+    previs.play().catch(() => {})
+    requestAnimationFrame(cmpSync)
+  })
+  film.addEventListener('pause', () => previs.pause())
+  film.addEventListener('ended', () => {
+    film.currentTime = 0
+    film.play().catch(() => {})
+  })
+  let cmpBlobs = null
+  const cmpLoad = () =>
+    (cmpBlobs ??= Promise.all(
+      [film, previs].map((v) =>
+        fetch(v.currentSrc || v.src)
+          .then((r) => (r.ok ? r.blob() : null))
+          .then((b) => {
+            if (b) v.src = URL.createObjectURL(b)
+          })
+          .catch(() => {})
+      )
+    ))
+  const cmpPlay = (at) =>
+    cmpLoad().then(() => {
+      if (at !== void 0) film.currentTime = at
+      film.play().catch(() => {})
+    })
+  cmp.addEventListener('pointermove', (e) => {
+    const r = cmp.getBoundingClientRect()
+    cmp.style.setProperty('--x', `${Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)).toFixed(2)}%`)
+  })
+  cmp.addEventListener('pointerenter', () => cmpPlay())
+  cmp.addEventListener('click', (e) => {
+    if (e.target.closest('.cmp-sound')) return
+    if (film.paused) cmpPlay()
+    else film.pause()
+  })
+  cmpSound.addEventListener('click', () => {
+    film.muted = !film.muted
+    cmpSound.setAttribute('aria-pressed', String(!film.muted))
+    cmpSound.firstElementChild.textContent = film.muted ? 'volume_off' : 'volume_up'
+    if (!film.muted) cmpPlay()
+  })
+  idleReset(cmp, () => {
+    film.pause()
+    film.muted = true
+    cmpSound.setAttribute('aria-pressed', 'false')
+    cmpSound.firstElementChild.textContent = 'volume_off'
+    film.currentTime = 0
+    previs.currentTime = 0
+    cmp.style.setProperty('--x', '50%')
+    nwTiles.forEach((b) => b.classList.remove('now'))
+  })
+  nwTiles.forEach((b, i) => {
+    const v = b.querySelector('video')
+    b.addEventListener('pointerenter', () => {
+      v.preload = 'auto'
+      v.currentTime = 0
+      v.play()
+        .then(() => b.classList.add('on'))
+        .catch(() => {})
+    })
+    b.addEventListener('pointerleave', () => {
+      b.classList.remove('on')
+      v.pause()
+    })
+    b.addEventListener('click', () => {
+      cmpPlay(nwFilmAt[i] + 0.02)
+      cmp.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' })
+    })
+  })
   const reel = document.getElementById('reel')
   idleReset(reel, () => {
     reelGoal = null
