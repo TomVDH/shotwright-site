@@ -62,6 +62,7 @@
       piece(x, len, 0, w.height)
     }
 
+    const follow = new THREE.Vector3()
     // Boxes, actors, lights and cameras move; each gets a node to update.
     const boxMat = new THREE.MeshLambertMaterial({ color: '#d9c8ad' })
     const boxes = new Map(ev0.boxes.map((b) => {
@@ -118,6 +119,17 @@
       t = time
       const ev = ShotwrightCore.evaluate(project, scene, t)
       const liveCam = scene.cuts[ev.cutIndex]?.camId
+      // Follow mode aims the orbit at the live camera's subject.
+      if (opts.follow) {
+        const c = ev.cameras.find((x) => x.id === liveCam)
+        if (c) {
+          const aim = c.pose.aim
+          const cast = ev.actors.map((x) => x.pos).filter((q) => Math.hypot(q[0] - aim[0], q[1] - aim[1]) < 12)
+          const pts = cast.length ? cast : [aim]
+          const cx = pts.reduce((v, q) => v + q[0], 0) / pts.length, cy = pts.reduce((v, q) => v + q[1], 0) / pts.length
+          follow.copy(v3([cx, cy, 0]))
+        }
+      }
       for (const b of ev.boxes) {
         const m = boxes.get(b.id)
         m.position.copy(v3([b.pos[0], b.pos[1], b.pos[2] + b.size[2] / 2]))
@@ -254,6 +266,8 @@
         el = snapTo.from[1] + (snapTo.to[1] - snapTo.from[1]) * q
         if (k === 1) snapTo = null
       } else if (!dragging && !reduce && idle > 1.5 && drifting) az += dt * 0.05
+      // The orbit glides toward the followed subject, about a second to settle.
+      if (opts.follow && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
       if (opts.play) update((now / 1000) % END_OF(scene))
       place()
       if (gizmo) gizmo.draw()
