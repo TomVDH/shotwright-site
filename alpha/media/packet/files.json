@@ -1,0 +1,173 @@
+{
+  "scene": "Diner standoff",
+  "folder": "exports/diner-standoff/<date time> packet",
+  "look": "grey",
+  "files": [
+    {
+      "name": "cut01.mp4",
+      "bytes": 1634451
+    },
+    {
+      "name": "cut01.png",
+      "bytes": 397229
+    },
+    {
+      "name": "cut01_end.png",
+      "bytes": 340915
+    },
+    {
+      "name": "cut02.png",
+      "bytes": 257969
+    },
+    {
+      "name": "cut03.png",
+      "bytes": 223379
+    },
+    {
+      "name": "cut04.png",
+      "bytes": 323372
+    },
+    {
+      "name": "cut05.mp4",
+      "bytes": 1206183
+    },
+    {
+      "name": "cut05.png",
+      "bytes": 207512
+    },
+    {
+      "name": "cut05_end.png",
+      "bytes": 213204
+    },
+    {
+      "name": "cut06.png",
+      "bytes": 318276
+    },
+    {
+      "name": "cut07.png",
+      "bytes": 273965
+    },
+    {
+      "name": "cut08.png",
+      "bytes": 219818
+    },
+    {
+      "name": "cut09.png",
+      "bytes": 297732
+    },
+    {
+      "name": "cut10.mp4",
+      "bytes": 1115992
+    },
+    {
+      "name": "cut10.png",
+      "bytes": 189331
+    },
+    {
+      "name": "cut10_end.png",
+      "bytes": 216904
+    },
+    {
+      "name": "prompt.txt",
+      "bytes": 10773
+    },
+    {
+      "name": "scene.json",
+      "bytes": 136824
+    },
+    {
+      "name": "sequence.mp4",
+      "bytes": 11126614
+    }
+  ],
+  "totalBytes": 18710443,
+  "zip": {
+    "name": "diner-standoff-packet.zip",
+    "bytes": 18573369
+  },
+  "depth": {
+    "files": [
+      {
+        "name": "cut01.mp4",
+        "bytes": 453379
+      },
+      {
+        "name": "cut01.png",
+        "bytes": 397229
+      },
+      {
+        "name": "cut01_end.png",
+        "bytes": 340915
+      },
+      {
+        "name": "cut02.png",
+        "bytes": 257969
+      },
+      {
+        "name": "cut03.png",
+        "bytes": 223379
+      },
+      {
+        "name": "cut04.png",
+        "bytes": 323372
+      },
+      {
+        "name": "cut05.mp4",
+        "bytes": 336654
+      },
+      {
+        "name": "cut05.png",
+        "bytes": 207512
+      },
+      {
+        "name": "cut05_end.png",
+        "bytes": 213204
+      },
+      {
+        "name": "cut06.png",
+        "bytes": 318276
+      },
+      {
+        "name": "cut07.png",
+        "bytes": 273965
+      },
+      {
+        "name": "cut08.png",
+        "bytes": 219818
+      },
+      {
+        "name": "cut09.png",
+        "bytes": 297732
+      },
+      {
+        "name": "cut10.mp4",
+        "bytes": 417068
+      },
+      {
+        "name": "cut10.png",
+        "bytes": 189331
+      },
+      {
+        "name": "cut10_end.png",
+        "bytes": 216904
+      },
+      {
+        "name": "prompt.txt",
+        "bytes": 10773
+      },
+      {
+        "name": "scene.json",
+        "bytes": 136824
+      },
+      {
+        "name": "sequence.mp4",
+        "bytes": 2523309
+      }
+    ],
+    "totalBytes": 7357613,
+    "zip": {
+      "name": "diner-standoff-packet.zip",
+      "bytes": 7220539
+    }
+  }
+}

@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shotwright</title>
-<script>document.documentElement.classList.add("js");try{var t=localStorage.getItem("sw-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>
+document.documentElement.classList.add('js')
+try {
+  var t = localStorage.getItem('sw-theme')
+  if (t) document.documentElement.dataset.theme = t
+} catch (e) {}
+</script>
 <meta name="description" content="Shotwright plans the shoot before there is one: block the scene, place the cameras, cut the coverage, then brief Seedance and Higgsfield. alpha-1, built for ZenaStudios.">
 <link rel="icon" href="../brand/shotwright-favicon.svg" type="image/svg+xml">
 <link rel="alternate icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F2340'/%3E%3Cpath d='M7 7h18v2.5H11.5V25H7z' fill='%23EEF1F3'/%3E%3Ccircle cx='19.5' cy='19' r='3' fill='%23F2C230'/%3E%3C/svg%3E">
@@ -13,18 +19,16 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Caveat:wght@500&family=Silkscreen&family=Bodoni+Moda:opsz,wght@6..96,700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,1,0&icon_names=arrow_back,arrow_forward,dark_mode,light_mode,pan_tool_alt,sync,volume_off,volume_up&display=block">
 <style>
-/* Layout: one drafting sheet; text runs left, figures run full width.
-   Motion: the opening shot pulls focus, the edit track plays with the scroll, the prompt rolls. */
 :root {
-  --paper: #EEF1F3;
-  --sheet: #F8F9FA;
-  --ink: #0F2340;
-  --ink-2: #4A5970;
-  --rule: #CBD3DC;
+  --paper: #eef1f3;
+  --sheet: #f8f9fa;
+  --ink: #0f2340;
+  --ink-2: #4a5970;
+  --rule: #cbd3dc;
   --edge: rgb(15 35 64 / 0.22);
   --grid: rgb(15 35 64 / 0.045);
-  --tape: #F2C230;
-  --tape-ink: #1B1505;
+  --tape: #f2c230;
+  --tape-ink: #1b1505;
   --shadow: 15 35 64;
   --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -40,14 +44,14 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0A1729;
-    --sheet: #0E1F37;
-    --ink: #E6ECF2;
-    --ink-2: #9DACBF;
-    --rule: #233A5C;
+    --paper: #0a1729;
+    --sheet: #0e1f37;
+    --ink: #e6ecf2;
+    --ink-2: #9dacbf;
+    --rule: #233a5c;
     --edge: rgb(230 236 242 / 0.12);
     --grid: rgb(150 180 220 / 0.05);
-    --tape: #F5C842;
+    --tape: #f5c842;
     --shadow: 0 4 12;
     --rn-edge: transparent;
     --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -55,21 +59,23 @@
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0A1729;
-  --sheet: #0E1F37;
-  --ink: #E6ECF2;
-  --ink-2: #9DACBF;
-  --rule: #233A5C;
+  --paper: #0a1729;
+  --sheet: #0e1f37;
+  --ink: #e6ecf2;
+  --ink-2: #9dacbf;
+  --rule: #233a5c;
   --edge: rgb(230 236 242 / 0.12);
   --grid: rgb(150 180 220 / 0.05);
-  --tape: #F5C842;
+  --tape: #f5c842;
   --shadow: 0 4 12;
   --rn-edge: transparent;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   padding-inline: clamp(16px, 4vw, 48px);
@@ -79,460 +85,1929 @@ body {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
-.sheet { max-width: 1240px; margin-inline: auto; }
-/* The grid settles in: a hair larger, then on its 32 px pitch. */
-/* It fades out once three quarters of the hero scrolls away. */
+.sheet {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
 body::before {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: 32px 32px;
   animation: grid-in 1.6s var(--ease) both;
   transition: opacity 1.2s var(--ease);
 }
-.past-hero body::before { opacity: 0; }
-@keyframes grid-in { from { background-size: 34px 34px; background-position: -6px -6px; } }
-img { max-width: 100%; }
-/* Text links: yellow at rest; ink on a yellow underline when hovered. */
-/* Classed links are buttons or marks and style themselves. */
-a { color: inherit; text-decoration: none; }
-a:not([class]) { color: var(--tape); transition: color 0.2s; }
-a:not([class]):hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--tape); text-decoration-thickness: 2px; text-underline-offset: 3px; }
-/* Footer links stay in the footer's own grey. */
-footer a, footer a:not([class]) { color: inherit; }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--tape); outline-offset: 3px; border-radius: 4px; }
-.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-p { margin: 0; }
+.past-hero body::before {
+  opacity: 0;
+}
+@keyframes grid-in {
+  from {
+    background-size: 34px 34px;
+    background-position: -6px -6px;
+  }
+}
+img {
+  max-width: 100%;
+}
 
-/* Header */
-.bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding-block: 20px 0; }
-.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo { display: block; color: var(--ink); overflow: visible; }
-.logo .slab { fill: currentColor; }
-.logo .stem { fill: var(--tape); }
-/* The bar slides in behind the letters and eases into the i. */
-.masthead .logo .lph { animation: slidein 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
-@keyframes slidein { from { transform: translateX(-760px); } }
-.build { font-size: 0.92rem; color: var(--ink-2); }
-.for { margin-left: auto; font-size: 0.92rem; color: var(--ink-2); }
-.for strong { font-weight: 600; color: var(--ink); }
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:not([class]) {
+  color: var(--tape);
+  transition: color 0.2s;
+}
+a:not([class]):hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--tape);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
 
-/* Hero */
-.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: end; gap: 20px clamp(24px, 5vw, 72px); padding-block: clamp(40px, 6vw, 88px) clamp(48px, 7vw, 104px); }
-.hero-copy { display: grid; gap: 14px; padding-bottom: 0.6rem; }
-/* Under the hero: three sample scenes, named in plain text. */
-.scene-pick { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px clamp(20px, 3vw, 36px); margin-top: clamp(18px, 2.4vw, 28px); }
-.scene-pick button { padding: 4px 0; border: 0; background: none; color: var(--ink-2); font: 550 0.95rem/1.2 var(--body); cursor: pointer; text-decoration: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: 6px; transition: color 0.25s, text-decoration-color 0.25s; }
-.scene-pick button:hover { color: var(--ink); }
-.scene-pick button[aria-pressed="true"] { color: var(--ink); text-decoration-color: var(--tape); }
-/* Between scenes: the square monogram, its yellow bar rising like a level. */
-.hero-load { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; background: color-mix(in srgb, var(--paper) 55%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); animation: load-in 0.25s var(--ease) both; }
-.hero-load[hidden] { display: none; }
-.hero-load svg { width: 56px; height: 56px; }
-.m-sq { fill: #0B0B0D; }
-.m-notch { fill: #EEF1F3; }
-.m-bar { fill: var(--tape); transform-box: fill-box; transform-origin: 50% 100%; animation: level 0.8s cubic-bezier(0.45, 0, 0.2, 1) infinite alternate; }
-@keyframes level { from { transform: scaleY(0.2); } }
-@keyframes load-in { from { opacity: 0; } }
-@media (prefers-reduced-motion: reduce) { .m-bar { animation: none; } }
-/* Under the hero: a full-weight button that is not ready to press yet. */
-.soon { display: flex; justify-content: center; margin: clamp(36px, 5vw, 64px) 0 0; }
-.soon button { padding: 19px 38px; border: 0; border-radius: 999px; background: var(--ink); color: var(--paper); font: 700 1.15rem/1 var(--body); opacity: 0.78; cursor: not-allowed; display: inline-flex; align-items: center; gap: 12px; }
-.soon .hf { width: 20px; height: 20px; }
-.w { display: inline-block; }
-/* "first." pushes in with the scroll; grain in the letters coarsens as it grows. */
-.zoom { position: relative; display: inline-block; transform-origin: 0 72%; transform: scale(var(--z, 1)); will-change: transform; }
+footer a,
+footer a:not([class]) {
+  color: inherit;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--tape);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+p {
+  margin: 0;
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  padding-block: 20px 0;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logo {
+  display: block;
+  color: var(--ink);
+  overflow: visible;
+}
+.logo .slab {
+  fill: currentColor;
+}
+.logo .stem {
+  fill: var(--tape);
+}
+
+.masthead .logo .lph {
+  animation: slidein 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}
+@keyframes slidein {
+  from {
+    transform: translateX(-760px);
+  }
+}
+.build {
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+.for {
+  margin-left: auto;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+.for strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 20px clamp(24px, 5vw, 72px);
+  padding-block: clamp(40px, 6vw, 88px) clamp(48px, 7vw, 104px);
+}
+.hero-copy {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 0.6rem;
+}
+
+.scene-pick {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px clamp(20px, 3vw, 36px);
+  margin-top: clamp(18px, 2.4vw, 28px);
+}
+.scene-pick button {
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  font: 550 0.95rem/1.2 var(--body);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  transition:
+    color 0.25s,
+    text-decoration-color 0.25s;
+}
+.scene-pick button:hover {
+  color: var(--ink);
+}
+.scene-pick button[aria-pressed="true"] {
+  color: var(--ink);
+  text-decoration-color: var(--tape);
+}
+
+.hero-load {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--paper) 55%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: load-in 0.25s var(--ease) both;
+}
+.hero-load[hidden] {
+  display: none;
+}
+.hero-load svg {
+  width: 56px;
+  height: 56px;
+}
+.m-sq {
+  fill: #0b0b0d;
+}
+.m-notch {
+  fill: #eef1f3;
+}
+.m-bar {
+  fill: var(--tape);
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: level 0.8s cubic-bezier(0.45, 0, 0.2, 1) infinite alternate;
+}
+@keyframes level {
+  from {
+    transform: scaleY(0.2);
+  }
+}
+@keyframes load-in {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .m-bar {
+    animation: none;
+  }
+}
+
+.soon {
+  display: flex;
+  justify-content: center;
+  margin: clamp(36px, 5vw, 64px) 0 0;
+}
+.soon button {
+  padding: 19px 38px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font: 700 1.15rem/1 var(--body);
+  opacity: 0.78;
+  cursor: not-allowed;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.soon .hf {
+  width: 20px;
+  height: 20px;
+}
+.w {
+  display: inline-block;
+}
+
+.zoom {
+  position: relative;
+  display: inline-block;
+  transform-origin: 0 72%;
+  transform: scale(var(--z, 1));
+  will-change: transform;
+}
 .zoom::after {
-  content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
-  color: transparent; -webkit-background-clip: text; background-clip: text;
-  background-image: var(--grain); background-size: 160px 160px; background-position: var(--gx, 0) var(--gy, 0);
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-image: var(--grain);
+  background-size: 160px 160px;
+  background-position: var(--gx, 0) var(--gy, 0);
 }
-.masthead { margin: clamp(48px, 9vw, 128px) 0 0; }
-.masthead .logo { width: 100%; height: auto; cursor: ew-resize; touch-action: pan-y; animation: wipe 0.7s var(--ease) both; }
-@keyframes wipe { from { clip-path: inset(0 100% 0 0); } }
-/* After the opening, the playhead follows the pointer and springs back into the i. */
-.masthead .logo.settled .lph { animation: none; }
-.masthead .logo.settled .lph { transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); }
-.masthead .logo.settled.held .lph { transition: transform 0.08s linear; }
+.masthead {
+  margin: clamp(48px, 9vw, 128px) 0 0;
+}
+.masthead .logo {
+  width: 100%;
+  height: auto;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  animation: wipe 0.7s var(--ease) both;
+}
+@keyframes wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+.masthead .logo.settled .lph {
+  animation: none;
+}
+.masthead .logo.settled .lph {
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.masthead .logo.settled.held .lph {
+  transition: transform 0.08s linear;
+}
 .tagline {
-  margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 62%;
-  font-size: clamp(3.4rem, 8vw, 6.5rem); line-height: 0.86; letter-spacing: -0.005em;
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 62%;
+  font-size: clamp(3.4rem, 8vw, 6.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.005em;
 }
-.promise { max-width: 30em; font-size: clamp(1.08rem, 1.6vw, 1.28rem); line-height: 1.45; text-wrap: pretty; }
-.status { color: var(--ink-2); }
+.promise {
+  max-width: 30em;
+  font-size: clamp(1.08rem, 1.6vw, 1.28rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.status {
+  color: var(--ink-2);
+}
 
-/* Figures */
-.shot { margin: 0; }
-.frame { position: relative; }
+.shot {
+  position: relative;
+  margin: 0;
+}
+.disclaim {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+.frame {
+  position: relative;
+}
 .pic {
-  display: block; width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--edge); background: #09090b;
-  box-shadow: 0 1px 2px rgb(var(--shadow) / 0.12), 0 24px 44px -30px rgb(var(--shadow) / 0.45);
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--edge);
+  background: #09090b;
+  box-shadow:
+    0 1px 2px rgb(var(--shadow) / 0.12),
+    0 24px 44px -30px rgb(var(--shadow) / 0.45);
 }
-.frame--open { container-type: inline-size; }
-/* Live parts of the hero sit exactly over their places in the screenshot. */
-.live-mon { position: absolute; z-index: 2; left: 77.125%; top: 10.39%; width: 21.75%; height: 19.48%; overflow: hidden; background: #000; }
-.live-mon video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.live-ph { position: absolute; z-index: 3; top: 82.9%; bottom: 0; width: 2px; margin-left: -1px; background: #fafafa; left: calc((0.00716 + var(--p, 0) * 0.98751) * 100%); pointer-events: none; }
-.live-cut { color: #e4e4e7; }
-.live-tc { position: absolute; z-index: 3; left: 2.5%; top: 80.1%; display: flex; gap: 1.5cqw; padding: 0 1.2cqw 0 0.3cqw; background: #09090b; color: #d4d4d8; font-size: 0.86cqw; line-height: 1.6; font-variant-numeric: tabular-nums; pointer-events: none; }
-.live-vp { position: absolute; z-index: 2; left: 14%; top: 6.84%; width: 62%; height: 72.53%; overflow: hidden; cursor: grab; background: #18181b; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06), 0 18px 40px -20px rgb(0 0 0 / 0.6); }
-.live-vp:active { cursor: grabbing; }
-.live-vp canvas, .stage3d canvas { display: block; width: 100%; height: 100%; }
-.gizmo { position: absolute; top: 10px; right: 10px; width: clamp(48px, 5vw, 72px); height: clamp(48px, 5vw, 72px); overflow: visible; cursor: pointer; touch-action: none; }
-.gizmo-ring { fill: rgb(255 255 255 / 0.05); stroke: rgb(255 255 255 / 0.1); }
-.gizmo-ball { transition: stroke-width 0.15s; }
-.gizmo g:hover .gizmo-ball { stroke-width: 3; }
-.gizmo-label { font: 700 8px "Archivo", sans-serif; fill: #111; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
-/* The opening shot pulls focus while crop marks are drawn. */
-.frame--open .pic { animation: rack 1.1s var(--ease) both; }
-@keyframes rack { from { filter: blur(10px) saturate(0.7); } }
-.crop { position: absolute; width: 0; height: 0; pointer-events: none; }
-.crop::before, .crop::after { content: ""; position: absolute; background: var(--ink-2); animation: draw 0.6s var(--ease) 0.5s both; }
-.crop::before { width: var(--cm-len); height: 1px; }
-.crop::after { width: 1px; height: var(--cm-len); }
-.crop.tl { top: 0; left: 0; }
-.crop.tl::before { top: 0; right: var(--cm-gap); transform-origin: right; }
-.crop.tl::after { left: 0; bottom: var(--cm-gap); transform-origin: bottom; }
-.crop.tr { top: 0; right: 0; }
-.crop.tr::before { top: 0; left: var(--cm-gap); transform-origin: left; }
-.crop.tr::after { left: -1px; bottom: var(--cm-gap); transform-origin: bottom; }
-.crop.bl { bottom: 0; left: 0; }
-.crop.bl::before { top: -1px; right: var(--cm-gap); transform-origin: right; }
-.crop.bl::after { left: 0; top: var(--cm-gap); transform-origin: top; }
-.crop.br { bottom: 0; right: 0; }
-.crop.br::before { top: -1px; left: var(--cm-gap); transform-origin: left; }
-.crop.br::after { left: -1px; top: var(--cm-gap); transform-origin: top; }
-@keyframes draw { from { transform: scale(0); } }
+.frame--open {
+  container-type: inline-size;
+}
 
+.live-mon {
+  position: absolute;
+  z-index: 2;
+  left: 77.125%;
+  top: 10.39%;
+  width: 21.75%;
+  height: 19.48%;
+  overflow: hidden;
+  background: #000;
+}
+.live-mon video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.live-ph {
+  position: absolute;
+  z-index: 3;
+  top: 82.9%;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: #fafafa;
+  left: calc((0.00716 + var(--p, 0) * 0.98751) * 100%);
+  pointer-events: none;
+}
+.live-cut {
+  color: #e4e4e7;
+}
+.live-tc {
+  position: absolute;
+  z-index: 3;
+  left: 2.5%;
+  top: 80.1%;
+  display: flex;
+  gap: 1.5cqw;
+  padding: 0 1.2cqw 0 0.3cqw;
+  background: #09090b;
+  color: #d4d4d8;
+  font-size: 0.86cqw;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.live-vp {
+  position: absolute;
+  z-index: 2;
+  left: 14%;
+  top: 6.84%;
+  width: 62%;
+  height: 72.53%;
+  overflow: hidden;
+  cursor: grab;
+  background: #18181b;
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    0 18px 40px -20px rgb(0 0 0 / 0.6);
+}
+.live-vp:active {
+  cursor: grabbing;
+}
+.live-vp:not(.on) {
+  visibility: hidden;
+}
+html:not(.js) :is(.live-mon, .live-ph, .live-tc, .hero-play, .scene-pick, .hero-load, .deck-play) {
+  display: none;
+}
+.live-vp canvas,
+.stage3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.gizmo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: clamp(48px, 5vw, 72px);
+  height: clamp(48px, 5vw, 72px);
+  overflow: visible;
+  cursor: pointer;
+  touch-action: none;
+}
+.gizmo-ring {
+  fill: rgb(255 255 255 / 0.05);
+  stroke: rgb(255 255 255 / 0.1);
+}
+.gizmo-ball {
+  transition: stroke-width 0.15s;
+}
+.gizmo g:hover .gizmo-ball {
+  stroke-width: 3;
+}
+.gizmo-label {
+  font:
+    700 8px "Archivo",
+    sans-serif;
+  fill: #111;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
 
-/* Sections */
-section { padding-top: var(--gap); }
-.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; gap: 10px clamp(24px, 5vw, 72px); margin-bottom: clamp(40px, 6vw, 80px); }
-h2 { margin: 0; font: 800 clamp(2.2rem, 5vw, 3.5rem)/0.95 var(--display); font-stretch: 66%; text-wrap: balance; }
-.lede { color: var(--ink-2); max-width: 38em; }
-h3 { margin: 0 0 8px; font: 780 clamp(1.55rem, 2.6vw, 2.1rem)/1.04 var(--display); font-stretch: 72%; text-wrap: balance; }
-.rn { font-family: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif; font-weight: 700; font-stretch: normal; font-size: 1.12em; color: var(--tape); -webkit-text-stroke: 0.7px var(--rn-edge); margin-right: 0.36em; }
-.hint { margin-top: 10px; font-size: 0.86rem; color: var(--ink-2); }
-.on-touch { display: none; }
-@media (hover: none) { .on-mouse { display: none; } .on-touch { display: inline; } }
+.frame--open .pic {
+  animation: rack 1.1s var(--ease) both;
+}
+@keyframes rack {
+  from {
+    filter: blur(10px) saturate(0.7);
+  }
+}
+.crop {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.crop::before,
+.crop::after {
+  content: "";
+  position: absolute;
+  background: var(--ink-2);
+  animation: draw 0.6s var(--ease) 0.5s both;
+}
+.crop::before {
+  width: var(--cm-len);
+  height: 1px;
+}
+.crop::after {
+  width: 1px;
+  height: var(--cm-len);
+}
+.crop.tl {
+  top: 0;
+  left: 0;
+}
+.crop.tl::before {
+  top: 0;
+  right: var(--cm-gap);
+  transform-origin: right;
+}
+.crop.tl::after {
+  left: 0;
+  bottom: var(--cm-gap);
+  transform-origin: bottom;
+}
+.crop.tr {
+  top: 0;
+  right: 0;
+}
+.crop.tr::before {
+  top: 0;
+  left: var(--cm-gap);
+  transform-origin: left;
+}
+.crop.tr::after {
+  left: -1px;
+  bottom: var(--cm-gap);
+  transform-origin: bottom;
+}
+.crop.bl {
+  bottom: 0;
+  left: 0;
+}
+.crop.bl::before {
+  top: -1px;
+  right: var(--cm-gap);
+  transform-origin: right;
+}
+.crop.bl::after {
+  left: 0;
+  top: var(--cm-gap);
+  transform-origin: top;
+}
+.crop.br {
+  bottom: 0;
+  right: 0;
+}
+.crop.br::before {
+  top: -1px;
+  left: var(--cm-gap);
+  transform-origin: left;
+}
+.crop.br::after {
+  left: -1px;
+  top: var(--cm-gap);
+  transform-origin: top;
+}
+@keyframes draw {
+  from {
+    transform: scale(0);
+  }
+}
 
-/* Through the lens: greybox stills from the monitor. */
-.renders { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 20px); margin: 0; padding: 0; list-style: none; }
-.renders li:first-child { grid-column: span 2; grid-row: span 2; }
-.renders li:first-child figcaption { font-size: 0.95rem; }
-.renders figure { margin: 0; display: grid; gap: 8px; }
-.still { position: relative; overflow: hidden; border-radius: 4px; }
-.still .pic { aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; box-shadow: none; transition: transform 0.9s var(--ease); }
-/* Hover shows the thirds guides of the monitor. */
+section {
+  padding-top: var(--gap);
+}
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 10px clamp(24px, 5vw, 72px);
+  margin-bottom: clamp(40px, 6vw, 80px);
+}
+h2 {
+  margin: 0;
+  font: 800 clamp(2.2rem, 5vw, 3.5rem)/0.95 var(--display);
+  font-stretch: 66%;
+  text-wrap: balance;
+}
+.lede {
+  color: var(--ink-2);
+  max-width: 38em;
+}
+h3 {
+  margin: 0 0 8px;
+  font: 780 clamp(1.55rem, 2.6vw, 2.1rem)/1.04 var(--display);
+  font-stretch: 72%;
+  text-wrap: balance;
+}
+.rn {
+  font-family: "Bodoni Moda", Didot, "Bodoni 72", Georgia, serif;
+  font-weight: 700;
+  font-stretch: normal;
+  font-size: 1.12em;
+  color: var(--tape);
+  -webkit-text-stroke: 0.7px var(--rn-edge);
+  margin-right: 0.36em;
+}
+.hint {
+  margin-top: 10px;
+  font-size: 0.86rem;
+  color: var(--ink-2);
+}
+.on-touch {
+  display: none;
+}
+@media (hover: none) {
+  .on-mouse {
+    display: none;
+  }
+  .on-touch {
+    display: inline;
+  }
+}
+
+.renders {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 20px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.renders li:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+.renders li:first-child figcaption {
+  font-size: 0.95rem;
+}
+.renders figure {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.still {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.still .pic {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: none;
+  transition: transform 0.9s var(--ease);
+}
+
 .still::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
   background:
-    linear-gradient(90deg, transparent calc(33.33% - 0.5px), rgb(255 255 255 / 0.55) calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), rgb(255 255 255 / 0.55) calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px)),
-    linear-gradient(transparent calc(33.33% - 0.5px), rgb(255 255 255 / 0.55) calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), rgb(255 255 255 / 0.55) calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px));
+    linear-gradient(
+      90deg,
+      transparent calc(33.33% - 0.5px),
+      rgb(255 255 255 / 0.55) calc(33.33% - 0.5px) calc(33.33% + 0.5px),
+      transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px),
+      rgb(255 255 255 / 0.55) calc(66.67% - 0.5px) calc(66.67% + 0.5px),
+      transparent calc(66.67% + 0.5px)
+    ),
+    linear-gradient(
+      transparent calc(33.33% - 0.5px),
+      rgb(255 255 255 / 0.55) calc(33.33% - 0.5px) calc(33.33% + 0.5px),
+      transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px),
+      rgb(255 255 255 / 0.55) calc(66.67% - 0.5px) calc(66.67% + 0.5px),
+      transparent calc(66.67% + 0.5px)
+    );
 }
-.still:hover::after { opacity: 1; }
-.still:hover .pic { transform: scale(1.03); }
-.renders figcaption { display: grid; gap: 1px; font-size: 0.86rem; line-height: 1.35; }
-.renders figcaption b { font-weight: 600; }
-.renders figcaption span { color: var(--ink-2); }
+.still:hover::after {
+  opacity: 1;
+}
+.still:hover .pic {
+  transform: scale(1.03);
+}
+.renders figcaption {
+  display: grid;
+  gap: 1px;
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+.renders figcaption b {
+  font-weight: 600;
+}
+.renders figcaption span {
+  color: var(--ink-2);
+}
 
-/* Steps */
-.steps { display: grid; gap: clamp(96px, 12vw, 176px); }
-.step { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(20px, 4vw, 56px); align-items: center; }
-.step--flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.step--flip .copy { order: 2; }
-.step--wide { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-.step--wide .copy { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 4px clamp(20px, 4vw, 56px); align-items: end; }
-.copy p { color: var(--ink-2); max-width: 32em; }
+.steps {
+  display: grid;
+  gap: clamp(96px, 12vw, 176px);
+}
+.step {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: center;
+}
+.step--flip {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.step--flip .copy {
+  order: 2;
+}
+.step--wide {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+.step--wide .copy {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 4px clamp(20px, 4vw, 56px);
+  align-items: end;
+}
+.copy p {
+  color: var(--ink-2);
+  max-width: 32em;
+}
 kbd {
-  font: 600 0.82em/1 var(--body); color: var(--ink); background: var(--sheet);
-  border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 2px 6px;
+  font: 600 0.82em/1 var(--body);
+  color: var(--ink);
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 2px 6px;
 }
 
-/* Monitor: the exported animatic over its edit track. */
-.deck { width: 100%; }
-/* Static until asked: a quiet play hint appears on hover or focus. */
-.panes { position: relative; }
+.deck {
+  width: 100%;
+}
+
+.panes {
+  position: relative;
+}
 .deck-play {
-  position: absolute; inset: 0; z-index: 4; display: grid; place-content: center; justify-items: center; gap: 12px;
-  border: 0; padding: 0; cursor: pointer; color: #fff; font: 600 0.95rem/1 var(--body); letter-spacing: 0.02em;
-  background: radial-gradient(60% 70% at 50% 50%, rgb(9 9 11 / 0.55), rgb(9 9 11 / 0.15)); opacity: 0; transition: opacity 0.45s var(--ease);
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+  font: 600 0.95rem/1 var(--body);
+  letter-spacing: 0.02em;
+  background: radial-gradient(60% 70% at 50% 50%, rgb(9 9 11 / 0.55), rgb(9 9 11 / 0.15));
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
 }
-.playable:hover .deck-play, .deck-play:focus-visible { opacity: 1; }
-.deck-ring { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; border: 1.5px solid rgb(255 255 255 / 0.85); transform: scale(0.92); transition: transform 0.6s var(--ease), background 0.3s; }
-.playable:hover .deck-ring { transform: none; }
-.deck-play:hover .deck-ring { background: rgb(255 255 255 / 0.12); }
-.deck-ring svg { width: 30px; height: 30px; margin-left: 4px; fill: #fff; }
-.deck-label { opacity: 0.9; }
-.hero-play { z-index: 5; border-radius: 6px; }
-.playable.live .deck-play { display: none; }
-.deck:not(.live) .scrub { cursor: pointer; }
-/* Stage and monitor sit flush, as in the app; the edit track spans both. */
-.panes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #18181b; border: 1px solid var(--edge); border-bottom: 0; border-radius: 6px 6px 0 0; overflow: hidden; }
-.stage3d { aspect-ratio: 16 / 9; cursor: grab; position: relative; }
-.stage3d:active { cursor: grabbing; }
-.stage3d canvas { display: block; width: 100%; height: 100%; }
-.monwrap { position: relative; border-left: 1px solid #2a2a2e; }
-.panes .monitor { display: block; width: 100%; border: 0; border-radius: 0; }
-.mb { position: absolute; padding: 3px 7px; border-radius: 3px; background: rgb(20 20 24 / 0.72); color: #f4f4f5; font-size: clamp(0.62rem, 0.9vw, 0.76rem); font-weight: 600; letter-spacing: 0.01em; pointer-events: none; }
-.mb-tl { top: 10px; left: 10px; } .mb-tr { top: 10px; right: 10px; } .mb-bl { bottom: 10px; left: 10px; }
-/* SDH captions: white on black, centred, two lines at most. */
-.cc { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); width: max-content; max-width: 78%; margin: 0; text-align: center; pointer-events: none; }
-.cc span { display: inline; padding: 2px 8px; line-height: 1.55; background: rgb(0 0 0 / 0.82); color: #fff; font-weight: 600; font-size: clamp(0.7rem, 1.15vw, 0.98rem); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.cc-off .cc { display: none; }
-/* Mute and CC share one size, border and baseline. */
-.cc-btn, .voice-btn { position: absolute; bottom: 10px; display: grid; place-items: center; width: 32px; height: 24px; padding: 0; border: 1.5px solid #f4f4f5; border-radius: 3px; background: rgb(20 20 24 / 0.72); color: #f4f4f5; cursor: pointer; }
-.cc-btn { right: 10px; font: 800 0.66rem/1 var(--body); letter-spacing: 0.04em; }
-.cc-btn[aria-pressed="false"] { opacity: 0.45; }
-.voice-btn { right: 50px; }
-.voice-btn span { font-family: "Material Symbols Outlined"; font-size: 17px; line-height: 1; font-variation-settings: "FILL" 1, "wght" 500; font-feature-settings: "liga"; }
-.voice-btn[aria-pressed="true"] { background: var(--tape); border-color: var(--tape); color: var(--tape-ink); }
-.thirds { position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
-  background: linear-gradient(90deg, transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px)),
-    linear-gradient(transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px)); }
-.monitor { aspect-ratio: 16 / 9; object-fit: cover; box-shadow: none; }
-.panes + .scrub .pic { border-radius: 0 0 6px 6px; box-shadow: 0 24px 44px -30px rgb(var(--shadow) / 0.45); }
-.brief { display: grid; gap: 6px; max-width: 48em; margin-top: clamp(16px, 2.4vw, 26px); color: var(--ink-2); min-height: 6.5em; }
-.brief b { font-weight: 650; color: var(--ink); }
-/* Scrubbable edit track */
-.scrub { position: relative; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-radius: 6px; outline: none; }
-.scrub:focus-visible { box-shadow: 0 0 0 2px var(--paper), 0 0 0 4px var(--tape); }
-.scrub .pic { pointer-events: none; }
-.cutbox, .ph, .readout { position: absolute; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
-.cutbox {
-  top: 25.2%; height: 72.8%; left: calc(var(--a, 0) * 100%); width: calc(var(--w, 0) * 100%);
-  border: 2px solid var(--tape); border-radius: 5px; transition: opacity 0.2s, left 0.14s var(--ease), width 0.14s var(--ease);
+.playable:hover .deck-play,
+.deck-play:focus-visible {
+  opacity: 1;
 }
-.ph { top: 3%; bottom: -5px; left: calc(var(--x, 0) * 100%); width: 2px; margin-left: -1px; background: var(--tape); }
-.ph::before, .live-ph::before { content: ""; position: absolute; left: 50%; width: 11px; height: 11px; border: solid #fff; border-width: 0 4px 4px 0; border-radius: 1px; transform: translate(-50%, -100%) rotate(45deg); top: 2px; filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5)); }
-.readout {
-  top: calc(100% + 12px); left: 0; z-index: 2; width: min(360px, 100%); display: grid; gap: 4px; padding: 9px 12px 10px;
-  background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px;
-  box-shadow: 0 14px 28px -18px rgb(var(--shadow) / 0.5); will-change: transform;
+.deck-ring {
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(255 255 255 / 0.85);
+  transform: scale(0.92);
+  transition:
+    transform 0.6s var(--ease),
+    background 0.3s;
 }
-.readout .meta { display: flex; flex-wrap: wrap; gap: 0 8px; font-size: 0.8rem; color: var(--ink-2); }
-.readout .meta b { font-weight: 600; color: var(--ink); }
-.readout .meta .tc { margin-left: auto; }
-.readout .line { font-size: 0.95rem; line-height: 1.4; }
-.scrub .cutbox, .scrub .ph { opacity: 1; }
+.playable:hover .deck-ring {
+  transform: none;
+}
+.deck-play:hover .deck-ring {
+  background: rgb(255 255 255 / 0.12);
+}
+.deck-ring svg {
+  width: 30px;
+  height: 30px;
+  margin-left: 4px;
+  fill: #fff;
+}
+.deck-label {
+  opacity: 0.9;
+}
+.hero-play {
+  z-index: 5;
+  border-radius: 6px;
+}
+.playable.live .deck-play {
+  display: none;
+}
+.deck:not(.live) .scrub {
+  cursor: pointer;
+}
 
-/* Teleprompter: the prompt rolls to its last line on hover, tap or the button. */
-.tall { justify-self: end; width: min(100%, 400px); cursor: pointer; }
+.panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  background: #18181b;
+  border: 1px solid var(--edge);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  overflow: hidden;
+}
+.stage3d {
+  aspect-ratio: 16 / 9;
+  cursor: grab;
+  position: relative;
+  background: #18181b url("media/stage-still.webp") center / cover no-repeat;
+}
+.stage3d:active {
+  cursor: grabbing;
+}
+.plan {
+  position: relative;
+}
+.plan-live {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 4px;
+  visibility: hidden;
+}
+.plan-live.on {
+  visibility: visible;
+}
+.plan-live canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.stage3d canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.monwrap {
+  position: relative;
+  border-left: 1px solid #2a2a2e;
+}
+.panes .monitor {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+}
+.mb {
+  position: absolute;
+  padding: 3px 7px;
+  border-radius: 3px;
+  background: rgb(20 20 24 / 0.72);
+  color: #f4f4f5;
+  font-size: clamp(0.62rem, 0.9vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+.mb-tl {
+  top: 10px;
+  left: 10px;
+}
+.mb-tr {
+  top: 10px;
+  right: 10px;
+}
+.mb-bl {
+  bottom: 10px;
+  left: 10px;
+}
+
+.cc {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 78%;
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+}
+.cc span {
+  display: inline;
+  padding: 2px 8px;
+  line-height: 1.55;
+  background: rgb(0 0 0 / 0.82);
+  color: #fff;
+  font-weight: 600;
+  font-size: clamp(0.7rem, 1.15vw, 0.98rem);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.cc-off .cc {
+  display: none;
+}
+
+.cc-btn,
+.voice-btn {
+  position: absolute;
+  bottom: 10px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 24px;
+  padding: 0;
+  border: 1.5px solid #f4f4f5;
+  border-radius: 3px;
+  background: rgb(20 20 24 / 0.72);
+  color: #f4f4f5;
+  cursor: pointer;
+}
+.cc-btn {
+  right: 10px;
+  font: 800 0.66rem/1 var(--body);
+  letter-spacing: 0.04em;
+}
+.cc-btn[aria-pressed="true"] {
+  background: var(--tape);
+  border-color: var(--tape);
+  color: var(--tape-ink);
+}
+.cc-btn[aria-pressed="false"] {
+  opacity: 0.7;
+}
+.voice-btn {
+  right: 50px;
+}
+.voice-btn span {
+  font-family: "Material Symbols Outlined";
+  font-size: 17px;
+  line-height: 1;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 500;
+  font-feature-settings: "liga";
+}
+.voice-btn[aria-pressed="true"] {
+  background: var(--tape);
+  border-color: var(--tape);
+  color: var(--tape-ink);
+}
+.thirds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    linear-gradient(
+      90deg,
+      transparent calc(33.33% - 0.5px),
+      #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px),
+      transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px),
+      #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px),
+      transparent calc(66.67% + 0.5px)
+    ),
+    linear-gradient(
+      transparent calc(33.33% - 0.5px),
+      #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px),
+      transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px),
+      #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px),
+      transparent calc(66.67% + 0.5px)
+    );
+}
+.monitor {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  box-shadow: none;
+}
+.panes + .scrub .pic {
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 24px 44px -30px rgb(var(--shadow) / 0.45);
+}
+.brief {
+  display: grid;
+  gap: 6px;
+  max-width: 48em;
+  margin-top: clamp(16px, 2.4vw, 26px);
+  color: var(--ink-2);
+  min-height: 6.5em;
+}
+.brief b {
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.scrub {
+  position: relative;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 6px;
+  outline: none;
+}
+.scrub:focus-visible {
+  box-shadow:
+    0 0 0 2px var(--paper),
+    0 0 0 4px var(--tape);
+}
+.scrub .pic {
+  pointer-events: none;
+}
+.cutbox,
+.ph,
+.readout {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.cutbox {
+  top: 25.2%;
+  height: 72.8%;
+  left: calc(var(--a, 0) * 100%);
+  width: calc(var(--w, 0) * 100%);
+  border: 2px solid var(--tape);
+  border-radius: 5px;
+  transition:
+    opacity 0.2s,
+    left 0.14s var(--ease),
+    width 0.14s var(--ease);
+}
+.ph {
+  top: 3%;
+  bottom: -5px;
+  left: calc(var(--x, 0) * 100%);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--tape);
+}
+.ph::before,
+.live-ph::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 4px 4px 0;
+  border-radius: 1px;
+  transform: translate(-50%, -100%) rotate(45deg);
+  top: 2px;
+  filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5));
+}
+.readout {
+  top: calc(100% + 12px);
+  left: 0;
+  z-index: 2;
+  width: min(360px, 100%);
+  display: grid;
+  gap: 4px;
+  padding: 9px 12px 10px;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  box-shadow: 0 14px 28px -18px rgb(var(--shadow) / 0.5);
+  will-change: transform;
+}
+.readout .meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+.readout .meta b {
+  font-weight: 600;
+  color: var(--ink);
+}
+.readout .meta .tc {
+  margin-left: auto;
+}
+.readout .line {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.scrub .cutbox,
+.scrub .ph {
+  opacity: 1;
+}
+
+.tall {
+  justify-self: end;
+  width: min(100%, 400px);
+  cursor: pointer;
+}
 .tall .pic {
-  aspect-ratio: 763 / 1000; object-fit: cover; object-position: 50% 0%; box-shadow: none;
-  -webkit-mask-image: linear-gradient(#000 76%, transparent); mask-image: linear-gradient(#000 76%, transparent);
+  aspect-ratio: 763 / 1000;
+  object-fit: cover;
+  object-position: 50% 0%;
+  box-shadow: none;
+  -webkit-mask-image: linear-gradient(#000 76%, transparent);
+  mask-image: linear-gradient(#000 76%, transparent);
   transition: object-position 1.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tall.rolling .pic { object-position: 50% 100%; transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+.tall.rolling .pic {
+  object-position: 50% 100%;
+  transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
 @media (hover: hover) {
-  .tall:hover .pic { object-position: 50% 100%; transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+  .tall:hover .pic {
+    object-position: 50% 100%;
+    transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  }
 }
-.tall + .hint { text-align: right; }
-.roll {
-  font: inherit; color: var(--ink); background: var(--sheet); cursor: pointer;
-  border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: 3px 9px;
+.tall + .hint {
+  text-align: right;
 }
-.roll[aria-pressed="true"] { background: var(--tape); border-color: var(--tape); color: var(--tape-ink); }
 
-/* Spec sheet: what alpha-1 does, beside the camera monitor. */
-.spec-unused { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(20px, 4vw, 56px); align-items: start; }
-.spec dl { order: 1; }
-.spec dl { margin: 0; border-top: 2px solid var(--ink); }
-.spec dl div { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 4px 20px; padding: 12px 0 13px; border-bottom: 1px solid var(--rule); }
-.spec dt { font-weight: 650; }
-.spec dd { margin: 0; color: var(--ink-2); }
+.spec-unused {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(20px, 4vw, 56px);
+  align-items: start;
+}
+.spec dl {
+  order: 1;
+}
+.spec dl {
+  margin: 0;
+  border-top: 2px solid var(--ink);
+}
+.spec dl div {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 4px 20px;
+  padding: 12px 0 13px;
+  border-bottom: 1px solid var(--rule);
+}
+.spec dt {
+  font-weight: 650;
+}
+.spec dd {
+  margin: 0;
+  color: var(--ink-2);
+}
 
-/* Notice: a note from TV in tape yellow, signed by hand. */
 .notice {
-  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(14px, 2.5vw, 28px); align-items: start;
-  margin-bottom: clamp(40px, 6vw, 72px); padding: clamp(18px, 2.6vw, 28px) clamp(18px, 3vw, 36px);
-  background: color-mix(in srgb, var(--tape) 12%, var(--paper)); color: var(--ink);
-  border: 1px solid color-mix(in srgb, var(--tape) 55%, transparent); border-radius: 4px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(14px, 2.5vw, 28px);
+  align-items: start;
+  margin-bottom: clamp(40px, 6vw, 72px);
+  padding: clamp(18px, 2.6vw, 28px) clamp(18px, 3vw, 36px);
+  background: color-mix(in srgb, var(--tape) 12%, var(--paper));
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--tape) 55%, transparent);
+  border-radius: 4px;
 }
 .notice-icon {
-  font-family: "Material Symbols Outlined"; font-size: clamp(2rem, 3.6vw, 2.6rem); line-height: 1; color: var(--tape); -webkit-text-stroke: 0.6px var(--rn-edge);
-  font-variation-settings: "FILL" 1, "wght" 400, "opsz" 48; -webkit-font-feature-settings: "liga"; font-feature-settings: "liga";
+  font-family: "Material Symbols Outlined";
+  font-size: clamp(2rem, 3.6vw, 2.6rem);
+  line-height: 1;
+  color: var(--tape);
+  -webkit-text-stroke: 0.6px var(--rn-edge);
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "opsz" 48;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
 }
-.notice-text { display: grid; gap: 10px; }
-.notice-title { font: 780 clamp(1.3rem, 2vw, 1.6rem)/1.05 var(--display); font-stretch: 74%; }
-.notice-text p:not(.notice-title):not(.notice-sign) { max-width: 60em; line-height: 1.55; color: var(--ink-2); }
-.notice-sign { justify-self: end; font: 500 clamp(1.4rem, 2vw, 1.7rem)/1 "Caveat", "Segoe Print", cursive; color: var(--ink-2); transform: rotate(-4deg); }
-/* Chimes: ten from a pool of fifty, turning in PSX time. */
-.fresh { font-weight: 650; color: var(--ink); }
-.deal { position: relative; height: clamp(520px, 52vw, 680px); margin: 0; padding: 0; list-style: none; }
-.deal li { position: absolute; left: var(--x, 50%); top: var(--y, 50%); display: grid; justify-items: center; gap: 4px; width: var(--w, 120px); translate: -50% -50%; rotate: var(--r, 0deg); animation: dealt 0.7s var(--ease) both; animation-delay: calc(var(--i) * 55ms); }
-.deal.out li { opacity: 0; scale: 0.94; filter: blur(10px); transition: opacity 0.28s var(--ease), scale 0.28s var(--ease), filter 0.28s var(--ease); }
-/* A reshuffle pops the new set in fast, with a small overshoot. */
-.deal.pop li { animation: pop 0.32s cubic-bezier(0.3, 1.6, 0.5, 1) both; animation-delay: calc(var(--i) * 16ms); }
-@keyframes pop { from { opacity: 0; scale: 0.6; } }
-/* The lineup staggers like props on a shelf that is not quite level. */
-.deal span { font-size: 0.86rem; color: var(--ink-2); text-align: center; }
-@keyframes dealt { from { opacity: 0; scale: 0.9; filter: blur(6px); } }
-.deal span { font-size: calc(0.74rem + var(--s, 1) * 0.12rem); }
-canvas.psx { width: min(100%, 136px); aspect-ratio: 1; }
-.deal canvas.psx { width: 100%; }
-canvas.psx.classic { image-rendering: pixelated; }
-/* Chime tools: a Fresh or Classic switch and a reshuffle. */
-.deal-tools { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 10px 32px; margin: calc(-1 * clamp(20px, 3.4vw, 48px)) 0 clamp(16px, 3vw, 36px); font-size: 0.9rem; color: var(--ink-2); }
-.look { display: inline-flex; align-items: center; gap: 10px; }
-.look label { cursor: pointer; transition: color 0.3s; }
-.look [data-on] { color: var(--ink); }
-.switch { position: relative; width: 36px; height: 20px; padding: 0; border: 1px solid color-mix(in srgb, var(--ink) 38%, transparent); border-radius: 10px; background: transparent; cursor: pointer; transition: background 0.35s var(--ease), border-color 0.35s; }
-.switch i { position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); transition: translate 0.35s var(--ease), background 0.35s; }
-.switch[aria-checked="true"] { background: var(--tape); border-color: var(--tape); }
-.switch[aria-checked="true"] i { translate: 16px 0; background: var(--tape-ink); }
-.reshuffle { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; transition: color 0.3s; }
-.reshuffle:hover { color: var(--ink); }
-.ri { font-family: "Material Symbols Outlined"; font-size: 22px; line-height: 1; font-feature-settings: "liga"; transition: rotate 0.6s var(--ease); }
-.reshuffle:hover .ri { rotate: 180deg; }
-/* What's coming: a rail of releases in order, each with its Chime turning. */
-/* The rail bleeds to the right edge and fades there, so more reads as more. */
-.rail { position: relative; }
+.notice-text {
+  display: grid;
+  gap: 10px;
+}
+.notice-title {
+  font: 780 clamp(1.3rem, 2vw, 1.6rem)/1.05 var(--display);
+  font-stretch: 74%;
+}
+.notice-text p:not(.notice-title):not(.notice-sign) {
+  max-width: 60em;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.notice-sign {
+  justify-self: end;
+  font:
+    500 clamp(1.4rem, 2vw, 1.7rem)/1 "Caveat",
+    "Segoe Print",
+    cursive;
+  color: var(--ink-2);
+  transform: rotate(-4deg);
+}
+
+.fresh {
+  font-weight: 650;
+  color: var(--ink);
+}
+.deal {
+  position: relative;
+  height: clamp(520px, 52vw, 680px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+html:not(.js) .deal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 32px 48px;
+  height: auto;
+}
+html:not(.js) .deal li {
+  position: static;
+  translate: none;
+  width: 120px;
+}
+html:not(.js) .deal-tools {
+  display: none;
+}
+.deal li {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  width: var(--w, 120px);
+  translate: -50% -50%;
+  rotate: var(--r, 0deg);
+  animation: dealt 0.7s var(--ease) both;
+  animation-delay: calc(var(--i) * 55ms);
+}
+.deal.out li {
+  opacity: 0;
+  scale: 0.94;
+  filter: blur(10px);
+  transition:
+    opacity 0.28s var(--ease),
+    scale 0.28s var(--ease),
+    filter 0.28s var(--ease);
+}
+
+.deal.pop li {
+  animation: pop 0.32s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 16ms);
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+}
+
+.deal span {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+  text-align: center;
+}
+@keyframes dealt {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    filter: blur(6px);
+  }
+}
+.deal span {
+  font-size: calc(0.74rem + var(--s, 1) * 0.12rem);
+}
+.psx {
+  width: min(100%, 136px);
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+.deal .psx {
+  width: 100%;
+}
+canvas.psx.classic {
+  image-rendering: pixelated;
+}
+
+.deal-tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px 32px;
+  margin: calc(-1 * clamp(20px, 3.4vw, 48px)) 0 clamp(16px, 3vw, 36px);
+  font-size: 0.9rem;
+  color: var(--ink-2);
+}
+.look {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.look label {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.look [data-on] {
+  color: var(--ink);
+}
+.switch {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--ink) 38%, transparent);
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.35s var(--ease),
+    border-color 0.35s;
+}
+.switch i {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition:
+    translate 0.35s var(--ease),
+    background 0.35s;
+}
+.switch[aria-checked="true"] {
+  background: var(--tape);
+  border-color: var(--tape);
+}
+.switch[aria-checked="true"] i {
+  translate: 16px 0;
+  background: var(--tape-ink);
+}
+.reshuffle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.reshuffle:hover {
+  color: var(--ink);
+}
+.ri {
+  font-family: "Material Symbols Outlined";
+  font-size: 22px;
+  line-height: 1;
+  font-feature-settings: "liga";
+  transition: rotate 0.6s var(--ease);
+}
+.reshuffle:hover .ri {
+  rotate: 180deg;
+}
+
+.rail {
+  position: relative;
+}
 .epics {
-  display: grid; grid-auto-flow: column; grid-auto-columns: clamp(208px, 18.5vw, 248px); gap: clamp(36px, 4vw, 56px);
-  margin: 0; padding: 4px 0; list-style: none;
-  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 0; scrollbar-width: none; overscroll-behavior-x: contain;
-  --fl: 0px; --fr: clamp(72px, 10vw, 140px);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(208px, 18.5vw, 248px);
+  gap: clamp(36px, 4vw, 56px);
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  --fl: 0px;
+  --fr: clamp(72px, 10vw, 140px);
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
   mask-image: linear-gradient(90deg, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
 }
-.epics::-webkit-scrollbar { display: none; }
-.epics:focus-visible { outline: 2px solid var(--tape); outline-offset: 6px; border-radius: 4px; }
-.epics li { display: grid; align-content: start; gap: 8px; padding-top: 22px; border-top: 1px solid var(--rule); scroll-snap-align: start; }
-.epics canvas.psx { width: 112px; margin: 0 0 10px -10px; }
-.epics em { font-style: normal; font-size: 0.82rem; font-weight: 600; color: var(--ink-2); }
-.epics b { font: 780 clamp(1.3rem, 1.8vw, 1.55rem)/1.05 var(--display); font-stretch: 74%; }
-.epics span { color: var(--ink-2); font-size: 0.95rem; max-width: 24ch; }
-/* Under the rail: a hairline gauge of the scroll, then two plain arrows. */
-.rail-nav { display: flex; align-items: center; gap: 18px; margin-top: clamp(12px, 2vw, 24px); }
-.rail-gauge { position: relative; flex: 1; height: 1px; background: var(--rule); overflow: hidden; }
-.rail-gauge i { position: absolute; inset: 0 auto 0 0; width: var(--w, 30%); translate: var(--x, 0) 0; background: var(--ink); }
-.rail-btn { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; transition: opacity 0.3s var(--ease), translate 0.3s var(--ease); }
-.rail-btn span { font-family: "Material Symbols Outlined"; font-size: 22px; line-height: 1; font-feature-settings: "liga"; }
-#rail-prev:hover { translate: -3px 0; }
-#rail-next:hover { translate: 3px 0; }
-.rail-btn[data-off] { opacity: 0.25; pointer-events: none; }
-/* Packet: the real files of one export, split by reader. */
-.packet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px); }
-.packet-col { display: grid; align-content: start; gap: 10px; }
-.packet-col > b { font: 780 1.2rem/1 var(--display); font-stretch: 74%; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
-.packet-col ul { margin: 0; padding: 0; list-style: none; display: grid; }
-.packet-col li { display: grid; gap: 2px; padding: 9px 0 10px; border-bottom: 1px solid var(--rule); }
-.packet-col li span { font-weight: 650; font-variant-numeric: tabular-nums; }
-.packet-col li em { font-style: normal; color: var(--ink-2); font-size: 0.92rem; }
-/* In the box: a row of words; the chosen one opens its line below. */
-.kit { display: grid; gap: clamp(18px, 2.4vw, 28px); }
-.kit-words { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px clamp(18px, 2.6vw, 36px); }
-.kit-words button { padding: 0; border: 0; background: none; color: color-mix(in srgb, var(--ink) 28%, transparent); font: 800 clamp(2rem, 5.2vw, 4.2rem)/1 var(--display); font-stretch: 62%; cursor: pointer; transition: color 0.35s var(--ease); }
-.kit-words button:hover { color: color-mix(in srgb, var(--ink) 60%, transparent); }
-.kit-words button[aria-selected="true"] { color: var(--ink); }
-.kit-words button[aria-selected="true"]::after { content: ""; display: block; height: 3px; margin-top: 8px; background: var(--tape); animation: kit-bar 0.5s var(--ease) both; transform-origin: left; }
-@keyframes kit-bar { from { transform: scaleX(0); } }
-.kit-panel { min-height: 3.2em; max-width: 40em; margin: 0; color: var(--ink-2); font-size: clamp(1.05rem, 1.6vw, 1.25rem); }
-.kit-panel.swap { animation: kit-in 0.45s var(--ease) both; }
-@keyframes kit-in { from { opacity: 0; filter: blur(6px); translate: 0 6px; } }
-.kit-panel kbd.hit { background: var(--tape); color: var(--tape-ink); border-color: var(--tape); }
-/* Footer lockup: ZenaSoft in pixels, the two-face mark in soft blue-white. */
-.zs-pixel { font: 400 0.95rem/1 "Silkscreen", "Courier New", monospace; letter-spacing: 0.02em; color: var(--ink); }
-.two-face { filter: grayscale(1) sepia(0.2) hue-rotate(180deg) saturate(1.6) brightness(1.25); opacity: 0; transition: opacity 1.4s var(--ease) 0.4s; }
-footer.in .two-face, .no-js .two-face { opacity: 0.42; }
-/* Theme switch and build hash sit on the content's right edge, at the page top; both scroll away. */
-.theme-btn.top { position: absolute; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 14px); right: var(--edge-r); order: 0; }
-/* Alpha: where the build stands. */
-.state { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px clamp(20px, 3vw, 40px); margin: 0; }
-.state div { padding-top: 12px; border-top: 1px solid var(--rule); }
-.state .today { border-top: 2px solid var(--ink); }
-.state dt { margin-bottom: 6px; font-weight: 650; color: var(--ink-2); }
-.state .today dt { color: var(--ink); }
-.state dd { margin: 0; }
-.state div:not(.today) dd { color: var(--ink-2); }
+.epics::-webkit-scrollbar {
+  display: none;
+}
+.epics:focus-visible {
+  outline: 2px solid var(--tape);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+.epics li {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  scroll-snap-align: start;
+}
+.epics .psx {
+  width: 112px;
+  margin: 0 0 10px -10px;
+}
+.epics em {
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.epics b {
+  font: 780 clamp(1.3rem, 1.8vw, 1.55rem)/1.05 var(--display);
+  font-stretch: 74%;
+}
+.epics span {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  max-width: 24ch;
+}
 
-/* Footer: the end card. */
+.rail-nav {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: clamp(12px, 2vw, 24px);
+}
+.rail-gauge {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  overflow: hidden;
+}
+.rail-gauge i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w, 30%);
+  translate: var(--x, 0) 0;
+  background: var(--ink);
+}
+.rail-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    opacity 0.3s var(--ease),
+    translate 0.3s var(--ease);
+}
+.rail-btn span {
+  font-family: "Material Symbols Outlined";
+  font-size: 22px;
+  line-height: 1;
+  font-feature-settings: "liga";
+}
+#rail-prev:hover {
+  translate: -3px 0;
+}
+#rail-next:hover {
+  translate: 3px 0;
+}
+.rail-btn[data-off] {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.packet {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 40px);
+}
+.packet-col {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+.packet-col > b {
+  font: 780 1.2rem/1 var(--display);
+  font-stretch: 74%;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+}
+.packet-col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+.packet-col li {
+  display: grid;
+  gap: 2px;
+  padding: 9px 0 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.packet-col li span {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.packet-col li em {
+  font-style: normal;
+  color: var(--ink-2);
+  font-size: 0.92rem;
+}
+
+.kit {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+  gap: 24px clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+.kit-words {
+  display: grid;
+  justify-items: start;
+}
+.kit-words button {
+  padding: 6px 0 6px 16px;
+  border: 0;
+  border-left: 2px solid var(--rule);
+  background: none;
+  color: color-mix(in srgb, var(--ink) 38%, transparent);
+  font: 750 clamp(1.3rem, 2vw, 1.7rem)/1.1 var(--display);
+  font-stretch: 70%;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.kit-words button:hover {
+  color: color-mix(in srgb, var(--ink) 70%, transparent);
+}
+.kit-words button[aria-selected="true"] {
+  color: var(--ink);
+  border-left-color: var(--tape);
+}
+.kit-panel {
+  margin: 0;
+  padding-top: 4px;
+  max-width: 24em;
+  color: var(--ink);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.45;
+}
+.kit-panel.swap {
+  animation: kit-in 0.45s var(--ease) both;
+}
+@keyframes kit-in {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    translate: 0 6px;
+  }
+}
+.kit-panel kbd.hit {
+  background: var(--tape);
+  color: var(--tape-ink);
+  border-color: var(--tape);
+}
+
+.zs-pixel {
+  font:
+    400 0.95rem/1 "Silkscreen",
+    "Courier New",
+    monospace;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.two-face {
+  filter: grayscale(1) sepia(0.2) hue-rotate(180deg) saturate(1.6) brightness(1.25);
+  opacity: 0;
+  transition: opacity 1.4s var(--ease) 0.4s;
+}
+footer.in .two-face,
+.no-js .two-face {
+  opacity: 0.42;
+}
+
+.theme-btn.top {
+  position: absolute;
+  z-index: 40;
+  top: calc(env(safe-area-inset-top, 0px) + 14px);
+  right: var(--edge-r);
+  order: 0;
+}
+
+.state {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px clamp(20px, 3vw, 40px);
+  margin: 0;
+}
+.state div {
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+.state .today {
+  border-top: 2px solid var(--ink);
+}
+.state dt {
+  margin-bottom: 6px;
+  font-weight: 650;
+  color: var(--ink-2);
+}
+.state .today dt {
+  color: var(--ink);
+}
+.state dd {
+  margin: 0;
+}
+.state div:not(.today) dd {
+  color: var(--ink-2);
+}
+
 footer {
-  display: grid; gap: clamp(36px, 5vw, 64px); margin-top: var(--gap); padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 104px);
-  border-top: 2px solid var(--ink); font-size: 0.92rem; color: var(--ink-2);
+  display: grid;
+  gap: clamp(36px, 5vw, 64px);
+  margin-top: var(--gap);
+  padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 104px);
+  border-top: 2px solid var(--ink);
+  font-size: 0.92rem;
+  color: var(--ink-2);
 }
-.endcard { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; }
-.credits { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 48px; padding-top: clamp(18px, 2.5vw, 28px); border-top: 1px solid var(--rule); }
-.credits .left { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
-.credits .right { display: grid; justify-items: end; gap: 14px; }
-.build { font-size: 0.8rem; color: var(--ink-2); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
-/* The build hash sits at the page top on the left content edge; it scrolls away. */
-/* Monospace here only: it is a commit hash. */
-.build--top { position: absolute; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 22px); left: var(--edge-r); font: 400 0.78rem/1 ui-monospace, "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace; }
-footer .brand { color: var(--ink); }
-footer .brand { flex: 0 1 620px; }
-footer .logo { width: 100%; height: auto; }
-.home { font-weight: 650; text-decoration: none; }
-.sign { font: 800 clamp(2rem, 4vw, 3rem)/0.9 var(--display); font-stretch: 62%; color: var(--ink); letter-spacing: 0.01em; }
-/* A margin note in pen: the logo is a draft too. */
-.aside { display: flex; align-items: flex-start; gap: 4px; margin: 0 auto 0 -8px; font: 500 clamp(1.4rem, 2.2vw, 1.8rem)/1 "Caveat", "Segoe Print", cursive; color: var(--ink-2); transform: rotate(-4deg); align-self: center; }
-.curl { width: 104px; height: 56px; flex: none; fill: none; stroke: var(--tape); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 260; stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s cubic-bezier(0.45, 0, 0.2, 1) 0.6s; }
-.js footer:not(.in) .curl { stroke-dashoffset: 260; }
-.aside span { padding-top: 2px; }
-.theme-btn { order: 3; display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--rule); border-radius: 999px; background: var(--sheet); cursor: pointer; }
-.ti { display: grid; place-items: center; width: 28px; height: 24px; border-radius: 999px; color: var(--ink-2); font-family: "Material Symbols Outlined"; font-size: 17px; font-variation-settings: "FILL" 1, "wght" 400; font-feature-settings: "liga"; transition: background 0.25s, color 0.25s; }
-:root:not([data-theme="dark"]) .ti-light, :root[data-theme="dark"] .ti-dark { background: var(--ink); color: var(--paper); }
-@media (prefers-color-scheme: dark) { :root:not([data-theme]) .ti-dark { background: var(--ink); color: var(--paper); } :root:not([data-theme]) .ti-light { background: none; color: var(--ink-2); } }
-.repo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.endcard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 48px;
+}
+.credits {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 48px;
+  padding-top: clamp(18px, 2.5vw, 28px);
+  border-top: 1px solid var(--rule);
+}
+.credits .left {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.credits .right {
+  display: grid;
+  justify-items: end;
+  gap: 14px;
+}
+.build {
+  font-size: 0.8rem;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.build--top {
+  position: absolute;
+  z-index: 40;
+  top: calc(env(safe-area-inset-top, 0px) + 22px);
+  left: var(--edge-r);
+  font:
+    400 0.78rem/1 ui-monospace,
+    "Cascadia Mono",
+    Consolas,
+    "SF Mono",
+    Menlo,
+    monospace;
+}
+footer .brand {
+  color: var(--ink);
+}
+footer .brand {
+  flex: 0 1 620px;
+}
+footer .logo {
+  width: 100%;
+  height: auto;
+}
+.home {
+  font-weight: 650;
+  text-decoration: none;
+}
+.suz {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  margin-left: 14px;
+  vertical-align: middle;
+  background: url("media/suzanne-turn.webp") 0 0 / auto 100% no-repeat;
+  opacity: 0.85;
+  animation: suz 3.6s steps(36) infinite;
+}
+@keyframes suz {
+  to {
+    background-position: -1296px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .suz {
+    animation: none;
+  }
+}
+.sign {
+  font: 800 clamp(2rem, 4vw, 3rem)/0.9 var(--display);
+  font-stretch: 62%;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.aside {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  margin: 0 auto 0 -8px;
+  font:
+    500 clamp(1.4rem, 2.2vw, 1.8rem)/1 "Caveat",
+    "Segoe Print",
+    cursive;
+  color: var(--ink-2);
+  transform: rotate(-4deg);
+  align-self: center;
+}
+.curl {
+  width: 104px;
+  height: 56px;
+  flex: none;
+  fill: none;
+  stroke: var(--tape);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 260;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.45, 0, 0.2, 1) 0.6s;
+}
+.js footer:not(.in) .curl {
+  stroke-dashoffset: 260;
+}
+.aside span {
+  padding-top: 2px;
+}
+.theme-btn {
+  order: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--sheet);
+  cursor: pointer;
+}
+.ti {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 24px;
+  border-radius: 999px;
+  color: var(--ink-2);
+  font-family: "Material Symbols Outlined";
+  font-size: 17px;
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400;
+  font-feature-settings: "liga";
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+:root:not([data-theme="dark"]) .ti-light,
+:root[data-theme="dark"] .ti-dark {
+  background: var(--ink);
+  color: var(--paper);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .ti-dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  :root:not([data-theme]) .ti-light {
+    background: none;
+    color: var(--ink-2);
+  }
+}
+.repo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+}
 .repo-link {
-  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 12px; border-radius: 6px; font-size: 0.86rem;
-  border: 1px solid var(--ink); color: var(--ink); font-weight: 650; text-decoration: none;
-  transition: background 0.25s, color 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  border-radius: 6px;
+  font-size: 0.86rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    background 0.25s,
+    color 0.25s;
 }
-.repo-link:hover { background: var(--ink); color: var(--paper); }
-.octo { width: 18px; height: 18px; fill: currentColor; }
-.collab { display: inline-flex; align-items: center; color: var(--ink); font-weight: 600; }
-/* Lockup: a white ZenaSoft negative in a pill that matches the two-face mark. */
-.two-face { height: 40px; width: auto; }
-/* A hand-drawn cross in tape yellow joins the two names. */
-.scrawl { width: 1.35em; height: 1.35em; margin-inline: 1.1em; fill: none; stroke: var(--tape); stroke-width: 2.6; stroke-linecap: round; transform: rotate(-4deg); }
+.repo-link:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+.octo {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.collab {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.two-face {
+  height: 40px;
+  width: auto;
+}
+
+.scrawl {
+  width: 1.35em;
+  height: 1.35em;
+  margin-inline: 1.1em;
+  fill: none;
+  stroke: var(--tape);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  transform: rotate(-4deg);
+}
 
 @media (max-width: 800px) {
-  .panes { grid-template-columns: minmax(0, 1fr); }
-  .monwrap { border-left: 0; border-top: 1px solid #2a2a2e; }
-  .step, .step--flip, .step--wide .copy, .spec, .hero, .head, .packet { grid-template-columns: minmax(0, 1fr); }
-  .renders { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .step--flip .copy { order: 0; }
-  .tall { justify-self: center; }
-  .tall + .hint { text-align: center; }
-  .state { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .for { margin-left: 0; flex-basis: 100%; }
-  .aside { margin: 0; }
-  .readout { top: auto; bottom: calc(100% + 12px); }
+  .panes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .monwrap {
+    border-left: 0;
+    border-top: 1px solid #2a2a2e;
+  }
+  .step,
+  .step--flip,
+  .step--wide .copy,
+  .spec,
+  .hero,
+  .head,
+  .packet,
+  .kit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .renders {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .step--flip .copy {
+    order: 0;
+  }
+  .tall {
+    justify-self: center;
+  }
+  .tall + .hint {
+    text-align: center;
+  }
+  .state {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .for {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+  .aside {
+    margin: 0;
+  }
+  .readout {
+    top: auto;
+    bottom: calc(100% + 12px);
+  }
 }
 @media (max-width: 480px) {
-  :root { --cm-gap: 4px; --cm-len: 10px; }
-  .spec dl div { grid-template-columns: minmax(0, 1fr); }
-  .state { grid-template-columns: minmax(0, 1fr); }
+  :root {
+    --cm-gap: 4px;
+    --cm-len: 10px;
+  }
+  .spec dl div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .state {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
-/* Entrance: each block comes into focus once, staggered. */
+
 @media (prefers-reduced-motion: no-preference) {
   .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer):not(.in) {
-    opacity: 0; filter: blur(12px); transform: translateY(10px);
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(10px);
   }
   .js :is(.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer) {
-    transition: opacity 0.9s var(--ease), filter 1.1s var(--ease), transform 1.1s var(--ease);
+    transition:
+      opacity 0.9s var(--ease),
+      filter 1.1s var(--ease),
+      transform 1.1s var(--ease);
     transition-delay: calc(var(--i, 0) * 80ms);
   }
 }
-/* Key light: a soft pool of light follows the pointer across the paper. */
+
 .keylight {
-  position: fixed; z-index: 0; left: 0; top: 0; width: 1040px; height: 1040px; margin: -520px 0 0 -520px; pointer-events: none;
-  opacity: 0; transition: opacity 0.8s; will-change: transform; transform: translate3d(var(--mx, 50vw), var(--my, 30vh), 0);
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 1040px;
+  height: 1040px;
+  margin: -520px 0 0 -520px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s;
+  will-change: transform;
+  transform: translate3d(var(--mx, 50vw), var(--my, 30vh), 0);
   background: radial-gradient(closest-side, color-mix(in srgb, var(--tape) 14%, transparent), transparent);
 }
-.keylight.on { opacity: 1; }
-.sheet { position: relative; z-index: 1; }
-/* Parallax: images drift a few pixels against the scroll. */
-[data-drift] { translate: 0 var(--py, 0px); will-change: translate; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+.keylight.on {
+  opacity: 1;
 }
+.sheet {
+  position: relative;
+  z-index: 1;
+}
+
+[data-drift] {
+  translate: 0 var(--py, 0px);
+  will-change: translate;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.reel { --fade: clamp(40px, 8vw, 120px); margin-top: clamp(24px, 3vw, 40px); overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); }
+.reel::-webkit-scrollbar { display: none; }
+.reel:focus-visible { outline: 2px solid var(--tape); outline-offset: 4px; }
+.reel-track { display: flex; align-items: flex-end; gap: clamp(14px, 1.8vw, 24px); width: max-content; padding: 4px var(--fade) 8px; }
+.card { margin: 0; display: grid; gap: 8px; }
+.card figcaption { display: flex; justify-content: space-between; gap: 12px; font-size: 0.82rem; color: var(--ink-2); }
+.card figcaption span { opacity: 0.75; }
+.frame16 { position: relative; height: clamp(150px, 16vw, 220px); aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px; background: #0f0f12; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); }
+.frame16 img, .frame16 video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.frame16 .d { opacity: 0; transition: opacity 0.45s var(--ease); }
+.pk-still:hover .d, .pk-still.depth .d { opacity: 1; }
+.paper { height: clamp(150px, 16vw, 220px); width: clamp(220px, 22vw, 300px); overflow: hidden; padding: 12px 14px; border-radius: 4px; background: #0f0f12; color: #d4d4d8; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); font-size: 0.7rem; line-height: 1.5; }
+.paper pre { margin: 0; font: inherit; white-space: pre-wrap; }
+.roll pre { animation: roll 60s linear infinite; }
+.roll:hover pre { animation-play-state: paused; }
+@keyframes roll { to { transform: translateY(-80%); } }
+.zip .paper b { display: block; margin-bottom: 8px; color: #fafafa; font-weight: 650; }
+.zip ul { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 12px; color: #a1a1aa; }
+@media (prefers-reduced-motion: reduce) { .roll pre { animation: none; } }
 </style>
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">230bff1</span>
+<span class="build build--top" aria-label="Build">e0d7143</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -548,6 +2023,7 @@ footer .logo { width: 100%; height: auto; }
     </div>
 
     <figure class="shot">
+      <p class="disclaim">* UI pending serious review still</p>
       <div class="frame frame--open playable">
         <img class="pic" id="hero-pic" src="media/scenes/sHarbour/workspace.webp" width="2400" height="1502" fetchpriority="high"
           alt="The Shotwright workspace on a sample scene. The 3D stage in the middle is live: drag it or use its axis gizmo. Scenes and the outliner sit on the left, the camera monitor and inspector on the right, and the cuts run along the edit track below.">
@@ -590,7 +2066,7 @@ footer .logo { width: 100%; height: auto; }
         <div class="look"><label id="look-fresh" for="look-switch">Fresh</label><button type="button" class="switch" id="look-switch" role="switch" aria-checked="false" aria-labelledby="look-classic"><i></i></button><label id="look-classic" for="look-switch">Classic</label></div>
         <button type="button" class="reshuffle" id="reshuffle" aria-label="Show other Chimes" title="Show other Chimes"><span class="ri" aria-hidden="true">sync</span></button>
       </div>
-      <ul class="deal" id="deal"></ul>
+      <ul class="deal" id="deal"><li><img class="psx" src="media/chimes/thumbs/fun-rubberDuck.webp" alt="" width="128" height="128" loading="lazy"><span>Rubber duck</span></li><li><img class="psx" src="media/chimes/thumbs/food3-popcornBucket.webp" alt="" width="128" height="128" loading="lazy"><span>Popcorn bucket</span></li><li><img class="psx" src="media/chimes/thumbs/outdoors-hotAirBalloon.webp" alt="" width="128" height="128" loading="lazy"><span>Hot air balloon</span></li><li><img class="psx" src="media/chimes/thumbs/fun-lavaLamp.webp" alt="" width="128" height="128" loading="lazy"><span>Lava lamp</span></li><li><img class="psx" src="media/chimes/thumbs/around-car.webp" alt="" width="128" height="128" loading="lazy"><span>Car</span></li><li><img class="psx" src="media/chimes/thumbs/meals-ramen.webp" alt="" width="128" height="128" loading="lazy"><span>Ramen</span></li><li><img class="psx" src="media/chimes/thumbs/moreB-houseplant.webp" alt="" width="128" height="128" loading="lazy"><span>Houseplant</span></li><li><img class="psx" src="media/chimes/thumbs/life-filmClapper.webp" alt="" width="128" height="128" loading="lazy"><span>Film clapper</span></li><li><img class="psx" src="media/chimes/thumbs/drinks-bubbleTea.webp" alt="" width="128" height="128" loading="lazy"><span>Bubble tea</span></li></ul>
     </section>
 
     <section aria-labelledby="how">
@@ -603,8 +2079,11 @@ footer .logo { width: 100%; height: auto; }
             <h3><span class="rn">I</span>Block it from above.</h3>
             <p>Actors, walls, set pieces, lights and cameras, all in honest grey. Cones, eyelines and the 180° line stay on the plan, where everyone can see them. <kbd>G</kbd> grabs, <kbd>R</kbd> rotates. Blender hands feel at home.</p>
           </div>
-          <img class="pic" data-drift="-0.06" src="media/plan.webp" width="1400" height="1025" loading="lazy" decoding="async"
+<div class="plan" data-drift="-0.06">
+            <img class="pic" src="media/plan.webp" width="1400" height="1025" loading="lazy" decoding="async"
             alt="Top view of the diner booth. Mara and Dex face each other across the table, Suzanne stands to the left, camera cones fan out across the floor and the 180° line runs between the two actors.">
+            <div class="plan-live" id="plan-live" role="img" aria-label="A sample scene from above. Drag the floor to look around; drag the cast, set pieces and cameras."></div>
+          </div>
         </article>
 
         <article class="step step--wide">
@@ -658,17 +2137,139 @@ footer .logo { width: 100%; height: auto; }
           </div>
         </article>
 
-        <article class="step step--flip" id="brief-model">
+        <article class="step step--wide" id="brief-model">
           <div class="copy">
             <h3><span class="rn">IV</span>Brief the model.</h3>
-            <p>The prompt names the cast, the set, the lens and the move of every shot. The model guesses less, so you reroll less. Stamp a timecode on it before it leaves the studio.</p>
+            <p>The prompt names the cast, the set, the lens and the move of every shot. The model guesses less, so you reroll less. This is one real export of the diner: hover a still for its depth pass.</p>
           </div>
-          <div>
-            <div class="tall" id="prompt" data-drift="-0.07">
-              <img class="pic" src="media/prompt.webp" width="763" height="1447" loading="lazy" decoding="async"
-                alt="The camera monitor on CAM 4, a 50 mm over-the-shoulder shot on Mara, above the Prompt tab. The prompt opens with the scene line, then lists the cast and every set piece with its size.">
+          <div class="reel" id="reel" tabindex="0" aria-label="The exported packet, file by file">
+            <div class="reel-track">
+              <figure class="card text"><div class="paper roll"><pre>SCENE Diner standoff | 10 shots | 40.0 s | 16:9 | 24 fps
+
+Cast:
+- Mara, the purple figure: a police detective in her fifties, silver bob, a long charcoal trench coat
+- Dex, the amber figure: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands
+- Suzanne, the orange figure: a cheerful orange monkey head, the Blender mascot
+Set pieces:
+- Booth table, the grey box (0.8 x 1.1 x 0.74 m): a chipped formica diner table with a napkin dispenser
+- Booth seat, the grey box (0.3 x 1.2 x 1.15 m): a high-backed red vinyl booth seat
+- Facing seat, the grey box (0.3 x 1.2 x 1.15 m): the facing red vinyl booth seat, split at one seam
+- Coffee cup, the low-poly model (0.09 x 0.09 x 0.1 m): a thick white diner mug of black coffee on a saucer
+- Folded napkin, the grey box (0.12 x 0.08 x 0.01 m): a paper napkin folded over a name written in ballpoint
+- Counter, the grey box (4.5 x 0.7 x 1.05 m): a long chrome-edged lunch counter with red stools and a pie case
+Lights:
+- Fluorescent key: key light
+- Counter fill: fill light
+- Booth pendant: practical light
+- Neon sign: practical light
+- Passing headlights: back light
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Screen direction: shot 8 crosses the Mara-Dex line, so screen direction flips there.
+
+=== 1. STILLS: restyle each cutNN.png with an image model ===
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+
+=== 2. SEEDANCE 2.0: the whole scene in one generation ===
+Upload @Video1 = sequence.mp4. Optional: the restyled stills for shots 1 to 9 as @Image1 to @Image9 (Seedance takes up to 9 images).
+@Video1 is a greybox animatic of this scene. Follow its shot order, cut timing, framing and camera moves exactly. Ignore its grey look and checker floor. In @Video1, Mara is the purple figure, Dex is the amber figure and Suzanne is the orange figure.
+Shot 1 (0.0-4.0 s): Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
+Shot 2 (4.0-7.5 s): Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
+Shot 3 (7.5-11.0 s): Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
+Shot 4 (11.0-14.5 s): Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
+Shot 5 (14.5-19.5 s): Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
+Shot 6 (19.5-22.5 s): Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
+Shot 7 (22.5-26.0 s): Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
+Shot 8 (26.0-30.5 s): Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
+Shot 9 (30.5-35.0 s): Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
+Shot 10 (35.0-40.0 s): Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass. Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+
+=== 3. SHOT BY SHOT: Seedance single shot or Higgsfield ===
+Shot 1 | CAM 1 | 4.0 s | cut01.png + cut01_end.png + cut01.mp4
+  Higgsfield camera preset: Crane Down (also try Dolly In)
+  Prompt: Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
+Shot 2 | CAM 2 | 3.5 s | cut02.png
+  Higgsfield camera preset: Static
+  Prompt: Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
+Shot 3 | CAM 3 | 3.5 s | cut03.png
+  Higgsfield camera preset: Static
+  Prompt: Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
+Shot 4 | CAM 4 | 3.5 s | cut04.png
+  Higgsfield camera preset: Static
+  Prompt: Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
+Shot 5 | CAM 5 | 5.0 s | cut05.png + cut05_end.png + cut05.mp4
+  Higgsfield camera preset: Dolly In
+  Prompt: Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
+Shot 6 | CAM 6 | 3.0 s | cut06.png
+  Higgsfield camera preset: Static
+  Prompt: Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
+Shot 7 | CAM 7 | 3.5 s | cut07.png
+  Higgsfield camera preset: Static
+  Prompt: Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
+Shot 8 | CAM 8 | 4.5 s | cut08.png | CROSSES THE LINE
+  Higgsfield camera preset: Static
+  Prompt: Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
+Shot 9 | CAM 9 | 4.5 s | cut09.png
+  Higgsfield camera preset: Static
+  Prompt: Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
+Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
+  Higgsfield camera preset: Dolly In
+  Prompt: Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.</pre></div><figcaption>prompt.txt<span>11 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut01.webp" alt="Greybox still of cut 1" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut01.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut01.png<span>388 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut02.webp" alt="Greybox still of cut 2" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut02.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut02.png<span>252 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut03.webp" alt="Greybox still of cut 3" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut03.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut03.png<span>218 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut04.webp" alt="Greybox still of cut 4" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut04.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut04.png<span>316 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut05.webp" alt="Greybox still of cut 5" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut05.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut05.png<span>203 KB</span></figcaption></figure>
+              <figure class="card clip"><div class="frame16"><video src="media/packet/cut05.mp4" muted loop playsinline preload="none" aria-label="Cut 5, the moving shot, as exported"></video></div><figcaption>cut05.mp4<span>1.2 MB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut06.webp" alt="Greybox still of cut 6" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut06.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut06.png<span>311 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut07.webp" alt="Greybox still of cut 7" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut07.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut07.png<span>268 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut08.webp" alt="Greybox still of cut 8" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut08.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut08.png<span>215 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut09.webp" alt="Greybox still of cut 9" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut09.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut09.png<span>291 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut10.webp" alt="Greybox still of cut 10" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut10.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut10.png<span>185 KB</span></figcaption></figure>
+              <figure class="card text"><div class="paper"><pre>{
+  &quot;project&quot;: {
+    &quot;version&quot;: 1,
+    &quot;name&quot;: &quot;Getting Started&quot;,
+    &quot;fps&quot;: 24,
+    &quot;aspect&quot;: &quot;16:9&quot;,
+    &quot;cast&quot;: [
+      {
+        &quot;id&quot;: &quot;mAna&quot;,
+        &quot;name&quot;: &quot;Ana&quot;,
+        &quot;desc&quot;: &quot;a woman in her thirties, dark curly hair, a mustard wool coat over a cardigan&quot;,
+        &quot;color&quot;: &quot;#c8564b&quot;,
+        &quot;colorName&quot;: &quot;red&quot;,
+        &quot;height&quot;: 1.65
+      },
+      {
+        &quot;id&quot;: &quot;mBen&quot;,
+        &quot;name&quot;: &quot;Ben&quot;,
+        &quot;desc&quot;: &quot;a tall man in his forties, grey stubble, a navy work jacket with the collar up&quot;,
+        &quot;color&quot;: &quot;#4f7fc4&quot;,
+        &quot;colorName&quot;: &quot;blue&quot;,
+        &quot;height&quot;: 1.82
+      },
+      {
+        &quot;id&quot;: &quot;mCleo&quot;,
+        &quot;name&quot;: &quot;Cleo&quot;,
+        &quot;desc&quot;: &quot;a lean young woman, short bleached hair, a green raincoat, running shoes&quot;,
+        &quot;color&quot;: &quot;#59a15a&quot;,
+        &quot;colorName&quot;: &quot;green&quot;,
+        &quot;height&quot;: 1.72,
+        &quot;glb&quot;: &quot;assets/stand-in.glb&quot;
+      },
+      {
+        &quot;id&quot;: &quot;mDex&quot;,
+        &quot;name&quot;: &quot;Dex&quot;,
+        &quot;desc&quot;: &quot;a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands&quot;,
+        &quot;color&quot;: &quot;#d29b3a&quot;,
+        &quot;colorName&quot;: &quot;amber&quot;,
+        &quot;height&quot;: 1.76
+      },
+</pre></div><figcaption>scene.json<span>134 KB</span></figcaption></figure>
+              <figure class="card zip"><div class="paper"><b>diner-standoff-packet.zip</b><ul><li>cut01.mp4</li><li>cut01.png</li><li>cut01_end.png</li><li>cut02.png</li><li>cut03.png</li><li>cut04.png</li><li>cut05.mp4</li><li>cut05.png</li><li>cut05_end.png</li><li>cut06.png</li><li>cut07.png</li><li>cut08.png</li><li>cut09.png</li><li>cut10.mp4</li><li>cut10.png</li><li>cut10_end.png</li><li>prompt.txt</li><li>scene.json</li><li>sequence.mp4</li></ul></div><figcaption>One zip<span>17.7 MB</span></figcaption></figure>
             </div>
-            <p class="hint"><button type="button" class="roll" id="roll" aria-pressed="false" aria-controls="prompt">Roll the full prompt</button></p>
           </div>
         </article>
       </div>
@@ -707,25 +2308,25 @@ footer .logo { width: 100%; height: auto; }
       </aside>
       <div class="rail">
         <ul class="epics" id="epics" tabindex="0" aria-label="Coming releases, alpha-2 to Shotwright 5">
-        <li><canvas class="psx" data-chime="home-alarmClock" aria-hidden="true"></canvas><em>alpha-2</em><b>Keyframes</b><span>Keys on every property, with diamonds, auto-key and I to insert.</span></li>
-        <li><canvas class="psx" data-chime="around-toolbox" aria-hidden="true"></canvas><em>alpha-2</em><b>Gizmos</b><span>Grab handles for cameras, actors and lights, with live numbers.</span></li>
-        <li><canvas class="psx" data-chime="money-memoryCard" aria-hidden="true"></canvas><em>alpha-2</em><b>Previz frames</b><span>One Higgsfield still per cut, kept as a take.</span></li>
-        <li><canvas class="psx" data-chime="life-book" aria-hidden="true"></canvas><em>alpha-3</em><b>Storyboards</b><span>Storyboard sheets, overheads and shot lists, ready to print.</span></li>
-        <li><canvas class="psx" data-chime="moreA-perfumeBottle" aria-hidden="true"></canvas><em>alpha-3</em><b>References</b><span>Faces for the cast, products for the props, photos for the location.</span></li>
-        <li><canvas class="psx" data-chime="moreB-parcelBox" aria-hidden="true"></canvas><em>Shotwright 1</em><b>Public release</b><span>Signed installers for Windows and macOS, and a file format that holds.</span></li>
-        <li><canvas class="psx" data-chime="outdoors-compass" aria-hidden="true"></canvas><em>Shotwright 1</em><b>First run</b><span>A guided tour, a docs site and shortcut help.</span></li>
-        <li><canvas class="psx" data-chime="life-filmClapper" aria-hidden="true"></canvas><em>Shotwright 1.5</em><b>Generated takes</b><span>Each shot through Seedance, its takes beside the cut.</span></li>
-        <li><canvas class="psx" data-chime="outdoors-camera" aria-hidden="true"></canvas><em>Shotwright 1.5</em><b>Real lenses</b><span>Focus, aperture and depth of field from the Optical Bench.</span></li>
-        <li><canvas class="psx" data-chime="demo-crate" aria-hidden="true"></canvas><em>Shotwright 1.5</em><b>Asset library</b><span>Stand-ins, a set-piece kit and imports from Blender.</span></li>
-        <li><canvas class="psx" data-chime="moreB-taxForm" aria-hidden="true"></canvas><em>Shotwright 2</em><b>Script import</b><span>Fountain and Final Draft in, as scene breakdowns and draft cuts.</span></li>
-        <li><canvas class="psx" data-chime="life-envelope" aria-hidden="true"></canvas><em>Shotwright 2</em><b>Shared review</b><span>Notes pinned to cuts and frames, for the whole crew.</span></li>
-        <li><canvas class="psx" data-chime="around-plug" aria-hidden="true"></canvas><em>Shotwright 2</em><b>Round-trip</b><span>Scenes to Blender and back. Edits out to Premiere and Resolve.</span></li>
-        <li><canvas class="psx" data-chime="around-smartphone" aria-hidden="true"></canvas><em>Shotwright 3</em><b>Virtual camera</b><span>A phone becomes the camera, with an AR viewfinder. The mouse gets the day off.</span></li>
-        <li><canvas class="psx" data-chime="play-chessKnight" aria-hidden="true"></canvas><em>Shotwright 3</em><b>Blocking assistant</b><span>Proposes coverage from the script. You still get the final say.</span></li>
-        <li><canvas class="psx" data-chime="life-briefcase" aria-hidden="true"></canvas><em>Shotwright 4</em><b>Shoot day</b><span>Call sheets, set-up order and a tracker of which cuts are in the can.</span></li>
-        <li><canvas class="psx" data-chime="drinks-coffeeCup" aria-hidden="true"></canvas><em>Shotwright 4</em><b>Continuity</b><span>Props, wardrobe and eyelines kept per cut, so the mug stays in the left hand.</span></li>
-        <li><canvas class="psx" data-chime="fun-snowGlobe" aria-hidden="true"></canvas><em>Shotwright 5</em><b>Generated sets</b><span>A line of text or a reference image in, a greybox set out, ready to dress.</span></li>
-        <li><canvas class="psx" data-chime="moreB-floppyDisk" aria-hidden="true"></canvas><em>Shotwright 5</em><b>Open format</b><span>A published spec for the project file, so other tools can read and write scenes.</span></li>
+        <li><img class="psx" data-chime="home-alarmClock" src="media/chimes/thumbs/home-alarmClock.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Keyframes</b><span>Keys on every property, with diamonds, auto-key and I to insert.</span></li>
+        <li><img class="psx" data-chime="around-toolbox" src="media/chimes/thumbs/around-toolbox.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Gizmos</b><span>Grab handles for cameras, actors and lights, with live numbers.</span></li>
+        <li><img class="psx" data-chime="money-memoryCard" src="media/chimes/thumbs/money-memoryCard.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Previz frames</b><span>One Higgsfield still per cut, kept as a take.</span></li>
+        <li><img class="psx" data-chime="life-book" src="media/chimes/thumbs/life-book.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>Storyboards</b><span>Storyboard sheets, overheads and shot lists, ready to print.</span></li>
+        <li><img class="psx" data-chime="moreA-perfumeBottle" src="media/chimes/thumbs/moreA-perfumeBottle.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>References</b><span>Faces for the cast, products for the props, photos for the location.</span></li>
+        <li><img class="psx" data-chime="moreB-parcelBox" src="media/chimes/thumbs/moreB-parcelBox.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>Public release</b><span>Signed installers for Windows and macOS, and a file format that holds.</span></li>
+        <li><img class="psx" data-chime="outdoors-compass" src="media/chimes/thumbs/outdoors-compass.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>First run</b><span>A guided tour, a docs site and shortcut help.</span></li>
+        <li><img class="psx" data-chime="life-filmClapper" src="media/chimes/thumbs/life-filmClapper.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Generated takes</b><span>Each shot through Seedance, its takes beside the cut.</span></li>
+        <li><img class="psx" data-chime="outdoors-camera" src="media/chimes/thumbs/outdoors-camera.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Real lenses</b><span>Focus, aperture and depth of field from the Optical Bench.</span></li>
+        <li><img class="psx" data-chime="demo-crate" src="media/chimes/thumbs/demo-crate.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Asset library</b><span>Stand-ins, a set-piece kit and imports from Blender.</span></li>
+        <li><img class="psx" data-chime="moreB-taxForm" src="media/chimes/thumbs/moreB-taxForm.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Script import</b><span>Fountain and Final Draft in, as scene breakdowns and draft cuts.</span></li>
+        <li><img class="psx" data-chime="life-envelope" src="media/chimes/thumbs/life-envelope.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Shared review</b><span>Notes pinned to cuts and frames, for the whole crew.</span></li>
+        <li><img class="psx" data-chime="around-plug" src="media/chimes/thumbs/around-plug.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Round-trip</b><span>Scenes to Blender and back. Edits out to Premiere and Resolve.</span></li>
+        <li><img class="psx" data-chime="around-smartphone" src="media/chimes/thumbs/around-smartphone.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Virtual camera</b><span>A phone becomes the camera, with an AR viewfinder. The mouse gets the day off.</span></li>
+        <li><img class="psx" data-chime="play-chessKnight" src="media/chimes/thumbs/play-chessKnight.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Blocking assistant</b><span>Proposes coverage from the script. You still get the final say.</span></li>
+        <li><img class="psx" data-chime="life-briefcase" src="media/chimes/thumbs/life-briefcase.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Shoot day</b><span>Call sheets, set-up order and a tracker of which cuts are in the can.</span></li>
+        <li><img class="psx" data-chime="drinks-coffeeCup" src="media/chimes/thumbs/drinks-coffeeCup.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Continuity</b><span>Props, wardrobe and eyelines kept per cut, so the mug stays in the left hand.</span></li>
+        <li><img class="psx" data-chime="fun-snowGlobe" src="media/chimes/thumbs/fun-snowGlobe.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Generated sets</b><span>A line of text or a reference image in, a greybox set out, ready to dress.</span></li>
+        <li><img class="psx" data-chime="moreB-floppyDisk" src="media/chimes/thumbs/moreB-floppyDisk.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Open format</b><span>A published spec for the project file, so other tools can read and write scenes.</span></li>
         </ul>
       </div>
       <div class="rail-nav">
@@ -740,7 +2341,7 @@ footer .logo { width: 100%; height: auto; }
     <div class="endcard">
       <a class="brand" href="#top" aria-label="Back to top"><svg class="logo logo--end" viewBox="0 0 1155 329" aria-hidden="true"><g class="lph"><rect class="stem" x="729.222" y="32.683" width="45.434" height="144.817"/></g><use href="#slab"/></svg></a>
       <p class="aside"><svg class="curl" viewBox="0 0 120 64" aria-hidden="true"><path d="M114 16C92 2 66 6 60 24C56 38 72 44 76 32C80 20 58 16 42 28C32 36 20 42 7 44M7 44l12-9M7 44l13 6"/></svg><span>this logo's alpha too btw</span></p>
-      <span class="sign">Frame first.</span>
+      <span class="sign">Frame first.<span class="suz" title="Suzanne, still turning" aria-hidden="true"></span></span>
     </div>
     <div class="credits">
       <span class="left"><a class="repo-link" href="https://github.com/TomVDH/shotwright" rel="noopener"><svg class="octo" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Request repo access</span></a><a href="attributions.html">Attributions</a></span>
@@ -754,10 +2355,10 @@ footer .logo { width: 100%; height: auto; }
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="media/shotwright-core.js"></script>
 <script src="media/stage.js"></script>
+<script src="media/plan.js"></script>
 <script src="media/psx.js"></script>
 <script>
-(() => {
-  // The sample edit: cut start, lens, rig, shot, flag.
+;(() => {
   const END = 40
   const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X']
   const CUTS = [
@@ -771,17 +2372,25 @@ footer .logo { width: 100%; height: auto; }
     [26, 35, 'tripod', '2S MS', 'across the 180° line'],
     [30.5, 160, 'tripod', 'ECU', ''],
     [35, 50, 'dolly', 'MS', '']
-  ].map(([t, lens, rig, shot, flag], i) => ({ i, t, lens, rig, shot, flag, cam: 'CAM ' + (i + 1) }))
+  ].map(([t, lens, rig, shot2, flag], i) => ({ i, t, lens, rig, shot: shot2, flag, cam: 'CAM ' + (i + 1) }))
   const endOf = (i) => (i < CUTS.length - 1 ? CUTS[i + 1].t : END)
   const cutAt = (t) => CUTS.reduce((c, k) => (k.t <= t ? k : c), CUTS[0])
   const tc = (t) => String(Math.floor(t / 60)).padStart(2, '0') + ':' + (t % 60).toFixed(3).padStart(6, '0')
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  // The brief for each shot, as Shotwright wrote it into prompt.txt.
-  const BRIEFS = ["Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.", "Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.", "Over-the-shoulder medium close-up on Dex, over Mara's right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: \"I told you everything I know, Mara.\" He will not meet her eyes.", "Over-the-shoulder medium close-up on Mara, over Dex's left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: \"Then tell it again. Slower.\" She does not blink.", "Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: \"The truck came in on the fourth. Somebody paid the night guard to look away.\"", "Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara's fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.", "Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: \"Who paid him, Dex?\" A long beat. The neon hum fills the silence.", "Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: \"You don't want that name.\"", "Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: \"Kessler.\" He slides a folded napkin across the table, stands and walks out of frame.", "Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens."]
-
-  // The strip image maps 0 to 40 s between these fractions of its width.
-  const X0 = 0.00716, X1 = 0.99467
+  const BRIEFS = [
+    'Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.',
+    'Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.',
+    `Over-the-shoulder medium close-up on Dex, over Mara's right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: "I told you everything I know, Mara." He will not meet her eyes.`,
+    `Over-the-shoulder medium close-up on Mara, over Dex's left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: "Then tell it again. Slower." She does not blink.`,
+    'Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: "The truck came in on the fourth. Somebody paid the night guard to look away."',
+    "Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara's fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.",
+    'Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: "Who paid him, Dex?" A long beat. The neon hum fills the silence.',
+    `Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: "You don't want that name."`,
+    'Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: "Kessler." He slides a folded napkin across the table, stands and walks out of frame.',
+    'Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.'
+  ]
+  const X0 = 716e-5,
+    X1 = 0.99467
   const xOf = (t) => X0 + (t / END) * (X1 - X0)
   const scrub = document.getElementById('scrub')
   const video = document.getElementById('monitor')
@@ -795,14 +2404,29 @@ footer .logo { width: 100%; height: auto; }
   const mbCam = document.getElementById('mb-cam')
   const mbShot = document.getElementById('mb-shot')
   const mbCut = document.getElementById('mb-cut')
-  // Captions as SRT would hold them: start, end, text; times in seconds.
-  const CUES = [[0.4, 2.9, "[RAIN HAMMERS THE WINDOW]"], [2.9, 3.95, "[VINYL SQUEAKS]"], [4.15, 7.3, "MARA: (freezing)\nIs that... the monkey?"], [7.6, 10.85, "DEX: That's Suzanne.\nShe came with the default scene."], [11.1, 14.3, "MARA: I have PTSD from trying\nto learn Blender, Dex."], [14.6, 16.9, "[FLASHBACK: TUTORIAL INTRO MUSIC]"], [16.9, 19.4, "MARA: (shaking)\nThe donut tutorial. Part seven."], [19.6, 22.35, "[COFFEE CUP ROTATES: R, Z, 90]"], [22.6, 24.4, "MARA: Why is she staring at me?"], [24.4, 25.9, "[SUZANNE DOES NOT BLINK]"], [26.1, 28.3, "[CAMERA CROSSES THE 180° LINE]"], [28.3, 30.4, "MARA: See? Even the camera's lost.\nLike me in the node editor."], [30.6, 33.1, "DEX: (whispering)\nJust press Tab."], [33.1, 34.9, "[MARA PRESSES TAB. SCREAMS.]"], [35.1, 37.7, "MARA: Ctrl+Z. Ctrl+Z. Ctrl+Z."], [37.7, 39.9, "♪ SUZANNE'S THEME SWELLS ♪"]]
+  const CUES = [
+    [0.4, 2.9, '[RAIN HAMMERS THE WINDOW]'],
+    [2.9, 3.95, '[VINYL SQUEAKS]'],
+    [4.15, 7.3, 'MARA: (freezing)\nIs that... the monkey?'],
+    [7.6, 10.85, "DEX: That's Suzanne.\nShe came with the default scene."],
+    [11.1, 14.3, 'MARA: I have PTSD from trying\nto learn Blender, Dex.'],
+    [14.6, 16.9, '[FLASHBACK: TUTORIAL INTRO MUSIC]'],
+    [16.9, 19.4, 'MARA: (shaking)\nThe donut tutorial. Part seven.'],
+    [19.6, 22.35, '[COFFEE CUP ROTATES: R, Z, 90]'],
+    [22.6, 24.4, 'MARA: Why is she staring at me?'],
+    [24.4, 25.9, '[SUZANNE DOES NOT BLINK]'],
+    [26.1, 28.3, '[CAMERA CROSSES THE 180° LINE]'],
+    [28.3, 30.4, "MARA: See? Even the camera's lost.\nLike me in the node editor."],
+    [30.6, 33.1, 'DEX: (whispering)\nJust press Tab.'],
+    [33.1, 34.9, '[MARA PRESSES TAB. SCREAMS.]'],
+    [35.1, 37.7, 'MARA: Ctrl+Z. Ctrl+Z. Ctrl+Z.'],
+    [37.7, 39.9, "♪ SUZANNE'S THEME SWELLS ♪"]
+  ]
   const cc = document.getElementById('cc')
-  // Robot voice: reads each new caption aloud once unmuted. Off by default.
   const voiceBtn = document.getElementById('voice-btn')
   const synth = window.speechSynthesis
-  let voiceOn = false, sayTimer = 0
-  // Two robot voices: Mara gets a woman's voice, Dex a man's; both stay flat and synthetic.
+  let voiceOn = false,
+    sayTimer = 0
   const voiceLike = (re) => {
     const vs = synth.getVoices().filter((v) => /^en/i.test(v.lang))
     return vs.find((v) => re.test(v.name)) || null
@@ -811,32 +2435,39 @@ footer .logo { width: 100%; height: auto; }
     MARA: () => ({ voice: voiceLike(/zira|susan|hazel|samantha|aria|jenny|libby|sonia|female/i), pitch: 0.7, fallbackPitch: 1.7 }),
     DEX: () => ({ voice: voiceLike(/david|george|daniel|guy|ryan|mark|(?<!fe)male/i), pitch: 0.1, fallbackPitch: 0.1 })
   }
-  // Only dialogue is spoken: speaker IDs, parentheticals and sound cues stay silent.
-  const speakable = (text) => /^[A-Z]+:/.test(text)
-    ? text.replace(/^[A-Z]+:\s*/, '').replace(/\([^)]*\)/g, '').replace(/\n/g, ' ').trim()
-    : ''
+  const speakable = (text) =>
+    /^[A-Z]+:/.test(text)
+      ? text
+          .replace(/^[A-Z]+:\s*/, '')
+          .replace(/\([^)]*\)/g, '')
+          .replace(/\n/g, ' ')
+          .trim()
+      : ''
   const say = (text) => {
     if (!voiceOn || !synth || !text) return
     clearTimeout(sayTimer)
-    const line = speakable(text)
-    if (!line) return
-    sayTimer = setTimeout(() => {
-      // Playback lets a line finish; only a scrub cuts it short.
-      if (held) synth.cancel()
-      const u = new SpeechSynthesisUtterance(line)
-      const who = (VOICES[text.match(/^([A-Z]+):/)?.[1]] || VOICES.DEX)()
-      u.voice = who.voice
-      u.pitch = who.voice ? who.pitch : who.fallbackPitch
-      u.rate = 1.08
-      synth.speak(u)
-    }, held ? 260 : 0)
+    const line2 = speakable(text)
+    if (!line2) return
+    sayTimer = setTimeout(
+      () => {
+        if (held) synth.cancel()
+        const u = new SpeechSynthesisUtterance(line2)
+        const who = (VOICES[text.match(/^([A-Z]+):/)?.[1]] || VOICES.DEX)()
+        u.voice = who.voice
+        u.pitch = who.voice ? who.pitch : who.fallbackPitch
+        u.rate = 1.08
+        synth.speak(u)
+      },
+      held ? 260 : 0
+    )
   }
   if (!synth) voiceBtn.hidden = true
   voiceBtn.addEventListener('click', () => {
     voiceOn = !voiceOn
     voiceBtn.setAttribute('aria-pressed', String(voiceOn))
     voiceBtn.firstElementChild.textContent = voiceOn ? 'volume_up' : 'volume_off'
-    if (voiceOn) say(cc.dataset.text || ''); else synth.cancel()
+    if (voiceOn) say(cc.dataset.text || '')
+    else synth.cancel()
   })
   const ccBtn = document.getElementById('cc-btn')
   ccBtn.addEventListener('click', () => {
@@ -845,7 +2476,6 @@ footer .logo { width: 100%; height: auto; }
     document.querySelector('.monwrap').classList.toggle('cc-off', !on)
   })
   let visible = false
-
   const show = (t) => {
     t = Math.min(END - 0.04, Math.max(0, t))
     const c = cutAt(t)
@@ -855,7 +2485,10 @@ footer .logo { width: 100%; height: auto; }
     scrub.setAttribute('aria-valuenow', t.toFixed(1))
     scrub.setAttribute('aria-valuetext', `${tc(t)}, shot ${ROMAN[c.i]}, ${c.cam}, ${c.shot}`)
     head.textContent = `Shot ${ROMAN[c.i]} · ${c.cam} · ${c.lens} mm ${c.rig} · ${tc(t)}`
-    if (shown !== c.i) { shown = c.i; line.textContent = BRIEFS[c.i] }
+    if (shown !== c.i) {
+      shown = c.i
+      line.textContent = BRIEFS[c.i]
+    }
     lastT = t
     stage?.update(t)
     mbCam.textContent = `${c.cam} · ${c.lens}mm`
@@ -866,19 +2499,46 @@ footer .logo { width: 100%; height: auto; }
     if (cc.dataset.text !== text) {
       cc.dataset.text = text
       say(text)
-      cc.replaceChildren(...text.split('\n').flatMap((ln, k) => k ? [document.createElement('br'), Object.assign(document.createElement('span'), { textContent: ln })] : [Object.assign(document.createElement('span'), { textContent: ln })]))
+      cc.replaceChildren(
+        ...text
+          .split('\n')
+          .flatMap((ln, k) =>
+            k
+              ? [document.createElement('br'), Object.assign(document.createElement('span'), { textContent: ln })]
+              : [Object.assign(document.createElement('span'), { textContent: ln })]
+          )
+      )
     }
     return t
   }
-  // Live stage: the real Shotwright evaluator draws the scene at the playhead.
   if (window.THREE && window.ShotwrightStage) {
-    fetch('media/diner.scene.json').then((r) => r.json()).then((d) => {
-      stage = ShotwrightStage.mount(document.getElementById('stage3d'), d, { drift: active })
-      stage.update(lastT)
-    }).catch(() => {})
+    fetch('media/diner.scene.json')
+      .then((r) => r.json())
+      .then((d) => {
+        try {
+          stage = ShotwrightStage.mount(document.getElementById('stage3d'), d, { drift: active })
+          stage.update(lastT)
+        } catch (e) {
+          stage = null
+        }
+      })
+      .catch(() => {})
   }
-
-  // Hero: one video clock drives the hero stage, monitor, playhead and timecode.
+  const planHost = document.getElementById('plan-live')
+  if (window.THREE && window.ShotwrightPlan) {
+    const pickScene = ['media/diner.scene.json', 'media/scenes/sWarehouse/scene.json', 'media/scenes/sChase/scene.json'][
+      Math.floor(Math.random() * 3)
+    ]
+    fetch(pickScene)
+      .then((r) => r.json())
+      .then((d) => {
+        try {
+          ShotwrightPlan.mount(planHost, d)
+          planHost.classList.add('on')
+        } catch (e) {}
+      })
+      .catch(() => {})
+  }
   let heroStage = null
   let heroEnd = 34
   let heroActive = false
@@ -892,13 +2552,11 @@ footer .logo { width: 100%; height: auto; }
     heroTc.textContent = `${tc(t)} / ${tc(heroEnd)}`
     if (!heroMon.paused) nextFrame()
   }
-  // Decoded frames drive the hero where the browser reports them; else animation frames.
-  const nextFrame = () => (heroMon.requestVideoFrameCallback ? heroMon.requestVideoFrameCallback(heroTick) : requestAnimationFrame(heroTick))
+  const nextFrame = () =>
+    heroMon.requestVideoFrameCallback ? heroMon.requestVideoFrameCallback(heroTick) : requestAnimationFrame(heroTick)
   heroMon.addEventListener('play', nextFrame)
-  // A scene switch swaps the still, the animatic and the live stage together.
   const shot = heroMon.closest('.shot')
   let heroLoad = 0
-  // Shot plans for the hero stage: time in seconds, view, subject.
   const PLANS = {
     sChase: [
       { t: 0, view: 'top', on: 'cleo', dist: 16 },
@@ -911,28 +2569,50 @@ footer .logo { width: 100%; height: auto; }
   const loadHero = (id, end) => {
     const n = ++heroLoad
     heroEnd = end
-    return fetch(`media/scenes/${id}/scene.json`).then((r) => r.json()).then((d) => {
-      if (n !== heroLoad || !window.ShotwrightStage) return
-      heroStage?.dispose()
-      const old = document.getElementById('hero-stage'), host = old.cloneNode(false)
-      old.replaceWith(host)
-      heroStage = ShotwrightStage.mount(host, d, { gizmo: true, drift: heroActive, top: true, isoOnDialogue: id === 'sWarehouse', plan: PLANS[id], ...(id === 'sHarbour' ? { overview: { center: [0, -25], dist: 125, az: Math.PI / 2 }, chase: 'bBoat' } : {}) })
-      heroStage.update(heroMon.currentTime || 0)
-    }).catch(() => {})
+    return fetch(`media/scenes/${id}/scene.json`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (n !== heroLoad || !window.ShotwrightStage) return
+        heroStage?.dispose()
+        const old = document.getElementById('hero-stage'),
+          host = old.cloneNode(false)
+        old.replaceWith(host)
+        try {
+          heroStage = ShotwrightStage.mount(host, d, {
+            gizmo: true,
+            drift: heroActive,
+            top: true,
+            isoOnDialogue: id === 'sWarehouse',
+            plan: PLANS[id],
+            ...(id === 'sHarbour' ? { overview: { center: [0, -25], dist: 125, az: Math.PI / 2 }, chase: 'bBoat' } : {})
+          })
+          heroStage.update(heroMon.currentTime || 0)
+          host.classList.add('on')
+        } catch (e) {
+          heroStage = null
+        }
+      })
+      .catch(() => {})
   }
   const pick = document.getElementById('scene-pick')
   pick.addEventListener('click', (e) => {
     const b = e.target.closest('button[data-scene]')
     if (!b || b.getAttribute('aria-pressed') === 'true') return
     for (const x of pick.querySelectorAll('button')) x.setAttribute('aria-pressed', String(x === b))
-    const id = b.dataset.scene, playing = !heroMon.paused
-    // The loader holds until the still, the animatic and the stage are ready.
+    const id = b.dataset.scene,
+      playing = !heroMon.paused
     const loader = document.getElementById('hero-load')
     loader.hidden = false
     const pic = document.getElementById('hero-pic')
     const ready = [
-      new Promise((r) => { pic.addEventListener('load', r, { once: true }); pic.addEventListener('error', r, { once: true }) }),
-      new Promise((r) => { heroMon.addEventListener('loadeddata', r, { once: true }); heroMon.addEventListener('error', r, { once: true }) }),
+      new Promise((r) => {
+        pic.addEventListener('load', r, { once: true })
+        pic.addEventListener('error', r, { once: true })
+      }),
+      new Promise((r) => {
+        heroMon.addEventListener('loadeddata', r, { once: true })
+        heroMon.addEventListener('error', r, { once: true })
+      }),
       loadHero(id, +b.dataset.end),
       new Promise((r) => setTimeout(r, reduce ? 0 : 700))
     ]
@@ -940,7 +2620,7 @@ footer .logo { width: 100%; height: auto; }
     heroMon.src = `media/scenes/${id}/animatic.mp4`
     heroMon.currentTime = 0
     heroTick()
-    Promise.race([Promise.all(ready), new Promise((r) => setTimeout(r, 6000))]).then(() => {
+    Promise.race([Promise.all(ready), new Promise((r) => setTimeout(r, 6e3))]).then(() => {
       loader.hidden = true
       if (playing) heroMon.play().catch(() => {})
     })
@@ -954,33 +2634,41 @@ footer .logo { width: 100%; height: auto; }
     heroStage?.drift(true)
     if (heroSeen && !reduce) heroMon.play().catch(() => {})
   })
-  new IntersectionObserver(([e]) => {
-    heroSeen = e.isIntersecting
-    if (heroSeen && heroActive && !reduce) heroMon.play().catch(() => {}); else heroMon.pause()
-  }, { threshold: 0.2 }).observe(heroMon.closest('.frame'))
-
-  // A blob copy seeks on any server, even one without range requests.
-  fetch(video.currentSrc || video.src).then((r) => r.ok ? r.blob() : null).then((b) => {
-    if (!b) return
-    const t = video.currentTime, playing = !video.paused
-    video.src = URL.createObjectURL(b)
-    video.currentTime = active ? t : POSTER_T
-    if (playing) video.play().catch(() => {})
-  }).catch(() => {})
-
-  // While it plays, the playhead follows the video frame by frame.
+  new IntersectionObserver(
+    ([e]) => {
+      heroSeen = e.isIntersecting
+      if (heroSeen && heroActive && !reduce) heroMon.play().catch(() => {})
+      else heroMon.pause()
+    },
+    { threshold: 0.2 }
+  ).observe(heroMon.closest('.frame'))
+  fetch(video.currentSrc || video.src)
+    .then((r) => (r.ok ? r.blob() : null))
+    .then((b) => {
+      if (!b) return
+      const t = video.currentTime,
+        playing = !video.paused
+      video.src = URL.createObjectURL(b)
+      video.currentTime = active ? t : POSTER_T
+      if (playing) video.play().catch(() => {})
+    })
+    .catch(() => {})
   const tick = () => {
     if (!held) show(video.currentTime)
     if (!video.paused) requestAnimationFrame(tick)
   }
   video.addEventListener('play', () => requestAnimationFrame(tick))
-  const resume = () => { if (active && visible && !held && !reduce) video.play().catch(() => {}) }
-  new IntersectionObserver(([e]) => {
-    visible = e.isIntersecting
-    if (visible) resume(); else video.pause()
-  }, { threshold: 0.35 }).observe(video)
-
-  // The deck starts as a still at the poster frame; a click makes it live.
+  const resume = () => {
+    if (active && visible && !held && !reduce) video.play().catch(() => {})
+  }
+  new IntersectionObserver(
+    ([e]) => {
+      visible = e.isIntersecting
+      if (visible) resume()
+      else video.pause()
+    },
+    { threshold: 0.35 }
+  ).observe(video)
   const POSTER_T = 15.5
   const deck = document.querySelector('.deck')
   const activate = () => {
@@ -992,20 +2680,43 @@ footer .logo { width: 100%; height: auto; }
   }
   document.getElementById('deck-play').addEventListener('click', activate)
   show(POSTER_T)
-  video.addEventListener('loadedmetadata', () => { if (!active) video.currentTime = POSTER_T }, { once: true })
-
-  // Holding the strip pauses the monitor and scrubs it.
+  video.addEventListener(
+    'loadedmetadata',
+    () => {
+      if (!active) video.currentTime = POSTER_T
+    },
+    { once: true }
+  )
   const tAt = (clientX) => {
     const r = scrub.getBoundingClientRect()
-    return ((clientX - r.left) / r.width - X0) / (X1 - X0) * END
+    return (((clientX - r.left) / r.width - X0) / (X1 - X0)) * END
   }
-  const seek = (t) => { held = true; video.pause(); video.currentTime = show(t) }
-  const release = () => { held = false; resume() }
-  scrub.addEventListener('pointerenter', (e) => { if (active && e.pointerType === 'mouse') seek(tAt(e.clientX)) })
-  scrub.addEventListener('pointermove', (e) => { if (held) seek(tAt(e.clientX)) })
-  scrub.addEventListener('pointerdown', (e) => { activate(); scrub.setPointerCapture?.(e.pointerId); seek(tAt(e.clientX)) })
-  scrub.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse' && !scrub.matches(':focus-visible')) release() })
-  scrub.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') setTimeout(release, 1200) })
+  const seek = (t) => {
+    held = true
+    video.pause()
+    video.currentTime = show(t)
+  }
+  const release = () => {
+    held = false
+    resume()
+  }
+  scrub.addEventListener('pointerenter', (e) => {
+    if (active && e.pointerType === 'mouse') seek(tAt(e.clientX))
+  })
+  scrub.addEventListener('pointermove', (e) => {
+    if (held) seek(tAt(e.clientX))
+  })
+  scrub.addEventListener('pointerdown', (e) => {
+    activate()
+    scrub.setPointerCapture?.(e.pointerId)
+    seek(tAt(e.clientX))
+  })
+  scrub.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'mouse' && !scrub.matches(':focus-visible')) release()
+  })
+  scrub.addEventListener('pointerup', (e) => {
+    if (e.pointerType !== 'mouse') setTimeout(release, 1200)
+  })
   scrub.addEventListener('pointercancel', release)
   scrub.addEventListener('blur', release)
   scrub.addEventListener('keydown', (e) => {
@@ -1018,14 +2729,23 @@ footer .logo { width: 100%; height: auto; }
     else if (e.key === 'PageUp') t = CUTS[Math.max(0, t - c.t < 0.3 ? c.i - 1 : c.i)].t
     else if (e.key === 'Home') t = 0
     else if (e.key === 'End') t = END
-    else if (e.key === ' ') { e.preventDefault(); if (video.paused) { held = false; video.play() } else { held = true; video.pause() } return }
-    else return
+    else if (e.key === ' ') {
+      e.preventDefault()
+      if (video.paused) {
+        held = false
+        video.play()
+      } else {
+        held = true
+        video.pause()
+      }
+      return
+    } else return
     e.preventDefault()
     seek(t)
   })
-
-  // Entrance: blocks come into focus as they enter; siblings stagger.
-  const blocks = document.querySelectorAll('.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer')
+  const blocks = document.querySelectorAll(
+    '.hero .w, .hero-copy, .head, .notice, .deal, .renders li, .step, .kit, .state > div, .rail, .rail-nav, footer'
+  )
   const groups = new Map()
   for (const el of blocks) {
     const n = groups.get(el.parentElement) ?? 0
@@ -1033,32 +2753,43 @@ footer .logo { width: 100%; height: auto; }
     groups.set(el.parentElement, n + 1)
   }
   if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target) }
-    }, { threshold: 0.12 })
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries)
+          if (e.isIntersecting) {
+            e.target.classList.add('in')
+            io.unobserve(e.target)
+          }
+      },
+      { threshold: 0.12 }
+    )
     blocks.forEach((el) => io.observe(el))
   } else blocks.forEach((el) => el.classList.add('in'))
-
-  // Key light: eases toward the pointer on devices with a fine pointer.
   const light = document.querySelector('.keylight')
   if (!reduce && matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    let tx = innerWidth / 2, ty = innerHeight * 0.3, x = tx, y = ty, moving = 0
+    let tx = innerWidth / 2,
+      ty = innerHeight * 0.3,
+      x = tx,
+      y = ty,
+      moving = 0
     const step = () => {
       x += (tx - x) * 0.08
       y += (ty - y) * 0.08
       light.style.transform = `translate3d(${x}px, ${y}px, 0)`
       moving = Math.abs(tx - x) + Math.abs(ty - y) > 0.5 ? requestAnimationFrame(step) : 0
     }
-    addEventListener('pointermove', (e) => {
-      tx = e.clientX
-      ty = e.clientY
-      light.classList.add('on')
-      if (!moving) moving = requestAnimationFrame(step)
-    }, { passive: true })
+    addEventListener(
+      'pointermove',
+      (e) => {
+        tx = e.clientX
+        ty = e.clientY
+        light.classList.add('on')
+        if (!moving) moving = requestAnimationFrame(step)
+      },
+      { passive: true }
+    )
     document.addEventListener('pointerleave', () => light.classList.remove('on'))
   }
-
-  // Parallax: offset grows with distance from the viewport centre.
   const drifters = [...document.querySelectorAll('[data-drift]')]
   let driftFrame = 0
   const drift = () => {
@@ -1072,11 +2803,15 @@ footer .logo { width: 100%; height: auto; }
     }
   }
   if (!reduce) {
-    addEventListener('scroll', () => { if (!driftFrame) driftFrame = requestAnimationFrame(drift) }, { passive: true })
+    addEventListener(
+      'scroll',
+      () => {
+        if (!driftFrame) driftFrame = requestAnimationFrame(drift)
+      },
+      { passive: true }
+    )
     drift()
   }
-
-  // Push-in: "first." scales with the first stretch of scroll, its grain jitters.
   const zoom = document.querySelector('.zoom')
   let zoomFrame = 0
   const push = () => {
@@ -1087,38 +2822,222 @@ footer .logo { width: 100%; height: auto; }
     zoom.style.setProperty('--gx', Math.round(Math.random() * 160) + 'px')
     zoom.style.setProperty('--gy', Math.round(Math.random() * 160) + 'px')
   }
-  if (!reduce) addEventListener('scroll', () => { if (!zoomFrame) zoomFrame = requestAnimationFrame(push) }, { passive: true })
-
-  // Masthead: grab the playhead and scrub the wordmark; it springs back into the i.
+  if (!reduce)
+    addEventListener(
+      'scroll',
+      () => {
+        if (!zoomFrame) zoomFrame = requestAnimationFrame(push)
+      },
+      { passive: true }
+    )
   const mast = document.querySelector('.masthead .logo')
   const mph = mast.querySelector('.lph')
   const settle = () => mast.classList.add('settled')
   if (reduce) settle()
-  else { mph.addEventListener('animationend', settle, { once: true }); setTimeout(settle, 2300) }
+  else {
+    mph.addEventListener('animationend', settle, { once: true })
+    setTimeout(settle, 2300)
+  }
   const grab = (e) => {
     if (!mast.classList.contains('settled')) return
     const r = mast.getBoundingClientRect()
-    const x = Math.min(1132, Math.max(22, (e.clientX - r.left) / r.width * 1155))
+    const x = Math.min(1132, Math.max(22, ((e.clientX - r.left) / r.width) * 1155))
     mast.classList.add('held')
     mph.style.transform = `translateX(${(x - 751.94).toFixed(1)}px)`
   }
-  const letGo = () => { mast.classList.remove('held'); mph.style.transform = '' }
-  mast.addEventListener('pointermove', (e) => { if (e.pointerType === 'mouse' || e.buttons) grab(e) })
-  mast.addEventListener('pointerdown', (e) => { mast.setPointerCapture?.(e.pointerId); grab(e) })
-  mast.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') letGo() })
-  mast.addEventListener('pointerup', (e) => { if (e.pointerType !== 'mouse') letGo() })
+  const letGo = () => {
+    mast.classList.remove('held')
+    mph.style.transform = ''
+  }
+  mast.addEventListener('pointermove', (e) => {
+    if (e.pointerType === 'mouse' || e.buttons) grab(e)
+  })
+  mast.addEventListener('pointerdown', (e) => {
+    mast.setPointerCapture?.(e.pointerId)
+    grab(e)
+  })
+  mast.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'mouse') letGo()
+  })
+  mast.addEventListener('pointerup', (e) => {
+    if (e.pointerType !== 'mouse') letGo()
+  })
   mast.addEventListener('pointercancel', letGo)
-
-  // Theme switch: flips the effective theme and remembers the choice.
   document.getElementById('theme-btn').addEventListener('click', () => {
     const root = document.documentElement
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
     root.dataset.theme = dark ? 'light' : 'dark'
-    try { localStorage.setItem('sw-theme', root.dataset.theme) } catch (e) {}
+    try {
+      localStorage.setItem('sw-theme', root.dataset.theme)
+    } catch (e) {}
   })
-
-  // Chimes: a handful at random from the whole library, in a loose cloud.
-  const POOL = [["around-bicycle","Bicycle"],["around-bus","Bus"],["around-car","Car"],["around-fuelPump","Fuel pump"],["around-laptop","Laptop"],["around-parkingSign","Parking sign"],["around-plug","Plug"],["around-router","Router"],["around-smartphone","Smartphone"],["around-sofa","Sofa"],["around-television","Television"],["around-toolbox","Toolbox"],["around-train","Train"],["around-waterTap","Water tap"],["demo-crate","Crate"],["demo-lightbulb","Lightbulb"],["drinks-beerGlass","Beer glass"],["drinks-bubbleTea","Bubble tea"],["drinks-cocktail","Cocktail"],["drinks-coffeeCup","Coffee cup"],["drinks-juiceBox","Juice box"],["drinks-milkshake","Milkshake"],["drinks-sodaCan","Soda can"],["drinks-takeawayCup","Takeaway cup"],["drinks-teapot","Teapot"],["drinks-waterBottle","Water bottle"],["drinks-wineGlass","Wine glass"],["food3-avocado","Avocado"],["food3-champagneBottle","Champagne bottle"],["food3-dumplingSteamer","Dumpling steamer"],["food3-grapes","Grapes"],["food3-honeyJar","Honey jar"],["food3-hotDog","Hot dog"],["food3-lemon","Lemon"],["food3-pineapple","Pineapple"],["food3-popcornBucket","Popcorn bucket"],["food3-pretzel","Pretzel"],["fun-balloonBundle","Balloon bundle"],["fun-birthdayCake","Birthday cake"],["fun-cactus","Cactus"],["fun-crown","Crown"],["fun-discoBall","Disco ball"],["fun-lavaLamp","Lava lamp"],["fun-medal","Medal"],["fun-partyPopper","Party popper"],["fun-rubberDuck","Rubber duck"],["fun-snowGlobe","Snow globe"],["home-alarmClock","Alarm clock"],["home-bathtub","Bathtub"],["home-candle","Candle"],["home-deskLamp","Desk lamp"],["home-electricFan","Electric fan"],["home-fridge","Fridge"],["home-keyboard","Keyboard"],["home-printer","Printer"],["home-vacuumCleaner","Vacuum cleaner"],["home-washingMachine","Washing machine"],["life-book","Book"],["life-briefcase","Briefcase"],["life-dogBone","Dog bone"],["life-dumbbell","Dumbbell"],["life-envelope","Envelope"],["life-filmClapper","Film clapper"],["life-gamepad","Gamepad"],["life-giftBox","Gift box"],["life-graduationCap","Graduation cap"],["life-heart","Heart"],["life-medicalKit","Medical kit"],["life-pillCapsule","Pill capsule"],["life-sneaker","Sneaker"],["life-suitcase","Suitcase"],["life-tShirt","T shirt"],["life-tent","Tent"],["life-tooth","Tooth"],["life-umbrella","Umbrella"],["meals-burger","Burger"],["meals-croissant","Croissant"],["meals-cupcake","Cupcake"],["meals-donut","Donut"],["meals-fries","Fries"],["meals-iceCreamCone","Ice cream cone"],["meals-maki","Maki"],["meals-pizzaSlice","Pizza slice"],["meals-ramen","Ramen"],["meals-salmonNigiri","Salmon nigiri"],["meals-taco","Taco"],["meals-waffle","Waffle"],["money-bank","Bank"],["money-calculator","Calculator"],["money-cart","Cart"],["money-coin","Coin"],["money-creditCard","Credit card"],["money-gem","Gem"],["money-house","House"],["money-memoryCard","Memory card"],["money-noteStack","Note stack"],["money-piggyBank","Piggy bank"],["money-plane","Plane"],["money-safe","Safe"],["money-savingsJar","Savings jar"],["money-wallet","Wallet"],["moreA-babyBottle","Baby bottle"],["moreA-beachChair","Beach chair"],["moreA-gasFlame","Gas flame"],["moreA-hairDryer","Hair dryer"],["moreA-headphones","Headphones"],["moreA-hotelBed","Hotel bed"],["moreA-paintRoller","Paint roller"],["moreA-perfumeBottle","Perfume bottle"],["moreA-taxi","Taxi"],["moreA-teddyBear","Teddy bear"],["moreA-wheelieBin","Wheelie bin"],["moreB-dinnerCloche","Dinner cloche"],["moreB-eyeglasses","Eyeglasses"],["moreB-fishBowl","Fish bowl"],["moreB-floppyDisk","Floppy disk"],["moreB-guitar","Guitar"],["moreB-houseplant","Houseplant"],["moreB-parcelBox","Parcel box"],["moreB-soccerBall","Soccer ball"],["moreB-taxForm","Tax form"],["moreB-ticketStub","Ticket stub"],["moreB-vinylRecord","Vinyl record"],["outdoors-bikeHelmet","Bike helmet"],["outdoors-camera","Camera"],["outdoors-campfire","Campfire"],["outdoors-compass","Compass"],["outdoors-foldedMap","Folded map"],["outdoors-hotAirBalloon","Hot air balloon"],["outdoors-motorScooter","Motor scooter"],["outdoors-passport","Passport"],["outdoors-sailboat","Sailboat"],["outdoors-skis","Skis"],["personal-bandage","Bandage"],["personal-cat","Cat"],["personal-flowerBouquet","Flower bouquet"],["personal-lipstick","Lipstick"],["personal-microphone","Microphone"],["personal-rockingHorse","Rocking horse"],["personal-smartwatch","Smartwatch"],["personal-stethoscope","Stethoscope"],["personal-stroller","Stroller"],["personal-yogaMat","Yoga mat"],["play-abacus","Abacus"],["play-atm","Atm"],["play-bullFigurine","Bull figurine"],["play-cashRegister","Cash register"],["play-chessKnight","Chess knight"],["play-dice","Dice"],["play-drone","Drone"],["play-goldBar","Gold bar"],["play-playingCards","Playing cards"],["play-shoppingBag","Shopping bag"],["produce-apple","Apple"],["produce-baguette","Baguette"],["produce-banana","Banana"],["produce-bread","Bread"],["produce-broccoli","Broccoli"],["produce-carrot","Carrot"],["produce-cheese","Cheese"],["produce-eggs","Eggs"],["produce-milk","Milk"],["produce-pear","Pear"],["produce-tomato","Tomato"],["produce-watermelon","Watermelon"]]
+  const POOL = [
+    ['around-bicycle', 'Bicycle'],
+    ['around-bus', 'Bus'],
+    ['around-car', 'Car'],
+    ['around-fuelPump', 'Fuel pump'],
+    ['around-laptop', 'Laptop'],
+    ['around-parkingSign', 'Parking sign'],
+    ['around-plug', 'Plug'],
+    ['around-router', 'Router'],
+    ['around-smartphone', 'Smartphone'],
+    ['around-sofa', 'Sofa'],
+    ['around-television', 'Television'],
+    ['around-toolbox', 'Toolbox'],
+    ['around-train', 'Train'],
+    ['around-waterTap', 'Water tap'],
+    ['demo-crate', 'Crate'],
+    ['demo-lightbulb', 'Lightbulb'],
+    ['drinks-beerGlass', 'Beer glass'],
+    ['drinks-bubbleTea', 'Bubble tea'],
+    ['drinks-cocktail', 'Cocktail'],
+    ['drinks-coffeeCup', 'Coffee cup'],
+    ['drinks-juiceBox', 'Juice box'],
+    ['drinks-milkshake', 'Milkshake'],
+    ['drinks-sodaCan', 'Soda can'],
+    ['drinks-takeawayCup', 'Takeaway cup'],
+    ['drinks-teapot', 'Teapot'],
+    ['drinks-waterBottle', 'Water bottle'],
+    ['drinks-wineGlass', 'Wine glass'],
+    ['food3-avocado', 'Avocado'],
+    ['food3-champagneBottle', 'Champagne bottle'],
+    ['food3-dumplingSteamer', 'Dumpling steamer'],
+    ['food3-grapes', 'Grapes'],
+    ['food3-honeyJar', 'Honey jar'],
+    ['food3-hotDog', 'Hot dog'],
+    ['food3-lemon', 'Lemon'],
+    ['food3-pineapple', 'Pineapple'],
+    ['food3-popcornBucket', 'Popcorn bucket'],
+    ['food3-pretzel', 'Pretzel'],
+    ['fun-balloonBundle', 'Balloon bundle'],
+    ['fun-birthdayCake', 'Birthday cake'],
+    ['fun-cactus', 'Cactus'],
+    ['fun-crown', 'Crown'],
+    ['fun-discoBall', 'Disco ball'],
+    ['fun-lavaLamp', 'Lava lamp'],
+    ['fun-medal', 'Medal'],
+    ['fun-partyPopper', 'Party popper'],
+    ['fun-rubberDuck', 'Rubber duck'],
+    ['fun-snowGlobe', 'Snow globe'],
+    ['home-alarmClock', 'Alarm clock'],
+    ['home-bathtub', 'Bathtub'],
+    ['home-candle', 'Candle'],
+    ['home-deskLamp', 'Desk lamp'],
+    ['home-electricFan', 'Electric fan'],
+    ['home-fridge', 'Fridge'],
+    ['home-keyboard', 'Keyboard'],
+    ['home-printer', 'Printer'],
+    ['home-vacuumCleaner', 'Vacuum cleaner'],
+    ['home-washingMachine', 'Washing machine'],
+    ['life-book', 'Book'],
+    ['life-briefcase', 'Briefcase'],
+    ['life-dogBone', 'Dog bone'],
+    ['life-dumbbell', 'Dumbbell'],
+    ['life-envelope', 'Envelope'],
+    ['life-filmClapper', 'Film clapper'],
+    ['life-gamepad', 'Gamepad'],
+    ['life-giftBox', 'Gift box'],
+    ['life-graduationCap', 'Graduation cap'],
+    ['life-heart', 'Heart'],
+    ['life-medicalKit', 'Medical kit'],
+    ['life-pillCapsule', 'Pill capsule'],
+    ['life-sneaker', 'Sneaker'],
+    ['life-suitcase', 'Suitcase'],
+    ['life-tShirt', 'T shirt'],
+    ['life-tent', 'Tent'],
+    ['life-tooth', 'Tooth'],
+    ['life-umbrella', 'Umbrella'],
+    ['meals-burger', 'Burger'],
+    ['meals-croissant', 'Croissant'],
+    ['meals-cupcake', 'Cupcake'],
+    ['meals-donut', 'Donut'],
+    ['meals-fries', 'Fries'],
+    ['meals-iceCreamCone', 'Ice cream cone'],
+    ['meals-maki', 'Maki'],
+    ['meals-pizzaSlice', 'Pizza slice'],
+    ['meals-ramen', 'Ramen'],
+    ['meals-salmonNigiri', 'Salmon nigiri'],
+    ['meals-taco', 'Taco'],
+    ['meals-waffle', 'Waffle'],
+    ['money-bank', 'Bank'],
+    ['money-calculator', 'Calculator'],
+    ['money-cart', 'Cart'],
+    ['money-coin', 'Coin'],
+    ['money-creditCard', 'Credit card'],
+    ['money-gem', 'Gem'],
+    ['money-house', 'House'],
+    ['money-memoryCard', 'Memory card'],
+    ['money-noteStack', 'Note stack'],
+    ['money-piggyBank', 'Piggy bank'],
+    ['money-plane', 'Plane'],
+    ['money-safe', 'Safe'],
+    ['money-savingsJar', 'Savings jar'],
+    ['money-wallet', 'Wallet'],
+    ['moreA-babyBottle', 'Baby bottle'],
+    ['moreA-beachChair', 'Beach chair'],
+    ['moreA-gasFlame', 'Gas flame'],
+    ['moreA-hairDryer', 'Hair dryer'],
+    ['moreA-headphones', 'Headphones'],
+    ['moreA-hotelBed', 'Hotel bed'],
+    ['moreA-paintRoller', 'Paint roller'],
+    ['moreA-perfumeBottle', 'Perfume bottle'],
+    ['moreA-taxi', 'Taxi'],
+    ['moreA-teddyBear', 'Teddy bear'],
+    ['moreA-wheelieBin', 'Wheelie bin'],
+    ['moreB-dinnerCloche', 'Dinner cloche'],
+    ['moreB-eyeglasses', 'Eyeglasses'],
+    ['moreB-fishBowl', 'Fish bowl'],
+    ['moreB-floppyDisk', 'Floppy disk'],
+    ['moreB-guitar', 'Guitar'],
+    ['moreB-houseplant', 'Houseplant'],
+    ['moreB-parcelBox', 'Parcel box'],
+    ['moreB-soccerBall', 'Soccer ball'],
+    ['moreB-taxForm', 'Tax form'],
+    ['moreB-ticketStub', 'Ticket stub'],
+    ['moreB-vinylRecord', 'Vinyl record'],
+    ['outdoors-bikeHelmet', 'Bike helmet'],
+    ['outdoors-camera', 'Camera'],
+    ['outdoors-campfire', 'Campfire'],
+    ['outdoors-compass', 'Compass'],
+    ['outdoors-foldedMap', 'Folded map'],
+    ['outdoors-hotAirBalloon', 'Hot air balloon'],
+    ['outdoors-motorScooter', 'Motor scooter'],
+    ['outdoors-passport', 'Passport'],
+    ['outdoors-sailboat', 'Sailboat'],
+    ['outdoors-skis', 'Skis'],
+    ['personal-bandage', 'Bandage'],
+    ['personal-cat', 'Cat'],
+    ['personal-flowerBouquet', 'Flower bouquet'],
+    ['personal-lipstick', 'Lipstick'],
+    ['personal-microphone', 'Microphone'],
+    ['personal-rockingHorse', 'Rocking horse'],
+    ['personal-smartwatch', 'Smartwatch'],
+    ['personal-stethoscope', 'Stethoscope'],
+    ['personal-stroller', 'Stroller'],
+    ['personal-yogaMat', 'Yoga mat'],
+    ['play-abacus', 'Abacus'],
+    ['play-atm', 'Atm'],
+    ['play-bullFigurine', 'Bull figurine'],
+    ['play-cashRegister', 'Cash register'],
+    ['play-chessKnight', 'Chess knight'],
+    ['play-dice', 'Dice'],
+    ['play-drone', 'Drone'],
+    ['play-goldBar', 'Gold bar'],
+    ['play-playingCards', 'Playing cards'],
+    ['play-shoppingBag', 'Shopping bag'],
+    ['produce-apple', 'Apple'],
+    ['produce-baguette', 'Baguette'],
+    ['produce-banana', 'Banana'],
+    ['produce-bread', 'Bread'],
+    ['produce-broccoli', 'Broccoli'],
+    ['produce-carrot', 'Carrot'],
+    ['produce-cheese', 'Cheese'],
+    ['produce-eggs', 'Eggs'],
+    ['produce-milk', 'Milk'],
+    ['produce-pear', 'Pear'],
+    ['produce-tomato', 'Tomato'],
+    ['produce-watermelon', 'Watermelon']
+  ]
   const deal = document.getElementById('deal')
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches
   let hand = []
@@ -1126,38 +3045,48 @@ footer .logo { width: 100%; height: auto; }
     const rest = POOL.filter((c) => !hand.includes(c))
     hand = rest.sort(() => Math.random() - 0.5).slice(0, innerWidth < 640 ? 9 : 13)
     for (const cv of deal.querySelectorAll('canvas')) window.PSX?.drop(cv)
-    deal.replaceChildren(...hand.map(([file, name], i) => {
-      const li = document.createElement('li')
-      const r = (lo, hi) => lo + Math.random() * (hi - lo)
-      li.style.cssText = `--i:${i};--s:${r(0.7, 1.25).toFixed(2)};--r:${r(-4, 4).toFixed(1)}deg`
-      const cv = Object.assign(document.createElement('canvas'), { className: 'psx' })
-      cv.setAttribute('aria-hidden', 'true')
-      li.append(cv, Object.assign(document.createElement('span'), { textContent: name }))
-      window.PSX?.spin(cv, `media/chimes/${file}.glb`)
-      return li
-    }))
+    deal.replaceChildren(
+      ...hand.map(([file, name], i) => {
+        const li = document.createElement('li')
+        const r = (lo, hi) => lo + Math.random() * (hi - lo)
+        li.style.cssText = `--i:${i};--s:${r(0.7, 1.25).toFixed(2)};--r:${r(-4, 4).toFixed(1)}deg`
+        const live = window.PSX?.ok
+        const cv = live
+          ? document.createElement('canvas')
+          : Object.assign(new Image(128, 128), { src: `media/chimes/thumbs/${file}.webp`, alt: '' })
+        cv.className = 'psx'
+        cv.setAttribute('aria-hidden', 'true')
+        li.append(cv, Object.assign(document.createElement('span'), { textContent: name }))
+        if (live) PSX.spin(cv, `media/chimes/${file}.glb`)
+        return li
+      })
+    )
     cloud()
     deal.classList.remove('out')
   }
-  // Cloud layout: big Chimes first, each at a free spot inside an ellipse.
-  // Every spot keeps a clear ring around its neighbours.
   const cloud = () => {
-    const W = deal.clientWidth, H = deal.clientHeight
+    const W = deal.clientWidth,
+      H = deal.clientHeight
     const base = Math.min(140, Math.max(78, W * 0.11))
     const items = [...deal.children].map((li) => ({ li, w: base * parseFloat(li.style.getPropertyValue('--s')) }))
     items.sort((a, b) => b.w - a.w)
     const placed = []
     for (const it of items) {
       const rad = it.w * 0.62
-      let best = null, bestGap = -Infinity
+      let best = null,
+        bestGap = -Infinity
       for (let k = 0; k < 500; k++) {
-        const a = Math.random() * Math.PI * 2, u = Math.sqrt(Math.random())
-        const x = W / 2 + Math.cos(a) * u * (W / 2 - rad), y = H / 2 + Math.sin(a) * u * (H / 2 - rad)
+        const a = Math.random() * Math.PI * 2,
+          u = Math.sqrt(Math.random())
+        const x = W / 2 + Math.cos(a) * u * (W / 2 - rad),
+          y = H / 2 + Math.sin(a) * u * (H / 2 - rad)
         let gap = Infinity
         for (const p of placed) gap = Math.min(gap, Math.hypot(p.x - x, p.y - y) - p.rad - rad)
-        // A free spot nearer the middle wins, so the cloud stays round.
         const score = Math.min(gap, 40) - u * 30
-        if (score > bestGap) { bestGap = score; best = { x, y } }
+        if (score > bestGap) {
+          bestGap = score
+          best = { x, y }
+        }
       }
       placed.push({ ...best, rad })
       it.li.style.setProperty('--x', `${best.x.toFixed(0)}px`)
@@ -1166,13 +3095,23 @@ footer .logo { width: 100%; height: auto; }
     }
   }
   let cloudW = 0
-  addEventListener('resize', () => { if (deal.clientWidth !== cloudW) { cloudW = deal.clientWidth; cloud() } })
+  addEventListener('resize', () => {
+    if (deal.clientWidth !== cloudW) {
+      cloudW = deal.clientWidth
+      cloud()
+    }
+  })
   draw10()
   document.getElementById('reshuffle').addEventListener('click', () => {
     deal.classList.add('out')
-    setTimeout(() => { deal.classList.add('pop'); draw10() }, still ? 0 : 280)
+    setTimeout(
+      () => {
+        deal.classList.add('pop')
+        draw10()
+      },
+      still ? 0 : 280
+    )
   })
-  // Fresh or Classic: the switch and both labels set the look.
   const lookSwitch = document.getElementById('look-switch')
   const setLook = (classic) => {
     lookSwitch.setAttribute('aria-checked', String(classic))
@@ -1182,38 +3121,78 @@ footer .logo { width: 100%; height: auto; }
   }
   setLook(window.PSX?.mode === 'classic')
   lookSwitch.addEventListener('click', () => setLook(lookSwitch.getAttribute('aria-checked') !== 'true'))
-  document.getElementById('look-fresh').addEventListener('click', (e) => { e.preventDefault(); setLook(false) })
-  document.getElementById('look-classic').addEventListener('click', (e) => { e.preventDefault(); setLook(true) })
-  // The grid fades once three quarters of the hero scrolls away.
+  document.getElementById('look-fresh').addEventListener('click', (e) => {
+    e.preventDefault()
+    setLook(false)
+  })
+  document.getElementById('look-classic').addEventListener('click', (e) => {
+    e.preventDefault()
+    setLook(true)
+  })
   const heroEl = document.querySelector('.hero')
   const gridFade = () => document.documentElement.classList.toggle('past-hero', scrollY > (heroEl.offsetTop + heroEl.offsetHeight) * 0.75)
   addEventListener('scroll', gridFade, { passive: true })
   gridFade()
-  for (const cv of document.querySelectorAll('.epics canvas.psx')) window.PSX?.spin(cv, `media/chimes/${cv.dataset.chime}.glb`, { tilt: 0.25 })
-  // In the box: words switch the line below; it cycles while in view and unhovered.
-  const KIT = ["Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.", "Every cut through its own lens, with thirds and a shot read: MCU, OTS, 2S.", "An edit track, a cheat per cut, and a polite alarm at the 180° line.", "Top, front, side, iso and perspective on <kbd data-k=\"7\">7</kbd> <kbd data-k=\"1\">1</kbd> <kbd data-k=\"3\">3</kbd> <kbd data-k=\"5\">5</kbd>. Try them.", "Stills, an animatic and a prompt for Seedance and Higgsfield. Timecode optional.", "Six worked scenes, so day one starts with something to break."]
-  const kit = document.getElementById('kit'), kitPanel = document.getElementById('kit-panel')
+  if (window.PSX?.ok)
+    for (const im of document.querySelectorAll('.epics img.psx')) {
+      const cv = Object.assign(document.createElement('canvas'), { className: 'psx' })
+      cv.setAttribute('aria-hidden', 'true')
+      im.replaceWith(cv)
+      PSX.spin(cv, `media/chimes/${im.dataset.chime}.glb`, { tilt: 0.25 })
+    }
+  const KIT = [
+    'Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.',
+    'Every cut through its own lens, with thirds and a shot read: MCU, OTS, 2S.',
+    'An edit track, a cheat per cut, and a polite alarm at the 180° line.',
+    'Top, front, side, iso and perspective on <kbd data-k="7">7</kbd> <kbd data-k="1">1</kbd> <kbd data-k="3">3</kbd> <kbd data-k="5">5</kbd>. Try them.',
+    'Stills, an animatic and a prompt for Seedance and Higgsfield. Timecode optional.',
+    'Six worked scenes, so day one starts with something to break.'
+  ]
+  const kit = document.getElementById('kit'),
+    kitPanel = document.getElementById('kit-panel')
   const kitTabs = [...kit.querySelectorAll('[role="tab"]')]
-  let kitAt = 0, kitHold = false, kitSeen = false
+  let kitAt = 0,
+    kitHold = false,
+    kitSeen = false
   const kitShow = (i) => {
     kitAt = i
     kitTabs.forEach((b, j) => b.setAttribute('aria-selected', String(j === i)))
     kitPanel.innerHTML = KIT[i]
-    kitPanel.classList.remove('swap'); void kitPanel.offsetWidth; kitPanel.classList.add('swap')
+    kitPanel.classList.remove('swap')
+    void kitPanel.offsetWidth
+    kitPanel.classList.add('swap')
   }
-  kitTabs.forEach((b, i) => b.addEventListener('click', () => { kitShow(i); kitHold = true }))
-  kit.addEventListener('pointerenter', () => { kitHold = true })
-  kit.addEventListener('pointerleave', () => { kitHold = false })
-  new IntersectionObserver(([e]) => { kitSeen = e.isIntersecting }, { threshold: 0.4 }).observe(kit)
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(() => { if (kitSeen && !kitHold) kitShow((kitAt + 1) % KIT.length) }, 3800)
-  // On Views, pressing 7, 1, 3 or 5 lights its key.
+  kitTabs.forEach((b, i) =>
+    b.addEventListener('click', () => {
+      kitShow(i)
+      kitHold = true
+    })
+  )
+  kit.addEventListener('pointerenter', () => {
+    kitHold = true
+  })
+  kit.addEventListener('pointerleave', () => {
+    kitHold = false
+  })
+  new IntersectionObserver(
+    ([e]) => {
+      kitSeen = e.isIntersecting
+    },
+    { threshold: 0.4 }
+  ).observe(kit)
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+    setInterval(() => {
+      if (kitSeen && !kitHold) kitShow((kitAt + 1) % KIT.length)
+    }, 3800)
   addEventListener('keydown', (e) => {
     const k = kitPanel.querySelector(`kbd[data-k="${e.key}"]`)
     if (!k || !kitSeen) return
-    k.classList.add('hit'); setTimeout(() => k.classList.remove('hit'), 300)
+    k.classList.add('hit')
+    setTimeout(() => k.classList.remove('hit'), 300)
   })
-  // The rail arrows page by the visible width and hide at either end.
-  const rail = document.getElementById('epics'), prev = document.getElementById('rail-prev'), next = document.getElementById('rail-next')
+  const rail = document.getElementById('epics'),
+    prev = document.getElementById('rail-prev'),
+    next = document.getElementById('rail-next')
   const bar = document.getElementById('rail-bar')
   const railEnds = () => {
     const span = rail.scrollWidth - rail.clientWidth
@@ -1225,20 +3204,33 @@ footer .logo { width: 100%; height: auto; }
     bar.style.setProperty('--w', `${(w * 100).toFixed(2)}%`)
     bar.style.setProperty('--x', `${((span ? rail.scrollLeft / span : 0) * (1 / w - 1) * 100).toFixed(2)}%`)
   }
-  const page = (dir) => rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+  const page = (dir) =>
+    rail.scrollBy({
+      left: dir * rail.clientWidth * 0.8,
+      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    })
   prev.addEventListener('click', () => page(-1))
   next.addEventListener('click', () => page(1))
   rail.addEventListener('scroll', railEnds, { passive: true })
   addEventListener('resize', railEnds)
   railEnds()
 
-
-  // Teleprompter: the button or a tap on the panel rolls the prompt.
-  const prompt = document.getElementById('prompt')
-  const rollBtn = document.getElementById('roll')
-  const roll = () => rollBtn.setAttribute('aria-pressed', String(prompt.classList.toggle('rolling')))
-  prompt.addEventListener('click', roll)
-  rollBtn.addEventListener('click', roll)
+  const reel = document.getElementById('reel')
+  let reelGoal = null
+  reel.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse') return
+    const r = reel.getBoundingClientRect()
+    reelGoal = ((e.clientX - r.left) / r.width) * (reel.scrollWidth - reel.clientWidth)
+  })
+  reel.addEventListener('pointerleave', () => { reelGoal = null })
+  const reelTick = () => {
+    if (reelGoal !== null) reel.scrollLeft += (reelGoal - reel.scrollLeft) * 0.08
+    requestAnimationFrame(reelTick)
+  }
+  requestAnimationFrame(reelTick)
+  for (const st of reel.querySelectorAll('.pk-still')) st.addEventListener('click', () => st.classList.toggle('depth'))
+  const clip = reel.querySelector('video')
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) clip.play().catch(() => {}); else clip.pause() }, { threshold: 0.3 }).observe(clip)
 })()
 </script>
 </body>

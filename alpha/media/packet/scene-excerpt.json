@@ -1,0 +1,40 @@
+{
+  "project": {
+    "version": 1,
+    "name": "Getting Started",
+    "fps": 24,
+    "aspect": "16:9",
+    "cast": [
+      {
+        "id": "mAna",
+        "name": "Ana",
+        "desc": "a woman in her thirties, dark curly hair, a mustard wool coat over a cardigan",
+        "color": "#c8564b",
+        "colorName": "red",
+        "height": 1.65
+      },
+      {
+        "id": "mBen",
+        "name": "Ben",
+        "desc": "a tall man in his forties, grey stubble, a navy work jacket with the collar up",
+        "color": "#4f7fc4",
+        "colorName": "blue",
+        "height": 1.82
+      },
+      {
+        "id": "mCleo",
+        "name": "Cleo",
+        "desc": "a lean young woman, short bleached hair, a green raincoat, running shoes",
+        "color": "#59a15a",
+        "colorName": "green",
+        "height": 1.72,
+        "glb": "assets/stand-in.glb"
+      },
+      {
+        "id": "mDex",
+        "name": "Dex",
+        "desc": "a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands",
+        "color": "#d29b3a",
+        "colorName": "amber",
+        "height": 1.76
+      },

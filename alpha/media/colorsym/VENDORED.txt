@@ -1,0 +1,4 @@
+ColorSym, vendored from https://github.com/luisfrancisco/colorsym at commit 884fc45.
+By Chris Eastridge and Luis Francisco.
+Font: SIL Open Font License 1.1 (Reserved Font Name: ColorSym). Symbols: CC BY-SA 4.0.
+Not yet used by Shotwright; kept for colour accessibility work.
