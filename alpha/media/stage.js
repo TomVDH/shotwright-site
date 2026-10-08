@@ -463,7 +463,7 @@
     place()
     if (!shared) requestAnimationFrame(loop)
     const up = new THREE.Vector3(0, 1, 0)
-    const shot = (camId, time, yaw, pitch, w, h) => {
+    const shot = (camId, time, yaw, pitch, w, h, fx = {}) => {
       update(time)
       for (const n of cams.values()) {
         n.g.visible = false
@@ -474,12 +474,17 @@
       const cam = ShotwrightCore.evaluate(project, scene, time).cameras.find((c) => c.id === camId)
       if (!cam) return renderer.domElement
       view.position.copy(v3(cam.pose.pos))
-      const dir = v3(cam.pose.aim).sub(view.position)
+      const aimAt = v3(cam.pose.aim)
+      if (fx.aim) aimAt.lerp(v3(fx.aim), fx.aimMix ?? 1)
+      if (fx.dpos) view.position.add(new THREE.Vector3(fx.dpos[0], fx.dpos[2], -fx.dpos[1]))
+      if (fx.dolly) view.position.addScaledVector(aimAt.clone().sub(view.position).normalize(), fx.dolly)
+      const dir = aimAt.sub(view.position)
       dir.applyAxisAngle(up, yaw)
       dir.applyAxisAngle(new THREE.Vector3().crossVectors(dir, up).normalize(), pitch)
       view.up.copy(up)
       view.lookAt(view.position.clone().add(dir))
-      const hf = 2 * Math.atan(FILM_MM / 2 / cam.pose.focal)
+      if (fx.roll) view.rotateZ(fx.roll)
+      const hf = 2 * Math.atan(FILM_MM / 2 / (fx.focal || cam.pose.focal))
       view.aspect = w / h
       view.fov = (2 * Math.atan(Math.tan(hf / 2) / view.aspect) * 180) / Math.PI
       view.far = 400

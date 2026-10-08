@@ -680,6 +680,7 @@ h3 {
   border-radius: 4px;
 }
 .still .pic {
+  display: block;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 4px;
@@ -1133,34 +1134,6 @@ kbd {
 .scrub .cutbox,
 .scrub .ph {
   opacity: 1;
-}
-
-.tall {
-  justify-self: end;
-  width: min(100%, 400px);
-  cursor: pointer;
-}
-.tall .pic {
-  aspect-ratio: 763 / 1000;
-  object-fit: cover;
-  object-position: 50% 0%;
-  box-shadow: none;
-  -webkit-mask-image: linear-gradient(#000 76%, transparent);
-  mask-image: linear-gradient(#000 76%, transparent);
-  transition: object-position 1.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.tall.rolling .pic {
-  object-position: 50% 100%;
-  transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-}
-@media (hover: hover) {
-  .tall:hover .pic {
-    object-position: 50% 100%;
-    transition: object-position 9s cubic-bezier(0.45, 0.05, 0.55, 0.95);
-  }
-}
-.tall + .hint {
-  text-align: right;
 }
 
 .spec-unused {
@@ -1911,12 +1884,6 @@ footer .logo {
   .step--flip .copy {
     order: 0;
   }
-  .tall {
-    justify-self: center;
-  }
-  .tall + .hint {
-    text-align: center;
-  }
   .state {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2075,17 +2042,6 @@ footer .logo {
   font: inherit;
   white-space: pre-wrap;
 }
-.roll pre {
-  animation: roll 60s linear infinite;
-}
-.roll:hover pre {
-  animation-play-state: paused;
-}
-@keyframes roll {
-  to {
-    transform: translateY(-80%);
-  }
-}
 .zip .paper b {
   display: block;
   margin-bottom: 8px;
@@ -2101,15 +2057,74 @@ footer .logo {
   color: #a1a1aa;
 }
 @media (prefers-reduced-motion: reduce) {
-  .roll pre {
-    animation: none;
+}
+.paper:hover pre,
+.paper:hover ul {
+  animation: paper-read 7s linear infinite;
+}
+@keyframes paper-read {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
   }
+  86% {
+    transform: translateY(-55%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-55%);
+    opacity: 0;
+  }
+}
+.transcript {
+  height: 8.6em;
+  margin: 10px 0 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  -webkit-mask-image: linear-gradient(transparent, #000 22%, #000 70%, transparent);
+  mask-image: linear-gradient(transparent, #000 22%, #000 70%, transparent);
+}
+.transcript li {
+  display: grid;
+  grid-template-columns: 3.4em 4.6em minmax(0, 1fr);
+  gap: 12px;
+  padding: 2px 0;
+  color: var(--ink-2);
+  opacity: 0.55;
+  transition:
+    opacity 0.3s,
+    color 0.3s;
+}
+.transcript li.past {
+  opacity: 0.35;
+}
+.transcript li.now {
+  color: var(--ink);
+  opacity: 1;
+}
+.transcript time {
+  font-variant-numeric: tabular-nums;
+}
+.transcript b {
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.transcript .fx {
+  font-style: italic;
+}
+.renders figcaption .mm {
+  font-style: normal;
+  font-weight: 300;
+  color: var(--ink-2);
 }
 </style>
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">4b0ce45</span>
+<span class="build build--top" aria-label="Build">71895c7</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2119,8 +2134,8 @@ footer .logo {
     <div class="hero">
       <p class="tagline"><span class="w">Frame</span> <span class="w"><span class="zoom" data-text="first.">first.</span></span></p>
       <div class="hero-copy">
-      <p class="promise">Shotwright plans the shoot before there is one. Block the scene, place the cameras, cut the coverage. Then hand Seedance and Higgsfield a brief so clear it leaves them nothing to guess.</p>
-      <p class="status">alpha-1. Built for ZenaStudios and used there every day, rough edges and all.</p>
+      <p class="promise">Shotwright is a previz tool for film and AI video. Block a scene, place cameras, cut coverage, then export a brief for Seedance or Higgsfield.</p>
+      <p class="status">alpha-1. Used daily at ZenaStudios.</p>
       </div>
     </div>
 
@@ -2150,19 +2165,24 @@ footer .logo {
       <div class="head">
         <h2 id="lens">Through the lens</h2>
       </div>
+      <div class="deal-tools">
+        <div class="look">
+          <label id="lens-wiggle" for="lens-switch" data-on>Wiggle</label><button type="button" class="switch" id="lens-switch" role="switch" aria-checked="false" aria-labelledby="lens-action"><i></i></button><label id="lens-action" for="lens-switch">Action</label>
+        </div>
+      </div>
       <ul class="renders">
-        <li><figure><div class="still" data-drift="-0.04"><img class="pic" src="media/render-1.webp" width="960" height="539" loading="lazy" decoding="async" alt="A crane shot looks down into the diner booth: Mara and Dex at the table, Suzanne in the foreground, the neon sign in the window."></div><figcaption><b>28 mm crane</b><span>Wide two-shot from above</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.08"><img class="pic" src="media/render-2.webp" width="960" height="539" loading="lazy" decoding="async" alt="A 28 mm frame on Theo as he shoulders through the rooftop stairwell door."></div><figcaption><b>28 mm tripod</b><span>Theo at the stairwell door</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.05"><img class="pic" src="media/render-3.webp" width="960" height="539" loading="lazy" decoding="async" alt="From the chase car, the getaway car ahead on the harbour street: a low-poly Kassa car in the headlights."></div><figcaption><b>35 mm handheld</b><span>The getaway car, played by a Chime</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.09"><img class="pic" src="media/render-4.webp" width="960" height="539" loading="lazy" decoding="async" alt="Mara in the warehouse doorway at 40 mm, a rubber duck on the crate row staring into the lens."></div><figcaption><b>40 mm tripod</b><span>Mara in the doorway. The duck sees all.</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.06"><img class="pic" src="media/render-5.webp" width="960" height="539" loading="lazy" decoding="async" alt="Over Mara's shoulder onto Dex in the booth, the pink neon behind him."></div><figcaption><b>50 mm tripod</b><span>Over the shoulder</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.04"><img class="pic" src="media/render-1.webp" width="960" height="539" loading="lazy" decoding="async" alt="A crane shot looks down into the diner booth: Mara and Dex at the table, Suzanne in the foreground, the neon sign in the window."></div><figcaption><b>Crane establisher <i class="mm">(28 mm)</i></b><span>Wide two-shot from above</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.025"><img class="pic" src="media/render-2.webp" width="960" height="539" loading="lazy" decoding="async" alt="A 28 mm frame on Theo as he shoulders through the rooftop stairwell door."></div><figcaption><b>Medium full shot <i class="mm">(28 mm)</i></b><span>Theo at the stairwell door</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.025"><img class="pic" src="media/render-3.webp" width="960" height="539" loading="lazy" decoding="async" alt="From the chase car, the getaway car ahead on the harbour street: a low-poly Kassa car in the headlights."></div><figcaption><b>Handheld POV <i class="mm">(35 mm)</i></b><span>The getaway car, from the back seat</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.025"><img class="pic" src="media/render-4.webp" width="960" height="539" loading="lazy" decoding="async" alt="Mara in the warehouse doorway at 40 mm, a rubber duck on the crate row staring into the lens."></div><figcaption><b>Crash zoom <i class="mm">(40 mm)</i></b><span>Mara in the doorway, then the duck</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.025"><img class="pic" src="media/render-5.webp" width="960" height="539" loading="lazy" decoding="async" alt="Over Mara's shoulder onto Dex in the booth, the pink neon behind him."></div><figcaption><b>Over-the-shoulder <i class="mm">(50 mm)</i></b><span>Over Mara onto Dex</span></figcaption></figure></li>
       </ul>
     </section>
 
     <section aria-labelledby="chimes">
       <div class="head">
         <h2 id="chimes">Get started with Chimes</h2>
-        <p class="lede"><span class="fresh">Just updated.</span> 165 low-poly stand-ins, from a popcorn bucket to a hot-air balloon. Press <kbd>Shift</kbd> <kbd>A</kbd>, pick one, and it plays the part until the real prop turns up.</p>
+        <p class="lede"><span class="fresh">Just updated.</span> Discover 165 strangely nostalgic, very much machine-generated props, from a popcorn bucket to a hot-air balloon. <kbd>Shift</kbd> <kbd>A</kbd> places one in the scene.</p>
       </div>
       <div class="deal-tools">
         <div class="look"><label id="look-fresh" for="look-switch">Fresh</label><button type="button" class="switch" id="look-switch" role="switch" aria-checked="false" aria-labelledby="look-classic"><i></i></button><label id="look-classic" for="look-switch">Classic</label></div>
@@ -2179,7 +2199,7 @@ footer .logo {
         <article class="step">
           <div class="copy">
             <h3><span class="rn">I</span>Block it from above.</h3>
-            <p>Actors, walls, set pieces, lights and cameras, all in honest grey. Cones, eyelines and the 180° line stay on the plan, where everyone can see them. <kbd>G</kbd> grabs, <kbd>R</kbd> rotates. Blender hands feel at home.</p>
+            <p>Place actors, walls, set pieces, lights and cameras. Camera cones and the 180° line show on the plan. <kbd>G</kbd> moves, <kbd>R</kbd> rotates, as in Blender.</p>
           </div>
 <div class="plan" data-drift="-0.06">
             <img class="pic" src="media/plan.webp" width="1400" height="1025" loading="lazy" decoding="async"
@@ -2191,7 +2211,7 @@ footer .logo {
         <article class="step step--wide">
           <div class="copy">
             <h3><span class="rn">II</span>Cut the coverage.</h3>
-            <p>One camera per cut, laid out on an edit track. Cheat a mark for a single cut and the scene stays as it was. Cross the 180° line and Shotwright says so, politely. The stage below is Shotwright's own engine, running in this page.</p>
+            <p>Lay cuts on an edit track, one camera per cut. A cheat moves something for one cut only. Shotwright flags cuts that cross the 180° line.</p>
           </div>
           <div class="deck playable">
             <div class="panes">
@@ -2210,14 +2230,14 @@ footer .logo {
               <i class="cutbox" aria-hidden="true"></i>
               <i class="ph" aria-hidden="true"></i>
             </div>
-            <p class="brief" aria-live="polite"><b id="brief-head">Shot I · CAM 1 · 28 mm crane · 00:00.000</b><span id="brief-line"></span></p>
+            <div class="brief"><b id="brief-head">Shot I · CAM 1 · 28 mm crane · 00:00.000</b><ol class="transcript" id="transcript" aria-label="Transcript"></ol></div>
           </div>
         </article>
 
         <article class="step">
           <div class="copy">
             <h3><span class="rn">III</span>Compose your packet, for humans or bots.</h3>
-            <p>One export, one folder. The crew gets stills and the animatic. The model gets the prompt and the whole scene as data. Each reads what it reads best. Zip it or watermark it on the way out.</p>
+            <p>One export folder: stills and the animatic for the crew, the prompt and the scene data for the model. Zip and watermark are optional.</p>
           </div>
           <div class="packet" aria-label="The files in a packet, from the Diner standoff">
             <div class="packet-col">
@@ -2242,11 +2262,11 @@ footer .logo {
         <article class="step step--wide" id="brief-model">
           <div class="copy">
             <h3><span class="rn">IV</span>Brief the model.</h3>
-            <p>The prompt names the cast, the set, the lens and the move of every shot. The model guesses less, so you reroll less. This is one real export of the diner: hover a still for its depth pass.</p>
+            <p>The prompt describes the cast, set, lens and move of each shot. Below is a real export of the diner scene. Hover a still to see its depth pass.</p>
           </div>
           <div class="reel" id="reel" tabindex="0" aria-label="The exported packet, file by file">
             <div class="reel-track">
-              <figure class="card text"><div class="paper roll"><pre>SCENE Diner standoff | 10 shots | 40.0 s | 16:9 | 24 fps
+              <figure class="card text"><div class="paper"><pre>SCENE Diner standoff | 10 shots | 40.0 s | 16:9 | 24 fps
 
 Cast:
 - Mara, the purple figure: a police detective in her fifties, silver bob, a long charcoal trench coat
@@ -2377,58 +2397,40 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
       </div>
     </section>
 
-    <section aria-labelledby="spec">
-      <div class="head">
-        <h2 id="spec">In the box</h2>
-        <p class="lede">The kit grows with every build. A full list is on its way, hopefully soon.</p>
-      </div>
-      <div class="kit" id="kit">
-        <div class="kit-words" role="tablist" aria-label="In the box">
-        <button type="button" role="tab" id="kit-0" aria-selected="true" aria-controls="kit-panel">Cameras</button>
-        <button type="button" role="tab" id="kit-1" aria-selected="false" aria-controls="kit-panel">Monitor</button>
-        <button type="button" role="tab" id="kit-2" aria-selected="false" aria-controls="kit-panel">Coverage</button>
-        <button type="button" role="tab" id="kit-3" aria-selected="false" aria-controls="kit-panel">Views</button>
-        <button type="button" role="tab" id="kit-4" aria-selected="false" aria-controls="kit-panel">Brief</button>
-        <button type="button" role="tab" id="kit-5" aria-selected="false" aria-controls="kit-panel">Samples</button>
-        </div>
-        <p class="kit-panel" id="kit-panel" role="tabpanel" aria-live="polite">Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.</p>
-      </div>
-    </section>
-
     <section aria-labelledby="alpha">
       <div class="head">
         <h2 id="alpha">What&rsquo;s coming</h2>
-        <p class="lede">In-house at ZenaStudios for now, on Windows and macOS. No public download yet, and the file format still shifts between builds.</p>
+        <p class="lede">In use at ZenaStudios on Windows and macOS. No public download yet. The file format may still change.</p>
       </div>
       <aside class="notice" aria-label="A note from TV">
         <span class="notice-icon" aria-hidden="true">pan_tool_alt</span>
         <div class="notice-text">
           <p class="notice-title">This is a vibe-coded application.</p>
-          <p>Making wild ideas real is a lot of fun. An app also has to be secure, robust and do what it promises for the people who use it. Shotwright is not there yet. Bear with the bugs if you want to see it get there.</p>
+          <p>Making wild ideas real is fun. An app also has to be secure, robust and do what it says. Shotwright is not there yet. Bear with the bugs.</p>
           <p class="notice-sign">TV</p>
         </div>
       </aside>
       <div class="rail">
         <ul class="epics" id="epics" tabindex="0" aria-label="Coming releases, alpha-2 to Shotwright 5">
-        <li><img class="psx" data-chime="home-alarmClock" src="media/chimes/thumbs/home-alarmClock.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Keyframes</b><span>Keys on every property, with diamonds, auto-key and I to insert.</span></li>
-        <li><img class="psx" data-chime="around-toolbox" src="media/chimes/thumbs/around-toolbox.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Gizmos</b><span>Grab handles for cameras, actors and lights, with live numbers.</span></li>
+        <li><img class="psx" data-chime="home-alarmClock" src="media/chimes/thumbs/home-alarmClock.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Keyframes</b><span>Keys on every property, auto-key and I to insert.</span></li>
+        <li><img class="psx" data-chime="around-toolbox" src="media/chimes/thumbs/around-toolbox.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Gizmos</b><span>Handles for cameras, actors and lights.</span></li>
         <li><img class="psx" data-chime="money-memoryCard" src="media/chimes/thumbs/money-memoryCard.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-2</em><b>Previz frames</b><span>One Higgsfield still per cut, kept as a take.</span></li>
-        <li><img class="psx" data-chime="life-book" src="media/chimes/thumbs/life-book.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>Storyboards</b><span>Storyboard sheets, overheads and shot lists, ready to print.</span></li>
-        <li><img class="psx" data-chime="moreA-perfumeBottle" src="media/chimes/thumbs/moreA-perfumeBottle.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>References</b><span>Faces for the cast, products for the props, photos for the location.</span></li>
-        <li><img class="psx" data-chime="moreB-parcelBox" src="media/chimes/thumbs/moreB-parcelBox.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>Public release</b><span>Signed installers for Windows and macOS, and a file format that holds.</span></li>
-        <li><img class="psx" data-chime="outdoors-compass" src="media/chimes/thumbs/outdoors-compass.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>First run</b><span>A guided tour, a docs site and shortcut help.</span></li>
-        <li><img class="psx" data-chime="life-filmClapper" src="media/chimes/thumbs/life-filmClapper.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Generated takes</b><span>Each shot through Seedance, its takes beside the cut.</span></li>
-        <li><img class="psx" data-chime="outdoors-camera" src="media/chimes/thumbs/outdoors-camera.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Real lenses</b><span>Focus, aperture and depth of field from the Optical Bench.</span></li>
-        <li><img class="psx" data-chime="demo-crate" src="media/chimes/thumbs/demo-crate.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Asset library</b><span>Stand-ins, a set-piece kit and imports from Blender.</span></li>
-        <li><img class="psx" data-chime="moreB-taxForm" src="media/chimes/thumbs/moreB-taxForm.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Script import</b><span>Fountain and Final Draft in, as scene breakdowns and draft cuts.</span></li>
-        <li><img class="psx" data-chime="life-envelope" src="media/chimes/thumbs/life-envelope.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Shared review</b><span>Notes pinned to cuts and frames, for the whole crew.</span></li>
-        <li><img class="psx" data-chime="around-plug" src="media/chimes/thumbs/around-plug.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Round-trip</b><span>Scenes to Blender and back. Edits out to Premiere and Resolve.</span></li>
-        <li><img class="psx" data-chime="around-smartphone" src="media/chimes/thumbs/around-smartphone.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Virtual camera</b><span>A phone becomes the camera, with an AR viewfinder. The mouse gets the day off.</span></li>
-        <li><img class="psx" data-chime="play-chessKnight" src="media/chimes/thumbs/play-chessKnight.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Blocking assistant</b><span>Proposes coverage from the script. You still get the final say.</span></li>
-        <li><img class="psx" data-chime="life-briefcase" src="media/chimes/thumbs/life-briefcase.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Shoot day</b><span>Call sheets, set-up order and a tracker of which cuts are in the can.</span></li>
-        <li><img class="psx" data-chime="drinks-coffeeCup" src="media/chimes/thumbs/drinks-coffeeCup.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Continuity</b><span>Props, wardrobe and eyelines kept per cut, so the mug stays in the left hand.</span></li>
-        <li><img class="psx" data-chime="fun-snowGlobe" src="media/chimes/thumbs/fun-snowGlobe.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Generated sets</b><span>A line of text or a reference image in, a greybox set out, ready to dress.</span></li>
-        <li><img class="psx" data-chime="moreB-floppyDisk" src="media/chimes/thumbs/moreB-floppyDisk.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Open format</b><span>A published spec for the project file, so other tools can read and write scenes.</span></li>
+        <li><img class="psx" data-chime="life-book" src="media/chimes/thumbs/life-book.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>Storyboards</b><span>Storyboard sheets, overheads and shot lists.</span></li>
+        <li><img class="psx" data-chime="moreA-perfumeBottle" src="media/chimes/thumbs/moreA-perfumeBottle.webp" alt="" width="128" height="128" loading="lazy"><em>alpha-3</em><b>References</b><span>Reference images for cast, props and locations.</span></li>
+        <li><img class="psx" data-chime="moreB-parcelBox" src="media/chimes/thumbs/moreB-parcelBox.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>Public release</b><span>Signed installers for Windows and macOS, and a stable file format.</span></li>
+        <li><img class="psx" data-chime="outdoors-compass" src="media/chimes/thumbs/outdoors-compass.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1</em><b>First run</b><span>A guided tour, docs and shortcut help.</span></li>
+        <li><img class="psx" data-chime="life-filmClapper" src="media/chimes/thumbs/life-filmClapper.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Generated takes</b><span>Each shot generated in Seedance, with takes beside the cut.</span></li>
+        <li><img class="psx" data-chime="outdoors-camera" src="media/chimes/thumbs/outdoors-camera.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Real lenses</b><span>Focus, aperture and depth of field.</span></li>
+        <li><img class="psx" data-chime="demo-crate" src="media/chimes/thumbs/demo-crate.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 1.5</em><b>Asset library</b><span>Stand-ins, a set-piece kit and Blender import.</span></li>
+        <li><img class="psx" data-chime="moreB-taxForm" src="media/chimes/thumbs/moreB-taxForm.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Script import</b><span>Fountain and Final Draft scripts as scene breakdowns and draft cuts.</span></li>
+        <li><img class="psx" data-chime="life-envelope" src="media/chimes/thumbs/life-envelope.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Shared review</b><span>Notes pinned to cuts and frames.</span></li>
+        <li><img class="psx" data-chime="around-plug" src="media/chimes/thumbs/around-plug.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 2</em><b>Round-trip</b><span>Scenes to Blender and back. Edits to Premiere and Resolve.</span></li>
+        <li><img class="psx" data-chime="around-smartphone" src="media/chimes/thumbs/around-smartphone.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Virtual camera</b><span>A phone as the camera, with an AR viewfinder.</span></li>
+        <li><img class="psx" data-chime="play-chessKnight" src="media/chimes/thumbs/play-chessKnight.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 3</em><b>Blocking assistant</b><span>Suggests coverage from the script.</span></li>
+        <li><img class="psx" data-chime="life-briefcase" src="media/chimes/thumbs/life-briefcase.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Shoot day</b><span>Call sheets, set-up order and a tracker of finished cuts.</span></li>
+        <li><img class="psx" data-chime="drinks-coffeeCup" src="media/chimes/thumbs/drinks-coffeeCup.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 4</em><b>Continuity</b><span>Props, wardrobe and eyelines tracked per cut.</span></li>
+        <li><img class="psx" data-chime="fun-snowGlobe" src="media/chimes/thumbs/fun-snowGlobe.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Generated sets</b><span>A text prompt or reference image in, a greybox set out.</span></li>
+        <li><img class="psx" data-chime="moreB-floppyDisk" src="media/chimes/thumbs/moreB-floppyDisk.webp" alt="" width="128" height="128" loading="lazy"><em>Shotwright 5</em><b>Open format</b><span>A published spec for the project file.</span></li>
         </ul>
       </div>
       <div class="rail-nav">
@@ -2479,28 +2481,14 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   const cutAt = (t) => CUTS.reduce((c, k) => (k.t <= t ? k : c), CUTS[0])
   const tc = (t) => String(Math.floor(t / 60)).padStart(2, '0') + ':' + (t % 60).toFixed(3).padStart(6, '0')
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-  const BRIEFS = [
-    'Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.',
-    'Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.',
-    `Over-the-shoulder medium close-up on Dex, over Mara's right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: "I told you everything I know, Mara." He will not meet her eyes.`,
-    `Over-the-shoulder medium close-up on Mara, over Dex's left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: "Then tell it again. Slower." She does not blink.`,
-    'Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: "The truck came in on the fourth. Somebody paid the night guard to look away."',
-    "Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara's fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.",
-    'Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: "Who paid him, Dex?" A long beat. The neon hum fills the silence.',
-    `Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: "You don't want that name."`,
-    'Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: "Kessler." He slides a folded napkin across the table, stands and walks out of frame.',
-    'Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.'
-  ]
   const X0 = 716e-5,
     X1 = 0.99467
   const xOf = (t) => X0 + (t / END) * (X1 - X0)
   const scrub = document.getElementById('scrub')
   const video = document.getElementById('monitor')
   const head = document.getElementById('brief-head')
-  const line = document.getElementById('brief-line')
   let held = false
   let active = false
-  let shown = -1
   let stage = null
   let lastT = 0
   const mbCam = document.getElementById('mb-cam')
@@ -2525,6 +2513,18 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     [37.7, 39.9, "♪ SUZANNE'S THEME SWELLS ♪"]
   ]
   const cc = document.getElementById('cc')
+  const transcript = document.getElementById('transcript')
+  const rows = CUES.map(([a, , text]) => {
+    const li = document.createElement('li')
+    const who = /^([A-Z]+):\s*/.exec(text)
+    const say2 = who ? text.slice(who[0].length) : text.replace(/^\[|\]$/g, '')
+    li.append(Object.assign(document.createElement('time'), { textContent: tc(a).slice(0, 5) }))
+    li.append(Object.assign(document.createElement('b'), { textContent: who ? who[1] : '' }))
+    li.append(Object.assign(document.createElement('span'), { textContent: say2.replace(/\n/g, ' '), className: who ? '' : 'fx' }))
+    transcript.append(li)
+    return li
+  })
+  let said = -2
   const voiceBtn = document.getElementById('voice-btn')
   const synth = window.speechSynthesis
   let voiceOn = false,
@@ -2587,9 +2587,15 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     scrub.setAttribute('aria-valuenow', t.toFixed(1))
     scrub.setAttribute('aria-valuetext', `${tc(t)}, shot ${ROMAN[c.i]}, ${c.cam}, ${c.shot}`)
     head.textContent = `Shot ${ROMAN[c.i]} · ${c.cam} · ${c.lens} mm ${c.rig} · ${tc(t)}`
-    if (shown !== c.i) {
-      shown = c.i
-      line.textContent = BRIEFS[c.i]
+    const at = CUES.reduce((k, [a], i) => (t >= a ? i : k), -1)
+    if (at !== said) {
+      said = at
+      rows.forEach((r, i) => {
+        r.classList.toggle('now', i === at)
+        r.classList.toggle('past', i < at)
+      })
+      if (rows[at])
+        transcript.scrollTo({ top: Math.max(0, rows[at].offsetTop - transcript.offsetTop - 34), behavior: reduce ? 'auto' : 'smooth' })
     }
     lastT = t
     stage?.update(t)
@@ -2656,7 +2662,22 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
       const cv = Object.assign(document.createElement('canvas'), { className: 'lens' })
       cv.setAttribute('aria-hidden', 'true')
       el.append(cv)
-      const t = { el, cv, ctx: cv.getContext('2d'), shot: SHOTS[i], stage: null, yaw: 0, pitch: 0, goal: [0, 0], seen: false, dirty: true }
+      const t = {
+        el,
+        cv,
+        ctx: cv.getContext('2d'),
+        shot: SHOTS[i],
+        stage: null,
+        yaw: 0,
+        pitch: 0,
+        goal: [0, 0],
+        seen: false,
+        dirty: true,
+        i,
+        label: el.parentElement.querySelector('figcaption .mm'),
+        hover: false,
+        start: 0
+      }
       world(SHOTS[i][0])
         .then((st) => {
           t.stage = st
@@ -2667,8 +2688,14 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
         const r = el.getBoundingClientRect()
         t.goal = [-((e.clientX - r.left) / r.width - 0.5) * 0.14, -((e.clientY - r.top) / r.height - 0.5) * 0.09]
       })
+      el.addEventListener('pointerenter', () => {
+        t.hover = true
+        t.start = performance.now()
+      })
       el.addEventListener('pointerleave', () => {
         t.goal = [0, 0]
+        t.hover = false
+        t.dirty = true
       })
       return t
     })
@@ -2679,6 +2706,56 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
       }
     })
     for (const t of tiles) seen.observe(t.el)
+    const ease = (x) => (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2)
+    const swing = (tau, len) => {
+      const k = (tau % len) / len
+      return ease(k < 0.5 ? k * 2 : 2 - k * 2)
+    }
+    const DUCK = [-4.69, 4.5, 1.06]
+    const ACTIONS = [
+      (tau) => {
+        const p = swing(tau, 12)
+        return { fx: { dpos: [0, 0, 2.2 * p] }, yaw: 0.22 - 0.44 * p, pitch: -0.12 * p }
+      },
+      (tau) => ({ fx: { dolly: 1.4 * swing(tau, 9) }, yaw: 0.02 * Math.sin(tau * 0.7), pitch: 0 }),
+      (tau) => ({
+        fx: {
+          dpos: [0, 0, 0.025 * Math.sin(tau * 11.3) + 0.012 * Math.sin(tau * 23.7)],
+          roll: 0.012 * Math.sin(tau * 4.1) + 6e-3 * Math.sin(tau * 9.7)
+        },
+        yaw: 6e-3 * Math.sin(tau * 7.9) + 4e-3 * Math.sin(tau * 15.3),
+        pitch: 0.01 * Math.sin(tau * 12.7) + 5e-3 * Math.sin(tau * 21.1)
+      }),
+      (tau) => {
+        const k = tau % 8
+        const z = k > 3.6 ? Math.min(1, (k - 3.6) / 0.45) : 0
+        const e = 1 - Math.pow(1 - z, 4)
+        return { fx: { focal: 40 + 95 * e, aim: DUCK, aimMix: e }, yaw: 0, pitch: 0, focal: 40 + 95 * e }
+      },
+      (tau) => ({ fx: {}, yaw: 0.012 * Math.sin(tau * 0.55), pitch: 6e-3 * Math.sin(tau * 0.8) })
+    ]
+    const LABELS = tiles.map((t) => t.label?.textContent || '')
+    let action = false
+    const lensSwitch = document.getElementById('lens-switch')
+    const setAction = (on) => {
+      action = on
+      lensSwitch.setAttribute('aria-checked', String(on))
+      document.getElementById('lens-wiggle').toggleAttribute('data-on', !on)
+      document.getElementById('lens-action').toggleAttribute('data-on', on)
+      tiles.forEach((t, i) => {
+        if (t.label) t.label.textContent = LABELS[i]
+        t.dirty = true
+      })
+    }
+    lensSwitch.addEventListener('click', () => setAction(!action))
+    document.getElementById('lens-wiggle').addEventListener('click', (e) => {
+      e.preventDefault()
+      setAction(false)
+    })
+    document.getElementById('lens-action').addEventListener('click', (e) => {
+      e.preventDefault()
+      setAction(true)
+    })
     let settle2 = 0
     const lensTick = () => {
       requestAnimationFrame(lensTick)
@@ -2692,13 +2769,16 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
           t.pitch += dp * 0.12
           t.dirty = true
         }
-        if (!t.dirty && settle2 % 30) continue
+        if (action && t.hover && settle2 % 2) continue
+        if (!(action && t.hover) && !t.dirty && settle2 % 30) continue
         const r = Math.min(devicePixelRatio, 1.5),
           w = Math.round(t.el.clientWidth * r),
-          h = Math.round(t.el.clientHeight * r)
+          h = Math.round((w * 9) / 16)
         if (!w || !h) continue
         if (t.cv.width !== w || t.cv.height !== h) Object.assign(t.cv, { width: w, height: h })
-        t.ctx.drawImage(t.stage.shot(t.shot[1], t.shot[2], t.yaw, t.pitch, w, h), 0, 0, w, h)
+        const act = action && t.hover ? ACTIONS[t.i]((performance.now() - t.start) / 1e3) : { fx: {}, yaw: 0, pitch: 0 }
+        if (t.label) t.label.textContent = act.focal ? `(${Math.round(act.focal)} mm)` : LABELS[t.i]
+        t.ctx.drawImage(t.stage.shot(t.shot[1], t.shot[2], t.yaw + act.yaw, t.pitch + act.pitch, w, h, act.fx), 0, 0, w, h)
         t.cv.classList.add('on')
         t.dirty = false
       }
@@ -2707,18 +2787,10 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   }
   const planHost = document.getElementById('plan-live')
   if (window.THREE && window.ShotwrightPlan) {
-    const pickScene = ['media/diner.scene.json', 'media/scenes/sWarehouse/scene.json', 'media/scenes/sChase/scene.json'][
-      Math.floor(Math.random() * 3)
-    ]
-    fetch(pickScene)
-      .then((r) => r.json())
-      .then((d) => {
-        try {
-          ShotwrightPlan.mount(planHost, d)
-          planHost.classList.add('on')
-        } catch (e) {}
-      })
-      .catch(() => {})
+    try {
+      ShotwrightPlan.mount(planHost)
+      planHost.classList.add('on')
+    } catch (e) {}
   }
   let heroStage = null
   let heroEnd = 34
@@ -3321,56 +3393,6 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
       im.replaceWith(cv)
       PSX.spin(cv, `media/chimes/${im.dataset.chime}.glb`, { tilt: 0.25 })
     }
-  const KIT = [
-    'Crane, dolly, drone, handheld and tripod. Lenses from 28 to 160 mm, moves keyed on marks.',
-    'Every cut through its own lens, with thirds and a shot read: MCU, OTS, 2S.',
-    'An edit track, a cheat per cut, and a polite alarm at the 180° line.',
-    'Top, front, side, iso and perspective on <kbd data-k="7">7</kbd> <kbd data-k="1">1</kbd> <kbd data-k="3">3</kbd> <kbd data-k="5">5</kbd>. Try them.',
-    'Stills, an animatic and a prompt for Seedance and Higgsfield. Timecode optional.',
-    'Six worked scenes, so day one starts with something to break.'
-  ]
-  const kit = document.getElementById('kit'),
-    kitPanel = document.getElementById('kit-panel')
-  const kitTabs = [...kit.querySelectorAll('[role="tab"]')]
-  let kitAt = 0,
-    kitHold = false,
-    kitSeen = false
-  const kitShow = (i) => {
-    kitAt = i
-    kitTabs.forEach((b, j) => b.setAttribute('aria-selected', String(j === i)))
-    kitPanel.innerHTML = KIT[i]
-    kitPanel.classList.remove('swap')
-    void kitPanel.offsetWidth
-    kitPanel.classList.add('swap')
-  }
-  kitTabs.forEach((b, i) =>
-    b.addEventListener('click', () => {
-      kitShow(i)
-      kitHold = true
-    })
-  )
-  kit.addEventListener('pointerenter', () => {
-    kitHold = true
-  })
-  kit.addEventListener('pointerleave', () => {
-    kitHold = false
-  })
-  new IntersectionObserver(
-    ([e]) => {
-      kitSeen = e.isIntersecting
-    },
-    { threshold: 0.4 }
-  ).observe(kit)
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
-    setInterval(() => {
-      if (kitSeen && !kitHold) kitShow((kitAt + 1) % KIT.length)
-    }, 3800)
-  addEventListener('keydown', (e) => {
-    const k = kitPanel.querySelector(`kbd[data-k="${e.key}"]`)
-    if (!k || !kitSeen) return
-    k.classList.add('hit')
-    setTimeout(() => k.classList.remove('hit'), 300)
-  })
   const rail = document.getElementById('epics'),
     prev = document.getElementById('rail-prev'),
     next = document.getElementById('rail-next')

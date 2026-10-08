@@ -3,9 +3,32 @@
   const FILM_MM = 36
   const v3 = (x, y, z = 0) => new THREE.Vector3(x, z, -y)
   if (THREE.ColorManagement && 'legacyMode' in THREE.ColorManagement) THREE.ColorManagement.legacyMode = false
+  const SETUP = {
+    walls: [
+      { a: [-4.6, 2.8], b: [4.6, 2.8], height: 2.6 },
+      { a: [-4.6, 2.8], b: [-4.6, -2.2], height: 2.6 }
+    ],
+    boxes: [
+      { pos: [0, 0.15, 0], size: [1.3, 0.8, 0.75], yaw: 0 },
+      { pos: [-3.9, 2.2, 0], size: [0.5, 0.5, 1.3], yaw: 0 },
+      { pos: [2.9, 2.35, 0], size: [2.6, 0.6, 0.95], yaw: 0 },
+      { pos: [-3.95, -0.6, 0], size: [0.6, 1.8, 0.8], yaw: 0 }
+    ],
+    actors: [
+      { pos: [-1.05, 0.15, 0], color: '#a78bfa', height: 1.7 },
+      { pos: [1.05, 0.15, 0], color: '#f5a524', height: 1.76 }
+    ],
+    cameras: [
+      { pose: { pos: [0, -4.4, 1.5], aim: [0, 0.15, 1.2], focal: 24 }, color: '#e4e4e7', pair: true },
+      { pose: { pos: [-2.1, -1.1, 1.5], aim: [1.05, 0.15, 1.5], focal: 50 }, color: '#5eead4' },
+      { pose: { pos: [2.1, -1.1, 1.5], aim: [-1.05, 0.15, 1.5], focal: 50 }, color: '#f472b6' },
+      { pose: { pos: [-1.1, -2.3, 1.5], aim: [1.05, 0.15, 1.5], focal: 85 }, color: '#86efac' },
+      { pose: { pos: [1.1, -2.3, 1.5], aim: [-1.05, 0.15, 1.5], focal: 85 }, color: '#93c5fd' }
+    ]
+  }
   function mount(host, data) {
-    const { project, scene } = data
-    const ev = ShotwrightCore.evaluate(project, scene, 0)
+    const scene = data && data.scene ? data.scene : SETUP
+    const ev = data && data.scene ? ShotwrightCore.evaluate(data.project, data.scene, 0) : SETUP
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
     if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace
@@ -22,12 +45,15 @@
     sun.position.set(3, 10, 4)
     world.add(sun)
     const solid = ev.boxes.filter((b) => !(b.size[0] * b.size[1] > 400 && b.size[2] < 0.2) && Math.max(b.size[0], b.size[1]) < 20)
-    const pts = [...ev.actors.map((a) => a.pos), ...solid.map((b) => b.pos)]
+    const pts = [...ev.actors.map((a) => a.pos), ...solid.map((b) => b.pos), ...(scene === SETUP ? ev.cameras.map((c) => c.pose.pos) : [])]
     const xs = pts.map((p) => p[0]),
       ys = pts.map((p) => p[1])
     const cx = (Math.min(...xs) + Math.max(...xs)) / 2,
       cy = (Math.min(...ys) + Math.max(...ys)) / 2
-    const span = Math.min(Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 8) * 1.35, 28)
+    const span = Math.min(
+      Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys), 8) * (scene === SETUP ? 1.12 : 1.35),
+      28
+    )
     const home = v3(cx, cy)
     const view = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 200)
     view.up.set(0, 0, -1)
@@ -70,6 +96,12 @@
       items.push(it)
       return it
     })
+    const pairMid = { obj: { position: new THREE.Vector3() } }
+    const line = new THREE.Line(
+      new THREE.BufferGeometry(),
+      new THREE.LineDashedMaterial({ color: '#f2c230', dashSize: 0.22, gapSize: 0.14 })
+    )
+    world.add(line)
     const near = (p) => actors.reduce((best, a) => (a.obj.position.distanceTo(p) < best.obj.position.distanceTo(p) ? a : best), actors[0])
     const cams = ev.cameras.map((c) => {
       const g = new THREE.Group()
@@ -88,12 +120,20 @@
         fill,
         edge,
         half: Math.atan(FILM_MM / 2 / c.pose.focal),
-        subject: actors.length ? near(v3(c.pose.aim[0], c.pose.aim[1])) : null
+        subject: c.pair && actors.length > 1 ? pairMid : actors.length ? near(v3(c.pose.aim[0], c.pose.aim[1])) : null
       }
       items.push(it)
       return it
     })
     const aim = () => {
+      if (actors.length > 1) {
+        const A = actors[0].obj.position,
+          B = actors[1].obj.position
+        pairMid.obj.position.copy(A).add(B).multiplyScalar(0.5)
+        const d = B.clone().sub(A).normalize().multiplyScalar(3)
+        line.geometry.setFromPoints([A.clone().sub(d).setY(0.04), B.clone().add(d).setY(0.04)])
+        line.computeLineDistances()
+      }
       for (const c of cams) {
         if (!c.subject) continue
         const o = c.obj.position,
