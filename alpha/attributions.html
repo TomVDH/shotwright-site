@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shotwright Attributions</title>
+<script>try{var t=localStorage.getItem("sw-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="icon" href="../brand/shotwright-favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Caveat:wght@500&family=Silkscreen&family=Bodoni+Moda:opsz,wght@6..96,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,1,0&icon_names=arrow_back,arrow_forward,dark_mode,light_mode,pan_tool_alt,sync,volume_off,volume_up&display=block">
+<style>
+/* Layout: who made it, three ruled lists, licence texts, trademarks. */
+:root {
+  --paper: #EEF1F3;
+  --sheet: #F8F9FA;
+  --ink: #0F2340;
+  --ink-2: #4A5970;
+  --rule: #CBD3DC;
+  --edge: rgb(15 35 64 / 0.22);
+  --grid: rgb(15 35 64 / 0.045);
+  --tape: #F2C230;
+  --tape-ink: #1B1505;
+  --shadow: 15 35 64;
+  --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --gap: clamp(112px, 15vw, 220px);
+  --sheet-max: 1240px;
+  --edge-r: max(clamp(16px, 4vw, 48px), calc((100% - var(--sheet-max)) / 2));
+  --cm-gap: 8px;
+  --cm-len: 22px;
+  --rn-edge: var(--ink);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0A1729;
+    --sheet: #0E1F37;
+    --ink: #E6ECF2;
+    --ink-2: #9DACBF;
+    --rule: #233A5C;
+    --edge: rgb(230 236 242 / 0.12);
+    --grid: rgb(150 180 220 / 0.05);
+    --tape: #F5C842;
+    --shadow: 0 4 12;
+    --rn-edge: transparent;
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0A1729;
+  --sheet: #0E1F37;
+  --ink: #E6ECF2;
+  --ink-2: #9DACBF;
+  --rule: #233A5C;
+  --edge: rgb(230 236 242 / 0.12);
+  --grid: rgb(150 180 220 / 0.05);
+  --tape: #F5C842;
+  --shadow: 0 4 12;
+  --rn-edge: transparent;
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+
+  :root { --serif: "Bodoni Moda", Didot, Georgia, serif; --sheet-max: 1040px; }
+* { box-sizing: border-box; }
+body { margin: 0; padding-inline: clamp(16px, 4vw, 48px); background: var(--paper); color: var(--ink); font: 400 1rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+.sheet { max-width: 1040px; margin-inline: auto; padding-block: clamp(32px, 6vw, 72px) clamp(56px, 8vw, 104px); }
+/* Content links: yellow at rest; ink on a yellow underline when hovered. */
+a { color: inherit; text-decoration: none; }
+.sheet > a.back, main a, .refs a, .texts a { color: var(--tape); transition: color 0.2s; }
+.sheet > a.back:hover, main a:hover, .refs a:hover, .texts a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--tape); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--tape); outline-offset: 3px; border-radius: 3px; }
+.back { font-size: 0.92rem; }
+h1 { margin: clamp(28px, 5vw, 56px) 0 0; font: 800 clamp(3.4rem, 10vw, 6.4rem)/0.88 var(--display); font-stretch: 62%; }
+section { margin-top: clamp(64px, 9vw, 112px); }
+h2 { display: flex; align-items: baseline; gap: 0.4em; margin: 0; padding-bottom: 14px; border-bottom: 2px solid var(--ink); font: 800 clamp(1.8rem, 3.4vw, 2.4rem)/1 var(--display); font-stretch: 66%; }
+h3 { margin: 0 0 8px; font-size: 1.04rem; font-weight: 680; }
+.rn { font-family: var(--serif); font-weight: 700; font-stretch: normal; color: var(--tape); -webkit-text-stroke: 0.7px var(--rn-edge); }
+/* Who made it: two plain paragraphs side by side. */
+.colophon { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(28px, 5vw, 64px); margin-top: 22px; }
+.colophon p { margin: 0 0 14px; max-width: 34em; }
+.colophon p + p { color: var(--ink-2); }
+/* A list: name, copyright and source left, use in the middle, licence right. */
+.refs { margin: 0; padding: 0; list-style: none; }
+.refs li { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.15fr) minmax(0, 0.5fr); gap: 4px clamp(20px, 3vw, 40px); align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.who { display: grid; gap: 2px; }
+.who cite { font-style: normal; font-weight: 680; font-size: 1.04rem; }
+.ver { margin-left: 0.4em; font-size: 0.8rem; font-weight: 500; color: var(--ink-2); }
+.who .copy { font-size: 0.86rem; color: var(--ink-2); }
+.who .repo { font-size: 0.86rem; }
+.who a.repo:hover { color: var(--ink); }
+.use { margin: 0; color: var(--ink-2); }
+.lic { margin: 0; text-align: right; font-size: 0.92rem; white-space: nowrap; }
+/* Generated work says so in plain words beside its name. */
+.gen { margin-left: 0.6em; font-size: 0.8rem; font-weight: 600; color: var(--ink-2); }
+/* Licence texts: one block each, set small. */
+.texts { display: grid; gap: 28px; margin-top: 22px; }
+.texts p { margin: 0 0 8px; color: var(--ink-2); font-size: 0.92rem; max-width: 52em; }
+.texts pre { margin: 0; padding: 18px 20px; border: 1px solid var(--rule); border-radius: 4px; background: var(--sheet); font: 400 0.82rem/1.6 var(--body); white-space: pre-wrap; color: var(--ink-2); }
+.marks { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; max-width: 52em; color: var(--ink-2); font-size: 0.92rem; }
+footer a { color: inherit; }
+.logo { display: block; color: var(--ink); overflow: visible; }
+.logo .slab { fill: currentColor; }
+.logo .stem { fill: var(--tape); }
+.build { font-size: 0.92rem; color: var(--ink-2); }
+.zs-pixel { font: 400 0.95rem/1 "Silkscreen", "Courier New", monospace; letter-spacing: 0.02em; color: var(--ink); }
+.two-face { filter: grayscale(1) sepia(0.2) hue-rotate(180deg) saturate(1.6) brightness(1.25); opacity: 0; transition: opacity 1.4s var(--ease) 0.4s; }
+footer.in .two-face, .no-js .two-face { opacity: 0.42; }
+.theme-btn.top { position: absolute; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 14px); right: var(--edge-r); order: 0; }
+footer {
+  display: grid; gap: clamp(36px, 5vw, 64px); margin-top: var(--gap); padding-block: clamp(40px, 6vw, 72px) clamp(56px, 8vw, 104px);
+  border-top: 2px solid var(--ink); font-size: 0.92rem; color: var(--ink-2);
+}
+.endcard { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; }
+.credits { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 48px; padding-top: clamp(18px, 2.5vw, 28px); border-top: 1px solid var(--rule); }
+.credits .left { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.credits .right { display: grid; justify-items: end; gap: 14px; }
+.build { font-size: 0.8rem; color: var(--ink-2); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.build--top { position: absolute; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 22px); right: calc(var(--edge-r) + 84px); font: 400 0.78rem/1 ui-monospace, "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace; }
+footer .brand { color: var(--ink); }
+footer .brand { flex: 0 1 620px; }
+footer .logo { width: 100%; height: auto; }
+.home { font-weight: 650; text-decoration: none; }
+.sign { font: 800 clamp(2rem, 4vw, 3rem)/0.9 var(--display); font-stretch: 62%; color: var(--ink); letter-spacing: 0.01em; }
+.aside { display: flex; align-items: flex-start; gap: 4px; margin: 0 auto 0 -8px; font: 500 clamp(1.4rem, 2.2vw, 1.8rem)/1 "Caveat", "Segoe Print", cursive; color: var(--ink-2); transform: rotate(-4deg); align-self: center; }
+.curl { width: 104px; height: 56px; flex: none; fill: none; stroke: var(--tape); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 260; stroke-dashoffset: 0; transition: stroke-dashoffset 1.2s cubic-bezier(0.45, 0, 0.2, 1) 0.6s; }
+.js footer:not(.in) .curl { stroke-dashoffset: 260; }
+.aside span { padding-top: 2px; }
+.theme-btn { order: 3; display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--rule); border-radius: 999px; background: var(--sheet); cursor: pointer; }
+.ti { display: grid; place-items: center; width: 28px; height: 24px; border-radius: 999px; color: var(--ink-2); font-family: "Material Symbols Outlined"; font-size: 17px; font-variation-settings: "FILL" 1, "wght" 400; font-feature-settings: "liga"; transition: background 0.25s, color 0.25s; }
+:root:not([data-theme="dark"]) .ti-light, :root[data-theme="dark"] .ti-dark { background: var(--ink); color: var(--paper); }
+.repo-link {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 12px; border-radius: 6px; font-size: 0.86rem;
+  border: 1px solid var(--ink); color: var(--ink); font-weight: 650; text-decoration: none;
+  transition: background 0.25s, color 0.25s;
+}
+.repo-link:hover { background: var(--ink); color: var(--paper); }
+.octo { width: 18px; height: 18px; fill: currentColor; }
+.collab { display: inline-flex; align-items: center; color: var(--ink); font-weight: 600; }
+.two-face { height: 40px; width: auto; }
+.scrawl { width: 1.35em; height: 1.35em; margin-inline: 1.1em; fill: none; stroke: var(--tape); stroke-width: 2.6; stroke-linecap: round; transform: rotate(-4deg); }
+footer { margin-top: clamp(80px, 10vw, 128px); }
+@media (max-width: 720px) {
+  .colophon { grid-template-columns: minmax(0, 1fr); }
+  .refs li { grid-template-columns: minmax(0, 1fr) auto; }
+  .use { grid-column: 1 / -1; grid-row: 2; }
+  .lic { grid-column: 2; grid-row: 1; }
+}
+</style>
+</head>
+<body>
+<span class="build build--top" aria-label="Build">3f28665</span>
+<button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
+<div class="sheet">
+  <a class="back" href="./">Back to Shotwright</a>
+  <h1>Attributions</h1>
+
+  <section aria-labelledby="app">
+    <h2 id="app"><span class="rn">I</span>Software in Shotwright</h2>
+    <ol class="refs">
+      <li><div class="who"><cite>Electron <span class="ver">44.6.0</span></cite><span class="copy">Copyright (c) Electron contributors. Copyright (c) 2013-2020 GitHub Inc.</span><a class="repo" href="https://github.com/electron/electron">github.com/electron/electron</a></div><p class="use">App runtime</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>electron-vite <span class="ver">5.0.0</span></cite><span class="copy">Copyright (c) 2022, Alex Wei</span><a class="repo" href="https://github.com/alex8088/electron-vite">github.com/alex8088/electron-vite</a></div><p class="use">Build</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Vite <span class="ver">7.3.7</span></cite><span class="copy">Copyright (c) 2019-present, VoidZero Inc. and Vite contributors</span><a class="repo" href="https://github.com/vitejs/vite">github.com/vitejs/vite</a></div><p class="use">Bundler</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>electron-builder <span class="ver">26.15.3</span></cite><span class="copy">Copyright (c) 2015 Loopline Systems</span><a class="repo" href="https://github.com/electron-userland/electron-builder">github.com/electron-userland/electron-builder</a></div><p class="use">Installers</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>React <span class="ver">19.3.0</span></cite><span class="copy">Copyright (c) Meta Platforms, Inc. and affiliates.</span><a class="repo" href="https://github.com/facebook/react">github.com/facebook/react</a></div><p class="use">UI library</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>three.js <span class="ver">0.186.1</span></cite><span class="copy">Copyright © 2010-2026 three.js authors</span><a class="repo" href="https://github.com/mrdoob/three.js">github.com/mrdoob/three.js</a></div><p class="use">3D rendering</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>react-three-fiber <span class="ver">9.8.1</span></cite><span class="copy">Copyright (c) 2019-2025 Poimandres</span><a class="repo" href="https://github.com/pmndrs/react-three-fiber">github.com/pmndrs/react-three-fiber</a></div><p class="use">React renderer for three.js</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>drei <span class="ver">10.7.9</span></cite><span class="copy">Copyright (c) 2020 react-spring</span><a class="repo" href="https://github.com/pmndrs/drei">github.com/pmndrs/drei</a></div><p class="use">three.js helpers</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>zustand <span class="ver">5.0.15</span></cite><span class="copy">Copyright (c) 2019 Paul Henschel</span><a class="repo" href="https://github.com/pmndrs/zustand">github.com/pmndrs/zustand</a></div><p class="use">State</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>immer <span class="ver">11.1.21</span></cite><span class="copy">Copyright (c) 2017 Michel Weststrate</span><a class="repo" href="https://github.com/immerjs/immer">github.com/immerjs/immer</a></div><p class="use">Immutable state</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Zod <span class="ver">4.6.5</span></cite><span class="copy">Copyright (c) 2025 Colin McDonnell</span><a class="repo" href="https://github.com/colinhacks/zod">github.com/colinhacks/zod</a></div><p class="use">Schema validation</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Tailwind CSS <span class="ver">4.3.3</span></cite><span class="copy">Copyright (c) Tailwind Labs, Inc.</span><a class="repo" href="https://github.com/tailwindlabs/tailwindcss">github.com/tailwindlabs/tailwindcss</a></div><p class="use">CSS</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>tw-animate-css <span class="ver">1.4.0</span></cite><span class="copy">Copyright (c) 2025 Wombosvideo</span><a class="repo" href="https://github.com/Wombosvideo/tw-animate-css">github.com/Wombosvideo/tw-animate-css</a></div><p class="use">CSS animations</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>shadcn/ui</cite><span class="copy">Copyright (c) 2023 shadcn</span><a class="repo" href="https://github.com/shadcn-ui/ui">github.com/shadcn-ui/ui</a></div><p class="use">UI components</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Radix Primitives</cite><span class="copy">Copyright (c) 2022 WorkOS</span><a class="repo" href="https://github.com/radix-ui/primitives">github.com/radix-ui/primitives</a></div><p class="use">UI primitives</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Lucide <span class="ver">1.52.0</span></cite><span class="copy">Copyright (c) 2026 Lucide Icons and Contributors</span><a class="repo" href="https://github.com/lucide-icons/lucide">github.com/lucide-icons/lucide</a></div><p class="use">Icons</p><p class="lic"><a href="#isc">ISC</a></p></li>
+      <li><div class="who"><cite>cmdk <span class="ver">1.1.1</span></cite><span class="copy">Copyright (c) 2022 Paco Coursey</span><a class="repo" href="https://github.com/pacocoursey/cmdk">github.com/pacocoursey/cmdk</a></div><p class="use">Command menu</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>react-resizable-panels <span class="ver">4.14.2</span></cite><span class="copy">Copyright (c) 2018 Brian Vaughn</span><a class="repo" href="https://github.com/bvaughn/react-resizable-panels">github.com/bvaughn/react-resizable-panels</a></div><p class="use">Resizable panels</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Sonner <span class="ver">2.0.8</span></cite><span class="copy">Copyright (c) 2023 Emil Kowalski</span><a class="repo" href="https://github.com/emilkowalski/sonner">github.com/emilkowalski/sonner</a></div><p class="use">Notifications</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>mp4-muxer <span class="ver">5.2.2</span></cite><span class="copy">Copyright (c) 2023 Vanilagy</span><a class="repo" href="https://github.com/Vanilagy/mp4-muxer">github.com/Vanilagy/mp4-muxer</a></div><p class="use">MP4 encoding</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>fflate <span class="ver">0.8.3</span></cite><span class="copy">Copyright (c) 2026 Arjun Barrett</span><a class="repo" href="https://github.com/101arrowz/fflate">github.com/101arrowz/fflate</a></div><p class="use">Zip compression</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>class-variance-authority <span class="ver">0.7.1</span></cite><span class="copy">Copyright 2022 Joe Bell</span><a class="repo" href="https://github.com/joe-bell/cva">github.com/joe-bell/cva</a></div><p class="use">CSS class variants</p><p class="lic"><a href="#apache">Apache-2.0</a></p></li>
+      <li><div class="who"><cite>clsx <span class="ver">2.1.1</span></cite><span class="copy">Copyright (c) Luke Edwards</span><a class="repo" href="https://github.com/lukeed/clsx">github.com/lukeed/clsx</a></div><p class="use">CSS class names</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>tailwind-merge <span class="ver">3.7.0</span></cite><span class="copy">Copyright (c) 2021 Dany Castillo</span><a class="repo" href="https://github.com/dcastil/tailwind-merge">github.com/dcastil/tailwind-merge</a></div><p class="use">CSS class merging</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>TypeScript <span class="ver">5.9.3</span></cite><span class="copy">Copyright (c) Microsoft Corporation</span><a class="repo" href="https://github.com/microsoft/TypeScript">github.com/microsoft/TypeScript</a></div><p class="use">Language</p><p class="lic"><a href="#apache">Apache-2.0</a></p></li>
+      <li><div class="who"><cite>Vitest <span class="ver">5.0.3</span></cite><span class="copy">Copyright (c) 2021-present VoidZero Inc. and Vitest contributors</span><a class="repo" href="https://github.com/vitest-dev/vitest">github.com/vitest-dev/vitest</a></div><p class="use">Unit tests</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Playwright <span class="ver">1.63.0</span></cite><span class="copy">Copyright (c) Microsoft Corporation. Portions Copyright 2017 Google Inc.</span><a class="repo" href="https://github.com/microsoft/playwright">github.com/microsoft/playwright</a></div><p class="use">Browser tests and screenshots</p><p class="lic"><a href="#apache">Apache-2.0</a></p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="site">
+    <h2 id="site"><span class="rn">II</span>Software and fonts on this website</h2>
+    <ol class="refs">
+      <li><div class="who"><cite>three.js <span class="ver">0.147.0</span></cite><span class="copy">Copyright © 2010-2026 three.js authors</span><a class="repo" href="https://github.com/mrdoob/three.js">github.com/mrdoob/three.js</a></div><p class="use">3D rendering</p><p class="lic"><a href="#mit">MIT</a></p></li>
+      <li><div class="who"><cite>Archivo</cite><span class="copy">Copyright 2020 The Archivo Project Authors</span><a class="repo" href="https://github.com/Omnibus-Type/Archivo">github.com/Omnibus-Type/Archivo</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
+      <li><div class="who"><cite>Bodoni Moda</cite><span class="copy">Copyright 2020 The Bodoni Moda Project Authors</span><a class="repo" href="https://github.com/indestructible-type/Bodoni">github.com/indestructible-type/Bodoni</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
+      <li><div class="who"><cite>Caveat</cite><span class="copy">Copyright 2014 The Caveat Project Authors</span><a class="repo" href="https://github.com/googlefonts/caveat">github.com/googlefonts/caveat</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
+      <li><div class="who"><cite>Silkscreen</cite><span class="copy">Copyright 2001 The Silkscreen Project Authors</span><a class="repo" href="https://github.com/googlefonts/silkscreen">github.com/googlefonts/silkscreen</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
+      <li><div class="who"><cite>Material Symbols</cite><span class="copy">Copyright Google LLC</span><a class="repo" href="https://github.com/google/material-design-icons">github.com/google/material-design-icons</a></div><p class="use">Icons</p><p class="lic"><a href="#apache">Apache-2.0</a></p></li>
+      <li><div class="who"><cite>GitHub mark</cite><span class="copy">GitHub, Inc.</span></div><p class="use">Logo</p><p class="lic"><a href="https://github.com/logos">GitHub logo terms</a></p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="faces">
+    <h2 id="faces"><span class="rn">III</span>Models and scenes</h2>
+    <ol class="refs">
+      <li><div class="who"><cite>Suzanne</cite><span class="copy">Blender Foundation; distributed with Blender</span></div><p class="use">3D model</p><p class="lic"><a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">GPL-2.0+</a></p></li>
+      <li><div class="who"><cite>Kassa Chimes<span class="gen">AI-generated</span></cite><span class="copy">Copyright 2026 TV</span></div><p class="use">165 3D models</p><p class="lic">All rights reserved</p></li>
+      <li><div class="who"><cite>Getting Started scenes</cite><span class="copy">Copyright 2026 Onnozelaer</span></div><p class="use">Sample scenes</p><p class="lic">All rights reserved</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="texts">
+    <h2 id="texts"><span class="rn">IV</span>Licence texts</h2>
+    <div class="texts">
+      <div id="mit"><h3>MIT License</h3><p>Applies to every entry marked MIT, under the copyright line given with it.</p><pre>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</pre></div>
+      <div id="isc"><h3>ISC License</h3><p>Applies to Lucide, under the copyright line given with it.</p><pre>Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</pre></div>
+      <div id="apache"><h3>Apache License 2.0</h3><p>Applies to class-variance-authority, TypeScript, Playwright and Material Symbols. Full text: <a href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>. Playwright's NOTICE: Playwright, Copyright (c) Microsoft Corporation. This software contains code derived from the Puppeteer project, available under the Apache 2.0 license. TypeScript ships its third-party notices in <a href="https://github.com/microsoft/TypeScript/blob/main/ThirdPartyNoticeText.txt">ThirdPartyNoticeText.txt</a>.</p></div>
+      <div id="ofl"><h3>SIL Open Font License 1.1</h3><p>Applies to Archivo, Bodoni Moda, Caveat and Silkscreen, under the copyright lines given with them. Full text: <a href="https://openfontlicense.org/open-font-license-official-text/">openfontlicense.org</a>. The fonts are served unmodified by Google Fonts.</p></div>
+      <div><h3>Bundled with Electron</h3><p>Electron includes Chromium, Node.js and other components under their own licences. Their full texts ship with every Shotwright build as LICENSES.chromium.html and LICENSE in the install folder.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="marks">
+    <h2 id="marks"><span class="rn">V</span>Trademarks</h2>
+    <ul class="marks">
+      <li>Shotwright is a name of Onnozelaer, which makes it for ZenaStudios.</li>
+      <li>ZenaStudios and ZenaSoft are names of ZenaStudios.</li>
+      <li>Kassa Chimes is a name of TV.</li>
+      <li>Blender is a registered trademark of the Blender Foundation.</li>
+      <li>Electron is a trademark of the OpenJS Foundation.</li>
+      <li>React is a trademark of Meta Platforms, Inc.</li>
+      <li>Tailwind CSS is a trademark of Tailwind Labs Inc.</li>
+      <li>TypeScript and Windows are trademarks of the Microsoft group of companies.</li>
+      <li>macOS is a trademark of Apple Inc., registered in the U.S. and other countries.</li>
+      <li>GitHub and the Invertocat logo are trademarks of GitHub, Inc.</li>
+      <li>Google, Google Fonts and Material Symbols are trademarks of Google LLC.</li>
+      <li>Anthropic and Claude are trademarks of Anthropic, PBC.</li>
+      <li>Seedance is a product of ByteDance. Higgsfield is a product of Higgsfield AI. Both names belong to their owners.</li>
+      <li>All other names are the property of their owners. Their use here names the work and implies no endorsement of, or affiliation with, Shotwright.</li>
+    </ul>
+  </section>
+
+  <footer class="in">
+    <div class="endcard">
+      <a class="brand" href="./" aria-label="Back to Shotwright"><svg class="logo logo--end" viewBox="0 0 1155 329" aria-hidden="true"><defs><clipPath id="slabbox"><rect x="1.534" y="0" width="1152.93" height="177.5"/></clipPath><mask id="tipcut" maskUnits="userSpaceOnUse" x="0" y="0" width="1155" height="329"><rect width="1155" height="329" fill="#fff"/><rect x="729.222" y="0" width="45.434" height="177.5" fill="#000"/></mask></defs><g clip-path="url(#slabbox)"><g class="lph"><rect class="stem" x="729.222" y="32.683" width="45.434" height="144.817"/></g></g><path id="slab" fill="currentColor" mask="url(#tipcut)" d="M38.777,177.5l-37.243,-0l0,-177.5l1152.93,-0l-0,177.5l-65.536,-0l0.101,-12.416l0.371,-28.798l1.484,-0l17.065,0.368l6.454,0.276c2.523,-0 3.784,-1.043 3.784,-3.128c0,-1.595 -0.494,-2.638 -1.483,-3.129c-0.594,-0.306 -2.474,-0.49 -5.639,-0.552l-91.038,0c-2.028,0.062 -3.239,0.154 -3.635,0.276c-1.385,0.246 -2.078,1.35 -2.078,3.313c0,2.208 1.188,3.312 3.562,3.312l2.077,-0.092l14.023,-0.368l9.794,-0.276l0.222,21.162l0.179,20.052l-37.761,-0l0.114,-16.832l0.148,-20.426l0.075,-6.256c-0,-3.742 -0.94,-5.613 -2.82,-5.613c-1.236,0 -2.053,0.523 -2.448,1.567c-0.396,1.045 -0.594,3.073 -0.594,6.086l0.149,11.524l0.148,25.907c-6.529,0.368 -14.839,0.552 -24.93,0.552c-10.98,-0 -18.994,-0.184 -24.039,-0.552l0.371,-38.541l0.074,-4.795l-45.481,0l0.148,5.337l0.074,19.413l0.149,21.07l-0.007,1.559l-72.441,-0l0.256,-45.078c1.929,-0.307 3.833,-0.46 5.713,-0.46c15.581,-0 28.343,8.188 38.285,24.565c1.286,2.147 2.498,3.221 3.635,3.221c0.742,-0 1.373,-0.276 1.892,-0.828c0.52,-0.552 0.779,-1.227 0.779,-2.025c0,-2.33 -2.349,-6.287 -7.048,-11.868c-10.536,-12.452 -23.1,-18.678 -37.691,-18.678c-8.31,0 -16.249,2.346 -23.817,7.039c-7.568,4.692 -13.85,11.179 -18.845,19.459c-4.68,7.659 -7.854,15.876 -9.522,24.653l-14.374,-0l0.302,-40.938l-0,-6.441l-45.334,0l-0.074,4.509l0.485,42.87l-14.442,-0c-0.721,-7.221 -2.721,-14.182 -6.001,-20.881c-4.551,-9.262 -10.734,-15.917 -18.549,-19.965c-4.798,-2.515 -10.61,-4.232 -17.436,-5.152c-6.826,-0.921 -16.916,-1.381 -30.271,-1.381l-29.827,0l0.127,47.379l-22.936,-0l5.893,-16.556l4.303,-11.961c3.858,-10.857 5.787,-16.684 5.787,-17.481c0,-0.859 -0.358,-1.595 -1.076,-2.209c-0.717,-0.613 -1.57,-0.92 -2.559,-0.92c-1.187,0 -2.028,0.353 -2.523,1.057c-0.495,0.704 -1.162,2.465 -2.003,5.282c-3.742,12.542 -8.242,26.805 -13.501,42.788l-14.964,-0c-3.715,-8.191 -7.359,-16.529 -10.933,-25.014l-10.981,-26.597c-0.791,1.716 -1.632,3.646 -2.522,5.792l-5.713,13.238l-3.413,7.905l-5.045,11.767l-5.669,12.909l-14.582,-0c-2.635,-7.719 -5.629,-16.771 -8.982,-27.156l-6.381,-20.223l-46.446,0l0.445,1.197c5.251,13.803 10.686,29.197 16.304,46.182l-47.938,-0l0.101,-12.416l0.371,-28.798l1.484,-0l17.065,0.368l6.455,0.276c2.523,-0 3.784,-1.043 3.784,-3.128c-0,-1.595 -0.495,-2.638 -1.484,-3.129c-0.594,-0.306 -2.473,-0.49 -5.639,-0.552l-91.037,0c-2.028,0.062 -3.24,0.154 -3.636,0.276c-1.385,0.246 -2.077,1.35 -2.077,3.313c-0,2.208 1.187,3.312 3.561,3.312l2.078,-0.092l14.023,-0.368l9.793,-0.276l0.223,21.162l0.179,20.052l-25.768,-0c-1.121,-5.894 -2.879,-11.535 -5.276,-16.924c-5.639,-12.636 -13.801,-21.99 -24.485,-28.062c-7.271,-4.11 -14.814,-6.165 -22.629,-6.165c-8.112,0.061 -15.705,2.147 -22.778,6.257c-10.635,6.195 -18.722,15.549 -24.262,28.062c-2.414,5.461 -4.18,11.071 -5.3,16.832l-12.917,-0l0.114,-16.832l0.148,-20.426l0.074,-6.256c0,-3.742 -0.94,-5.613 -2.819,-5.613c-1.237,0 -2.053,0.523 -2.449,1.567c-0.395,1.045 -0.593,3.073 -0.593,6.086l0.148,11.524l0.149,25.907c-6.53,0.368 -14.839,0.552 -24.93,0.552c-10.981,-0 -18.994,-0.184 -24.039,-0.552l0.371,-38.541l0.074,-4.795l-45.481,0l0.148,5.337l0.074,19.413l0.149,21.07l-0.008,1.559l-34.669,-0c-3.149,-4.337 -6.726,-9.149 -10.731,-14.434c-4.6,-6.01 -7.864,-10.826 -9.794,-14.445c-1.929,-3.62 -2.893,-6.688 -2.893,-9.204c-0,-2.086 0.779,-3.789 2.337,-5.108c1.558,-1.32 3.574,-1.979 6.047,-1.979c4.006,-0 8.186,1.027 12.539,3.082c4.353,2.055 7.865,4.646 10.536,7.774c1.632,1.902 2.868,2.853 3.709,2.853c0.544,-0 1.076,-0.292 1.595,-0.874c0.52,-0.583 0.78,-1.212 0.78,-1.887c-0,-1.41 -0.928,-3.158 -2.783,-5.244c-1.855,-2.085 -4.068,-3.926 -6.64,-5.52c-6.826,-4.11 -14.32,-6.165 -22.481,-6.165c-11.674,0 -21.492,3.527 -29.456,10.581c-8.112,7.176 -12.168,16.408 -12.168,27.694c0,4.168 0.66,8.46 1.98,12.876Zm1050.15,-0l-0.122,14.91l0.223,63.301l-45.259,-0l0.445,-73.33l-0.044,-4.881l44.757,-0Zm-82.518,-0l-0.109,16.014l0.223,34.227l0.148,24.014c0,2.208 -0.185,3.711 -0.556,4.508c-0.371,0.797 -1.101,1.196 -2.189,1.196c-1.138,0 -1.917,-0.429 -2.337,-1.287c-0.42,-0.857 -0.631,-2.42 -0.631,-4.686l0.075,-7.812l0.222,-46.132l0,-17.093l-2.819,-0.11l-14.468,-0.442l-31.83,0.552l0.074,25.363l0.445,49.899l-45.481,-0l0.364,-78.211l98.869,-0Zm-171.31,-0l-0.115,20.247l0.371,55.48c1.83,0.429 3.685,0.644 5.565,0.644c5.589,-0 11.005,-1.166 16.248,-3.496c13.257,-5.828 22.778,-16.531 28.565,-32.111c2.474,-6.563 3.933,-13.249 4.378,-20.057l-38.73,-0c-3.413,-0.123 -5.465,-0.338 -6.158,-0.644c-0.692,-0.307 -1.039,-1.105 -1.039,-2.393c0,-1.962 1.187,-2.944 3.562,-2.944l4.451,0.092l42.811,0c-0.297,18.218 -4.996,33.429 -14.097,45.636c-5.095,6.808 -11.142,12.099 -18.141,15.871c-6.999,3.772 -14.258,5.658 -21.776,5.658c-6.529,0 -12.959,-1.533 -19.291,-4.6c-6.331,-3.067 -11.945,-7.361 -16.842,-12.881c-6.282,-7.115 -10.931,-15.672 -13.949,-25.67c-2.374,-7.974 -3.561,-15.887 -3.561,-23.738c-0,-5.203 0.462,-10.234 1.385,-15.094l46.363,-0Zm-60.737,-0l-0.069,9.482l0.296,68.729l-45.333,-0l0.52,-75.17l-0.035,-3.041l44.621,-0Zm-59.063,-0c0.204,2.036 0.305,4.092 0.305,6.169c0,10.06 -2.349,19.537 -7.048,28.431c-7.568,14.291 -18.821,21.897 -33.759,22.817c4.749,4.038 9.88,7.486 15.396,10.343c5.515,2.856 11.438,5.082 17.769,6.679c1.534,0.368 2.3,1.288 2.3,2.76c0,2.024 -1.137,3.036 -3.413,3.036c-5.193,0 -12.489,-2.821 -21.887,-8.465c-7.815,-4.723 -16.768,-12.022 -26.859,-21.897l0,3.772l0.074,15.641l0,8.925l-45.184,-0l-0,-4.14l0.148,-29.995l0.223,-35.882l-0.022,-8.194l44.911,-0l-0.224,20.707l0,16.653l0.074,4.324c3.017,3.597 6.233,6.94 9.646,10.029l3.561,0.092c10.189,-0 18.796,-3.527 25.82,-10.581c4.452,-4.416 7.864,-9.937 10.239,-16.561c2.226,-6.073 3.338,-12.268 3.338,-18.586c0,-2.067 -0.104,-4.093 -0.313,-6.077l4.905,-0Zm-124.893,-0l-30.982,87.044l-18.326,-42.769l-14.394,-31.823l-11.352,25.753l-17.287,40.193l-3.562,8.646l-14.319,-43.796l-12.614,-37.999c-0.577,-1.766 -1.152,-3.516 -1.725,-5.249l45.06,-0c2.497,7.312 4.672,13.428 6.525,18.347l8.057,-18.347l44.276,-0c2.868,6.322 5.777,12.556 8.729,18.703c2.185,-6.476 4.263,-12.711 6.235,-18.703l5.679,-0Zm-172.499,-0l-0.121,14.91l0.222,63.301l-45.259,-0l0.445,-73.33l-0.043,-4.881l44.756,-0Zm-70.524,-0c0.984,5.174 1.475,10.543 1.475,16.106c0,9.569 -1.706,18.831 -5.119,27.786c-5.095,13.372 -13.034,23.523 -23.817,30.455c-7.914,5.091 -16.224,7.636 -24.929,7.636c-9.2,0 -17.906,-2.883 -26.117,-8.648c-10.931,-7.606 -18.722,-18.279 -23.371,-32.019c-2.869,-8.403 -4.303,-17.082 -4.303,-26.038c-0,-5.205 0.483,-10.297 1.451,-15.278l46.144,-0l-0.111,14.91l0.371,49.776l0.074,11.225c1.682,0.368 3.29,0.552 4.823,0.552c10.932,-0 20.701,-3.742 29.307,-11.225c7.865,-6.87 13.553,-15.703 17.065,-26.498c2.473,-7.545 3.71,-15.365 3.71,-23.462c-0,-5.272 -0.507,-10.365 -1.521,-15.278l4.868,-0Zm-117.647,-0l-0.109,16.014l0.223,34.227l0.148,24.014c0,2.208 -0.185,3.711 -0.556,4.508c-0.371,0.797 -1.101,1.196 -2.189,1.196c-1.138,0 -1.917,-0.429 -2.337,-1.287c-0.421,-0.857 -0.631,-2.42 -0.631,-4.686l0.074,-7.812l0.223,-46.132l-0,-17.093l-2.82,-0.11l-14.468,-0.442l-31.829,0.552l0.074,25.363l0.445,49.899l-45.481,-0l0.363,-78.211l98.87,-0Zm-133.539,-0c8.287,11.413 13.614,19.542 15.979,24.387c3.413,7.054 5.12,13.862 5.12,20.425c-0,5.582 -1.212,10.857 -3.636,15.826c-2.423,4.968 -5.787,9.047 -10.09,12.237c-8.211,6.072 -18.227,9.108 -30.049,9.108c-10.882,0 -20.453,-3.496 -28.714,-10.489c-5.787,-4.907 -8.68,-8.74 -8.68,-11.5c-0,-0.798 0.259,-1.519 0.779,-2.163c0.519,-0.644 1.125,-0.966 1.817,-0.966c0.891,0 1.929,0.828 3.117,2.485c3.709,5.029 8.248,9.062 13.614,12.098c5.367,3.037 10.672,4.555 15.915,4.555c5.787,-0 8.681,-2.177 8.681,-6.531c-0,-2.76 -1.014,-5.873 -3.042,-9.338c-2.028,-3.465 -6.875,-10.32 -14.542,-20.565c-9.646,-12.943 -16.076,-22.543 -19.291,-28.799c-1.884,-3.668 -3.351,-7.258 -4.401,-10.77l57.423,-0Zm614.197,-0l-52.141,-0l0.444,-40.938c11.772,0.184 20.898,1.625 27.378,4.324c6.479,2.699 11.871,7.33 16.174,13.893c4.553,6.834 7.268,14.408 8.145,22.721Zm-367.879,-0l-53.718,-0l0.334,-44.986c1.732,-0.368 3.488,-0.552 5.268,-0.552c7.667,-0 14.963,2.024 21.888,6.072c9.25,5.336 16.422,13.648 21.516,24.934c2.103,4.655 3.673,9.5 4.712,14.532Z"/></svg></a>
+      <p class="aside"><svg class="curl" viewBox="0 0 120 64" aria-hidden="true"><path d="M114 16C92 2 66 6 60 24C56 38 72 44 76 32C80 20 58 16 42 28C32 36 20 42 7 44M7 44l12-9M7 44l13 6"/></svg><span>this logo's alpha too btw</span></p>
+      <span class="sign">Frame first.</span>
+    </div>
+    <div class="credits">
+      <span class="left"><a class="repo-link" href="https://github.com/TomVDH/shotwright" rel="noopener"><svg class="octo" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Request repo access</span></a><a href="attributions.html">Attributions</a></span>
+      <span class="right"><span class="collab"><span class="zs-pixel">ZenaSoft 1989 (c)</span><svg class="scrawl" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 4.8c3.1 3.4 7.9 9.6 13.6 14.9"/><path d="M18.6 4.1c-2.4 1.9-6.9 7.4-9.1 10.2-1.6 2-3 3.9-4.3 5.6"/></svg><img class="two-face" src="media/logos/two-face.svg" width="146" height="62" alt="Onnozelaer, the adjudant two-face mark"></span><span class="build">3f28665</span></span>
+    </div>
+  </footer>
+</div>
+<script>
+(() => {
+  // Theme switch: flips the effective theme and remembers the choice.
+  document.getElementById('theme-btn').addEventListener('click', () => {
+    const root = document.documentElement
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+    root.dataset.theme = dark ? 'light' : 'dark'
+    try { localStorage.setItem('sw-theme', root.dataset.theme) } catch (e) {}
+  })
+
+})()
+</script>
+</body>
+</html>

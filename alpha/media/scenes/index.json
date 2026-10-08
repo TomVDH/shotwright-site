@@ -1,0 +1,82 @@
+[
+  {
+    "id": "sWarehouse",
+    "name": "Warehouse reveal",
+    "duration": 39,
+    "cuts": 10,
+    "rigs": [
+      "crane",
+      "dolly",
+      "handheld",
+      "tripod"
+    ],
+    "lensRange": [
+      28,
+      135
+    ]
+  },
+  {
+    "id": "sHarbour",
+    "name": "Harbour chase",
+    "duration": 34,
+    "cuts": 11,
+    "rigs": [
+      "crane",
+      "dolly",
+      "drone",
+      "handheld",
+      "tripod"
+    ],
+    "lensRange": [
+      28,
+      60
+    ]
+  },
+  {
+    "id": "sChase",
+    "name": "Rooftop chase",
+    "duration": 38,
+    "cuts": 11,
+    "rigs": [
+      "crane",
+      "drone",
+      "handheld",
+      "tripod"
+    ],
+    "lensRange": [
+      24,
+      95
+    ]
+  },
+  {
+    "id": "sNightWalk",
+    "name": "Night walk",
+    "duration": 39,
+    "cuts": 10,
+    "rigs": [
+      "crane",
+      "dolly",
+      "handheld",
+      "tripod"
+    ],
+    "lensRange": [
+      32,
+      135
+    ]
+  },
+  {
+    "id": "sDiner",
+    "name": "Diner standoff",
+    "duration": 40,
+    "cuts": 10,
+    "rigs": [
+      "crane",
+      "dolly",
+      "tripod"
+    ],
+    "lensRange": [
+      28,
+      160
+    ]
+  }
+]
