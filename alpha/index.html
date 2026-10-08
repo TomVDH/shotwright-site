@@ -531,7 +531,7 @@ footer .logo { width: 100%; height: auto; }
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">15f7ab4</span>
+<span class="build build--top" aria-label="Build">861565d</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -908,7 +908,7 @@ footer .logo { width: 100%; height: auto; }
       heroStage?.dispose()
       const old = document.getElementById('hero-stage'), host = old.cloneNode(false)
       old.replaceWith(host)
-      heroStage = ShotwrightStage.mount(host, d, { gizmo: true, drift: heroActive, top: true, follow: id === 'sChase', ...(id === 'sHarbour' ? { overview: { center: [0, -25], dist: 125, az: Math.PI / 2 }, chase: 'bBoat' } : {}) })
+      heroStage = ShotwrightStage.mount(host, d, { gizmo: true, drift: heroActive, top: true, follow: id === 'sChase', isoOnDialogue: id === 'sWarehouse', ...(id === 'sHarbour' ? { overview: { center: [0, -25], dist: 125, az: Math.PI / 2 }, chase: 'bBoat' } : {}) })
       heroStage.update(heroMon.currentTime || 0)
     }).catch(() => {})
   }

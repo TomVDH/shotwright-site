@@ -63,6 +63,9 @@
     }
 
     const follow = new THREE.Vector3()
+    // Iso-on-dialogue: the first cut whose action quotes a speaker turns the view isometric.
+    const talkCut = opts.isoOnDialogue ? scene.cuts.find((c) => /[A-Z][a-z]+: "/.test(c.action || '')) : null
+    let isoNow = false
     // Boxes, actors, lights and cameras move; each gets a node to update.
     const boxMat = new THREE.MeshLambertMaterial({ color: '#d9c8ad' })
     // Huge flat boxes are ground, such as water; they read darker so set pieces stand out.
@@ -122,6 +125,18 @@
       t = time
       const ev = ShotwrightCore.evaluate(project, scene, t)
       const liveCam = scene.cuts[ev.cutIndex]?.camId
+      if (talkCut) {
+        const iso = t >= talkCut.start
+        if (iso !== isoNow) {
+          isoNow = iso
+          const c = ev.cameras.find((x) => x.id === liveCam)
+          const aim = c ? c.pose.aim : [0, 0]
+          const cast = ev.actors.map((x) => x.pos).filter((q) => Math.hypot(q[0] - aim[0], q[1] - aim[1]) < 12)
+          const pts = cast.length ? cast : [aim]
+          follow.copy(v3([pts.reduce((v, q) => v + q[0], 0) / pts.length, pts.reduce((v, q) => v + q[1], 0) / pts.length, 0]))
+          snap(iso ? -Math.PI / 4 : 0, iso ? 0.6155 : 1.45)
+        }
+      }
       // A chase starts when an actor stands within 3 m of the chase box.
       if (opts.chase) {
         const box = ev.boxes.find((b) => b.id === opts.chase)
@@ -287,7 +302,7 @@
         if (k === 1) snapTo = null
       } else if (!dragging && !reduce && idle > 1.5 && drifting) az += dt * 0.05
       // The orbit glides toward the followed subject, about a second to settle.
-      if ((opts.follow || opts.chase) && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
+      if ((opts.follow || opts.chase || talkCut) && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
       if (opts.chase) dist += ((chasing ? 45 : homeDist) - dist) * (reduce ? 1 : 1 - Math.exp(-dt * 2))
       if (opts.play) update((now / 1000) % END_OF(scene))
       place()
