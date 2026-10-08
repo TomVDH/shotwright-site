@@ -19,7 +19,7 @@
     host.appendChild(renderer.domElement)
     const world = new THREE.Scene()
     world.background = new THREE.Color('#18181b')
-    const view = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, 100)
+    const view = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, opts.overview ? 600 : 100)
 
     const legacy = !('outputColorSpace' in renderer)
     world.add(new THREE.HemisphereLight('#f4f1ea', '#2a2a30', legacy ? 1.1 * Math.PI : 1.1))
@@ -65,8 +65,11 @@
     const follow = new THREE.Vector3()
     // Boxes, actors, lights and cameras move; each gets a node to update.
     const boxMat = new THREE.MeshLambertMaterial({ color: '#d9c8ad' })
+    // Huge flat boxes are ground, such as water; they read darker so set pieces stand out.
+    const groundMat = new THREE.MeshLambertMaterial({ color: '#22384f' })
     const boxes = new Map(ev0.boxes.map((b) => {
-      const m = new THREE.Mesh(new THREE.BoxGeometry(b.size[0], b.size[2], b.size[1]), boxMat)
+      const flat = b.size[0] * b.size[1] > 400 && b.size[2] < 0.2
+      const m = new THREE.Mesh(new THREE.BoxGeometry(b.size[0], b.size[2], b.size[1]), flat ? groundMat : boxMat)
       world.add(m)
       return [b.id, m]
     }))
@@ -119,6 +122,12 @@
       t = time
       const ev = ShotwrightCore.evaluate(project, scene, t)
       const liveCam = scene.cuts[ev.cutIndex]?.camId
+      // A chase starts when an actor stands within 3 m of the chase box.
+      if (opts.chase) {
+        const box = ev.boxes.find((b) => b.id === opts.chase)
+        chasing = !!box && ev.actors.some((a) => Math.hypot(a.pos[0] - box.pos[0], a.pos[1] - box.pos[1]) < 3)
+        follow.copy(chasing ? v3([box.pos[0], box.pos[1], 0]) : home)
+      }
       // Follow mode aims the orbit at the live camera's subject.
       if (opts.follow) {
         const c = ev.cameras.find((x) => x.id === liveCam)
@@ -207,8 +216,19 @@
       az = 0
       el = 1.45
     }
+    // An overview holds one wide, still frame; a chase box takes over once someone boards it.
+    const home = target.clone()
+    let homeDist = dist, chasing = false
+    if (opts.overview) {
+      home.copy(v3([opts.overview.center[0], opts.overview.center[1], 0]))
+      target.copy(home)
+      dist = homeDist = opts.overview.dist
+      az = opts.overview.az ?? 0
+      el = 1.45
+    }
     let snapTo = null
-    let drifting = opts.drift !== false
+    // An overview never drifts.
+    let drifting = opts.drift !== false && !opts.overview
     // Snaps ease the orbit to a preset view, the way the app's gizmo does.
     const snap = (a, e) => {
       const turn = ((a - az + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI
@@ -267,7 +287,8 @@
         if (k === 1) snapTo = null
       } else if (!dragging && !reduce && idle > 1.5 && drifting) az += dt * 0.05
       // The orbit glides toward the followed subject, about a second to settle.
-      if (opts.follow && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
+      if ((opts.follow || opts.chase) && follow.lengthSq()) target.lerp(follow, reduce ? 1 : 1 - Math.exp(-dt * 3))
+      if (opts.chase) dist += ((chasing ? 45 : homeDist) - dist) * (reduce ? 1 : 1 - Math.exp(-dt * 2))
       if (opts.play) update((now / 1000) % END_OF(scene))
       place()
       if (gizmo) gizmo.draw()
@@ -333,7 +354,7 @@
       renderer.forceContextLoss()
       renderer.domElement.remove()
     }
-    return { update, snap, drift: (on) => { drifting = on }, dispose }
+    return { update, snap, drift: (on) => { drifting = on && !opts.overview }, dispose }
   }
 
   const END_OF = (scene) => scene.duration || 40

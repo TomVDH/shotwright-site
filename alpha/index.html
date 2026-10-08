@@ -279,11 +279,13 @@ kbd {
 .cc { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); width: max-content; max-width: 78%; margin: 0; text-align: center; pointer-events: none; }
 .cc span { display: inline; padding: 2px 8px; line-height: 1.55; background: rgb(0 0 0 / 0.82); color: #fff; font-weight: 600; font-size: clamp(0.7rem, 1.15vw, 0.98rem); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 .cc-off .cc { display: none; }
-.cc-btn { position: absolute; right: 10px; bottom: 10px; padding: 2px 6px; border: 1.5px solid #f4f4f5; border-radius: 3px; background: rgb(20 20 24 / 0.72); color: #f4f4f5; font: 800 0.66rem/1 var(--body); letter-spacing: 0.04em; cursor: pointer; }
+/* Mute and CC share one size, border and baseline. */
+.cc-btn, .voice-btn { position: absolute; bottom: 10px; display: grid; place-items: center; width: 32px; height: 24px; padding: 0; border: 1.5px solid #f4f4f5; border-radius: 3px; background: rgb(20 20 24 / 0.72); color: #f4f4f5; cursor: pointer; }
+.cc-btn { right: 10px; font: 800 0.66rem/1 var(--body); letter-spacing: 0.04em; }
 .cc-btn[aria-pressed="false"] { opacity: 0.45; }
-.voice-btn { position: absolute; right: 52px; bottom: 8px; display: grid; place-items: center; width: 26px; height: 22px; padding: 0; border: 0; border-radius: 3px; background: rgb(20 20 24 / 0.72); color: #f4f4f5; cursor: pointer; }
+.voice-btn { right: 50px; }
 .voice-btn span { font-family: "Material Symbols Outlined"; font-size: 17px; line-height: 1; font-variation-settings: "FILL" 1, "wght" 500; font-feature-settings: "liga"; }
-.voice-btn[aria-pressed="true"] { background: var(--tape); color: var(--tape-ink); }
+.voice-btn[aria-pressed="true"] { background: var(--tape); border-color: var(--tape); color: var(--tape-ink); }
 .thirds { position: absolute; inset: 0; pointer-events: none; opacity: 0.35;
   background: linear-gradient(90deg, transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px)),
     linear-gradient(transparent calc(33.33% - 0.5px), #fff calc(33.33% - 0.5px) calc(33.33% + 0.5px), transparent calc(33.33% + 0.5px) calc(66.67% - 0.5px), #fff calc(66.67% - 0.5px) calc(66.67% + 0.5px), transparent calc(66.67% + 0.5px)); }
@@ -529,7 +531,7 @@ footer .logo { width: 100%; height: auto; }
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">e54175e</span>
+<span class="build build--top" aria-label="Build">15f7ab4</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -802,10 +804,15 @@ footer .logo { width: 100%; height: auto; }
   const voiceBtn = document.getElementById('voice-btn')
   const synth = window.speechSynthesis
   let voiceOn = false, sayTimer = 0
-  const robot = synth && (() => {
-    const vs = synth.getVoices()
-    return vs.find((v) => /david|george|daniel|male/i.test(v.name) && /^en/i.test(v.lang)) || vs.find((v) => /^en/i.test(v.lang)) || vs[0]
-  })
+  // Two robot voices: Mara gets a woman's voice, Dex a man's; both stay flat and synthetic.
+  const voiceLike = (re) => {
+    const vs = synth.getVoices().filter((v) => /^en/i.test(v.lang))
+    return vs.find((v) => re.test(v.name)) || null
+  }
+  const VOICES = {
+    MARA: () => ({ voice: voiceLike(/zira|susan|hazel|samantha|aria|jenny|libby|sonia|female/i), pitch: 0.7, fallbackPitch: 1.7 }),
+    DEX: () => ({ voice: voiceLike(/david|george|daniel|guy|ryan|mark|(?<!fe)male/i), pitch: 0.1, fallbackPitch: 0.1 })
+  }
   // Only dialogue is spoken: speaker IDs, parentheticals and sound cues stay silent.
   const speakable = (text) => /^[A-Z]+:/.test(text)
     ? text.replace(/^[A-Z]+:\s*/, '').replace(/\([^)]*\)/g, '').replace(/\n/g, ' ').trim()
@@ -819,8 +826,9 @@ footer .logo { width: 100%; height: auto; }
       // Playback lets a line finish; only a scrub cuts it short.
       if (held) synth.cancel()
       const u = new SpeechSynthesisUtterance(line)
-      u.voice = robot() || null
-      u.pitch = 0.1
+      const who = (VOICES[text.match(/^([A-Z]+):/)?.[1]] || VOICES.DEX)()
+      u.voice = who.voice
+      u.pitch = who.voice ? who.pitch : who.fallbackPitch
       u.rate = 1.08
       synth.speak(u)
     }, held ? 260 : 0)
@@ -900,7 +908,7 @@ footer .logo { width: 100%; height: auto; }
       heroStage?.dispose()
       const old = document.getElementById('hero-stage'), host = old.cloneNode(false)
       old.replaceWith(host)
-      heroStage = ShotwrightStage.mount(host, d, { gizmo: true, drift: heroActive, top: true, follow: id === 'sHarbour' || id === 'sChase' })
+      heroStage = ShotwrightStage.mount(host, d, { gizmo: true, drift: heroActive, top: true, follow: id === 'sChase', ...(id === 'sHarbour' ? { overview: { center: [0, -25], dist: 125, az: Math.PI / 2 }, chase: 'bBoat' } : {}) })
       heroStage.update(heroMon.currentTime || 0)
     }).catch(() => {})
   }
