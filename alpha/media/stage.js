@@ -6,14 +6,17 @@
   if (THREE.ColorManagement && 'legacyMode' in THREE.ColorManagement) THREE.ColorManagement.legacyMode = false
   function mount(host, data, opts = {}) {
     const { project, scene } = data
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5))
-    if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace
-    else {
-      renderer.outputEncoding = THREE.sRGBEncoding
-      renderer.physicallyCorrectLights = true
+    const shared = !!opts.renderer
+    const renderer = opts.renderer || new THREE.WebGLRenderer({ antialias: true, alpha: false })
+    if (!shared) {
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5))
+      if ('outputColorSpace' in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace
+      else {
+        renderer.outputEncoding = THREE.sRGBEncoding
+        renderer.physicallyCorrectLights = true
+      }
+      host.appendChild(renderer.domElement)
     }
-    host.appendChild(renderer.domElement)
     const world = new THREE.Scene()
     world.background = new THREE.Color('#18181b')
     const view = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, opts.overview ? 600 : 100)
@@ -122,7 +125,7 @@
         at = v3(pose.aim)
       const fwd = at.clone().sub(o).normalize()
       const right = new THREE.Vector3().crossVectors(fwd, new THREE.Vector3(0, 1, 0)).normalize()
-      const up = new THREE.Vector3().crossVectors(right, fwd).normalize()
+      const up2 = new THREE.Vector3().crossVectors(right, fwd).normalize()
       const hw = (FILM_MM / 2 / pose.focal) * reach2,
         hh = hw * (9 / 16)
       const c = fwd.clone().multiplyScalar(reach2).add(o)
@@ -135,7 +138,7 @@
         c
           .clone()
           .addScaledVector(right, x * hw)
-          .addScaledVector(up, y * hh)
+          .addScaledVector(up2, y * hh)
       )
       return { o, k, fwd }
     }
@@ -345,8 +348,10 @@
       view.updateProjectionMatrix()
     }
     const ro = new ResizeObserver(size)
-    ro.observe(host)
-    size()
+    if (!shared) {
+      ro.observe(host)
+      size()
+    }
     let visible = false,
       prev = 0
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -356,8 +361,8 @@
       },
       { threshold: 0.05 }
     )
-    io.observe(host)
-    let dead = false
+    if (!shared) io.observe(host)
+    let dead = shared
     const loop = (now) => {
       if (dead) return
       requestAnimationFrame(loop)
@@ -456,7 +461,33 @@
     }
     update(0)
     place()
-    requestAnimationFrame(loop)
+    if (!shared) requestAnimationFrame(loop)
+    const up = new THREE.Vector3(0, 1, 0)
+    const shot = (camId, time, yaw, pitch, w, h) => {
+      update(time)
+      for (const n of cams.values()) {
+        n.g.visible = false
+        n.cone.visible = false
+        n.fill.visible = false
+      }
+      axis.visible = false
+      const cam = ShotwrightCore.evaluate(project, scene, time).cameras.find((c) => c.id === camId)
+      if (!cam) return renderer.domElement
+      view.position.copy(v3(cam.pose.pos))
+      const dir = v3(cam.pose.aim).sub(view.position)
+      dir.applyAxisAngle(up, yaw)
+      dir.applyAxisAngle(new THREE.Vector3().crossVectors(dir, up).normalize(), pitch)
+      view.up.copy(up)
+      view.lookAt(view.position.clone().add(dir))
+      const hf = 2 * Math.atan(FILM_MM / 2 / cam.pose.focal)
+      view.aspect = w / h
+      view.fov = (2 * Math.atan(Math.tan(hf / 2) / view.aspect) * 180) / Math.PI
+      view.far = 400
+      view.updateProjectionMatrix()
+      renderer.setSize(w, h, false)
+      renderer.render(world, view)
+      return renderer.domElement
+    }
     const dispose = () => {
       dead = true
       ro.disconnect()
@@ -467,6 +498,7 @@
     }
     return {
       update,
+      shot,
       snap,
       drift: (on) => {
         drifting = on && !opts.overview

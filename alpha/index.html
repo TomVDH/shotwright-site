@@ -717,6 +717,18 @@ h3 {
 .still:hover .pic {
   transform: scale(1.03);
 }
+.still .lens {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.still .lens.on {
+  opacity: 1;
+}
 .renders figcaption {
   display: grid;
   gap: 1px;
@@ -1984,30 +1996,120 @@ footer .logo {
   }
 }
 
-.reel { --fade: clamp(40px, 8vw, 120px); margin-top: clamp(24px, 3vw, 40px); overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); }
-.reel::-webkit-scrollbar { display: none; }
-.reel:focus-visible { outline: 2px solid var(--tape); outline-offset: 4px; }
-.reel-track { display: flex; align-items: flex-end; gap: clamp(14px, 1.8vw, 24px); width: max-content; padding: 4px var(--fade) 8px; }
-.card { margin: 0; display: grid; gap: 8px; }
-.card figcaption { display: flex; justify-content: space-between; gap: 12px; font-size: 0.82rem; color: var(--ink-2); }
-.card figcaption span { opacity: 0.75; }
-.frame16 { position: relative; height: clamp(150px, 16vw, 220px); aspect-ratio: 16 / 9; overflow: hidden; border-radius: 4px; background: #0f0f12; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); }
-.frame16 img, .frame16 video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.frame16 .d { opacity: 0; transition: opacity 0.45s var(--ease); }
-.pk-still:hover .d, .pk-still.depth .d { opacity: 1; }
-.paper { height: clamp(150px, 16vw, 220px); width: clamp(220px, 22vw, 300px); overflow: hidden; padding: 12px 14px; border-radius: 4px; background: #0f0f12; color: #d4d4d8; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06); font-size: 0.7rem; line-height: 1.5; }
-.paper pre { margin: 0; font: inherit; white-space: pre-wrap; }
-.roll pre { animation: roll 60s linear infinite; }
-.roll:hover pre { animation-play-state: paused; }
-@keyframes roll { to { transform: translateY(-80%); } }
-.zip .paper b { display: block; margin-bottom: 8px; color: #fafafa; font-weight: 650; }
-.zip ul { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 12px; color: #a1a1aa; }
-@media (prefers-reduced-motion: reduce) { .roll pre { animation: none; } }
+.reel {
+  --fade: clamp(40px, 8vw, 120px);
+  margin-top: clamp(24px, 3vw, 40px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+}
+.reel::-webkit-scrollbar {
+  display: none;
+}
+.reel:focus-visible {
+  outline: 2px solid var(--tape);
+  outline-offset: 4px;
+}
+.reel-track {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(14px, 1.8vw, 24px);
+  width: max-content;
+  padding: 4px var(--fade) 8px;
+}
+.card {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.card figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+.card figcaption span {
+  opacity: 0.75;
+}
+.frame16 {
+  position: relative;
+  height: clamp(150px, 16vw, 220px);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0f0f12;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
+}
+.frame16 img,
+.frame16 video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.frame16 .d {
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+}
+.pk-still:hover .d,
+.pk-still.depth .d {
+  opacity: 1;
+}
+.paper {
+  height: clamp(150px, 16vw, 220px);
+  width: clamp(220px, 22vw, 300px);
+  overflow: hidden;
+  padding: 12px 14px;
+  border-radius: 4px;
+  background: #0f0f12;
+  color: #d4d4d8;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+.paper pre {
+  margin: 0;
+  font: inherit;
+  white-space: pre-wrap;
+}
+.roll pre {
+  animation: roll 60s linear infinite;
+}
+.roll:hover pre {
+  animation-play-state: paused;
+}
+@keyframes roll {
+  to {
+    transform: translateY(-80%);
+  }
+}
+.zip .paper b {
+  display: block;
+  margin-bottom: 8px;
+  color: #fafafa;
+  font-weight: 650;
+}
+.zip ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 12px;
+  color: #a1a1aa;
+}
+@media (prefers-reduced-motion: reduce) {
+  .roll pre {
+    animation: none;
+  }
+}
 </style>
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">e0d7143</span>
+<span class="build build--top" aria-label="Build">4b0ce45</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2050,10 +2152,10 @@ footer .logo {
       </div>
       <ul class="renders">
         <li><figure><div class="still" data-drift="-0.04"><img class="pic" src="media/render-1.webp" width="960" height="539" loading="lazy" decoding="async" alt="A crane shot looks down into the diner booth: Mara and Dex at the table, Suzanne in the foreground, the neon sign in the window."></div><figcaption><b>28 mm crane</b><span>Wide two-shot from above</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.08"><img class="pic" src="media/render-2.webp" width="960" height="539" loading="lazy" decoding="async" alt="A tilted 28 mm frame on Theo against a rooftop wall, backlit by a lamp."></div><figcaption><b>28 mm, tilted</b><span>Medium full shot</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.08"><img class="pic" src="media/render-2.webp" width="960" height="539" loading="lazy" decoding="async" alt="A 28 mm frame on Theo as he shoulders through the rooftop stairwell door."></div><figcaption><b>28 mm tripod</b><span>Theo at the stairwell door</span></figcaption></figure></li>
         <li><figure><div class="still" data-drift="-0.05"><img class="pic" src="media/render-3.webp" width="960" height="539" loading="lazy" decoding="async" alt="From the chase car, the getaway car ahead on the harbour street: a low-poly Kassa car in the headlights."></div><figcaption><b>35 mm handheld</b><span>The getaway car, played by a Chime</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.09"><img class="pic" src="media/render-4.webp" width="960" height="539" loading="lazy" decoding="async" alt="A two-shot of Ana and Theo walking side by side at night."></div><figcaption><b>40 mm</b><span>Walking two-shot</span></figcaption></figure></li>
-        <li><figure><div class="still" data-drift="-0.06"><img class="pic" src="media/render-5.webp" width="960" height="539" loading="lazy" decoding="async" alt="Over Mara's shoulder onto Dex in the booth, the pink neon behind him."></div><figcaption><b>50 mm</b><span>Over the shoulder</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.09"><img class="pic" src="media/render-4.webp" width="960" height="539" loading="lazy" decoding="async" alt="Mara in the warehouse doorway at 40 mm, a rubber duck on the crate row staring into the lens."></div><figcaption><b>40 mm tripod</b><span>Mara in the doorway. The duck sees all.</span></figcaption></figure></li>
+        <li><figure><div class="still" data-drift="-0.06"><img class="pic" src="media/render-5.webp" width="960" height="539" loading="lazy" decoding="async" alt="Over Mara's shoulder onto Dex in the booth, the pink neon behind him."></div><figcaption><b>50 mm tripod</b><span>Over the shoulder</span></figcaption></figure></li>
       </ul>
     </section>
 
@@ -2523,6 +2625,85 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
         }
       })
       .catch(() => {})
+  }
+  const SHOTS = [
+    ['media/diner.scene.json', 'c1', 0.5],
+    ['media/scenes/sChase/scene.json', 'c4', 9.6],
+    ['media/scenes/sHarbour/scene.json', 'c5', 11.4],
+    ['media/scenes/sWarehouse/scene.json', 'c1', 0.5],
+    ['media/diner.scene.json', 'c3', 8]
+  ]
+  let lensGl = null
+  if (window.THREE && window.ShotwrightStage) {
+    try {
+      lensGl = new THREE.WebGLRenderer({ antialias: true })
+      if ('outputColorSpace' in lensGl) lensGl.outputColorSpace = THREE.SRGBColorSpace
+      else {
+        lensGl.outputEncoding = THREE.sRGBEncoding
+        lensGl.physicallyCorrectLights = true
+      }
+    } catch (e) {
+      lensGl = null
+    }
+  }
+  if (lensGl) {
+    const worlds = {}
+    const world = (url) =>
+      (worlds[url] ??= fetch(url)
+        .then((r) => r.json())
+        .then((d) => ShotwrightStage.mount(null, d, { renderer: lensGl, drift: false })))
+    const tiles = [...document.querySelectorAll('.renders .still')].map((el, i) => {
+      const cv = Object.assign(document.createElement('canvas'), { className: 'lens' })
+      cv.setAttribute('aria-hidden', 'true')
+      el.append(cv)
+      const t = { el, cv, ctx: cv.getContext('2d'), shot: SHOTS[i], stage: null, yaw: 0, pitch: 0, goal: [0, 0], seen: false, dirty: true }
+      world(SHOTS[i][0])
+        .then((st) => {
+          t.stage = st
+          t.dirty = true
+        })
+        .catch(() => {})
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect()
+        t.goal = [-((e.clientX - r.left) / r.width - 0.5) * 0.14, -((e.clientY - r.top) / r.height - 0.5) * 0.09]
+      })
+      el.addEventListener('pointerleave', () => {
+        t.goal = [0, 0]
+      })
+      return t
+    })
+    const seen = new IntersectionObserver((es) => {
+      for (const e of es) {
+        const t = tiles.find((x) => x.el === e.target)
+        if (t) t.seen = e.isIntersecting
+      }
+    })
+    for (const t of tiles) seen.observe(t.el)
+    let settle2 = 0
+    const lensTick = () => {
+      requestAnimationFrame(lensTick)
+      settle2++
+      for (const t of tiles) {
+        if (!t.seen || !t.stage) continue
+        const dy = t.goal[0] - t.yaw,
+          dp = t.goal[1] - t.pitch
+        if (Math.abs(dy) + Math.abs(dp) > 4e-4) {
+          t.yaw += dy * 0.12
+          t.pitch += dp * 0.12
+          t.dirty = true
+        }
+        if (!t.dirty && settle2 % 30) continue
+        const r = Math.min(devicePixelRatio, 1.5),
+          w = Math.round(t.el.clientWidth * r),
+          h = Math.round(t.el.clientHeight * r)
+        if (!w || !h) continue
+        if (t.cv.width !== w || t.cv.height !== h) Object.assign(t.cv, { width: w, height: h })
+        t.ctx.drawImage(t.stage.shot(t.shot[1], t.shot[2], t.yaw, t.pitch, w, h), 0, 0, w, h)
+        t.cv.classList.add('on')
+        t.dirty = false
+      }
+    }
+    requestAnimationFrame(lensTick)
   }
   const planHost = document.getElementById('plan-live')
   if (window.THREE && window.ShotwrightPlan) {
@@ -3214,7 +3395,6 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   rail.addEventListener('scroll', railEnds, { passive: true })
   addEventListener('resize', railEnds)
   railEnds()
-
   const reel = document.getElementById('reel')
   let reelGoal = null
   reel.addEventListener('pointermove', (e) => {
@@ -3222,7 +3402,9 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     const r = reel.getBoundingClientRect()
     reelGoal = ((e.clientX - r.left) / r.width) * (reel.scrollWidth - reel.clientWidth)
   })
-  reel.addEventListener('pointerleave', () => { reelGoal = null })
+  reel.addEventListener('pointerleave', () => {
+    reelGoal = null
+  })
   const reelTick = () => {
     if (reelGoal !== null) reel.scrollLeft += (reelGoal - reel.scrollLeft) * 0.08
     requestAnimationFrame(reelTick)
@@ -3230,7 +3412,13 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   requestAnimationFrame(reelTick)
   for (const st of reel.querySelectorAll('.pk-still')) st.addEventListener('click', () => st.classList.toggle('depth'))
   const clip = reel.querySelector('video')
-  new IntersectionObserver(([e]) => { if (e.isIntersecting) clip.play().catch(() => {}); else clip.pause() }, { threshold: 0.3 }).observe(clip)
+  new IntersectionObserver(
+    ([e]) => {
+      if (e.isIntersecting) clip.play().catch(() => {})
+      else clip.pause()
+    },
+    { threshold: 0.3 }
+  ).observe(clip)
 })()
 </script>
 </body>
