@@ -2260,7 +2260,7 @@ html:not(.js) .cmp-sound {
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">13c097c</span>
+<span class="build build--top" aria-label="Build">64daa0f</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -2850,13 +2850,24 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
         const r = el.getBoundingClientRect()
         t.goal = [-((e.clientX - r.left) / r.width - 0.5) * 0.14, -((e.clientY - r.top) / r.height - 0.5) * 0.09]
       })
-      el.addEventListener('pointerenter', () => {
+      el.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return
         t.hover = true
         t.start = performance.now()
       })
-      el.addEventListener('pointerleave', () => {
+      el.addEventListener('pointerleave', (e) => {
+        if (e.pointerType !== 'mouse') return
         t.goal = [0, 0]
         t.hover = false
+        t.dirty = true
+      })
+      el.addEventListener('pointerdown', (e) => {
+        t.pt = e.pointerType
+      })
+      el.addEventListener('click', () => {
+        if (t.pt === 'mouse') return
+        t.hover = !t.hover
+        t.start = performance.now()
         t.dirty = true
       })
       return t
@@ -2864,7 +2875,9 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     const seen = new IntersectionObserver((es) => {
       for (const e of es) {
         const t = tiles.find((x) => x.el === e.target)
-        if (t) t.seen = e.isIntersecting
+        if (!t) continue
+        t.seen = e.isIntersecting
+        if (!e.isIntersecting) t.hover = false
       }
     })
     for (const t of tiles) seen.observe(t.el)
@@ -3096,12 +3109,26 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   }
   document.getElementById('deck-play').addEventListener('click', activate)
   const idleReset = (el, reset) => {
-    let timer = 0
-    el.addEventListener('pointerleave', () => {
+    let timer = 0,
+      engaged = false
+    const later = () => {
       clearTimeout(timer)
-      timer = setTimeout(reset, 2500)
+      timer = setTimeout(() => {
+        if (!engaged) return
+        engaged = false
+        reset()
+      }, 2500)
+    }
+    const engage = () => {
+      engaged = true
+      clearTimeout(timer)
+    }
+    el.addEventListener('pointerenter', engage)
+    el.addEventListener('pointerdown', engage)
+    el.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'mouse') later()
     })
-    el.addEventListener('pointerenter', () => clearTimeout(timer))
+    new IntersectionObserver(([e]) => (e.isIntersecting ? clearTimeout(timer) : later()), { threshold: 0 }).observe(el)
   }
   idleReset(heroFrame, () => {
     heroActive = false
@@ -3680,7 +3707,9 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
     const r = cmp.getBoundingClientRect()
     cmp.style.setProperty('--x', `${Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)).toFixed(2)}%`)
   })
-  cmp.addEventListener('pointerenter', () => cmpPlay())
+  cmp.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'mouse') cmpPlay()
+  })
   cmp.addEventListener('click', (e) => {
     if (e.target.closest('.cmp-sound')) return
     if (film.paused) cmpPlay()
@@ -3704,14 +3733,16 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   })
   nwTiles.forEach((b, i) => {
     const v = b.querySelector('video')
-    b.addEventListener('pointerenter', () => {
+    b.addEventListener('pointerenter', (e) => {
+      if (e.pointerType !== 'mouse') return
       v.preload = 'auto'
       v.currentTime = 0
       v.play()
         .then(() => b.classList.add('on'))
         .catch(() => {})
     })
-    b.addEventListener('pointerleave', () => {
+    b.addEventListener('pointerleave', (e) => {
+      if (e.pointerType !== 'mouse') return
       b.classList.remove('on')
       v.pause()
     })
