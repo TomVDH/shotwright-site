@@ -44,6 +44,7 @@ try {
   --grid: rgb(15 35 64 / 0.045);
   --tape: #f2c230;
   --tape-ink: #1b1505;
+  --link: #876200;
   --shadow: 15 35 64;
   --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -67,6 +68,7 @@ try {
     --edge: rgb(230 236 242 / 0.12);
     --grid: rgb(150 180 220 / 0.05);
     --tape: #f5c842;
+    --link: #f5c842;
     --shadow: 0 4 12;
     --rn-edge: transparent;
     --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -82,6 +84,7 @@ try {
   --edge: rgb(230 236 242 / 0.12);
   --grid: rgb(150 180 220 / 0.05);
   --tape: #f5c842;
+  --link: #f5c842;
   --shadow: 0 4 12;
   --rn-edge: transparent;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -134,7 +137,7 @@ a {
   text-decoration: none;
 }
 a:not([class]) {
-  color: var(--tape);
+  color: var(--link);
   transition: color 0.2s;
 }
 a:not([class]):hover {
@@ -405,6 +408,7 @@ p {
   right: 0;
   bottom: 100%;
   margin: 0 0 10px;
+  padding-inline-end: 14px;
   font-size: 0.82rem;
   color: var(--ink-2);
 }
@@ -688,9 +692,14 @@ h3 {
 .renders li:first-child figcaption {
   font-size: 0.95rem;
 }
+.renders li {
+  display: grid;
+}
 .renders figure {
   margin: 0;
   display: grid;
+  grid-template-rows: auto 1fr;
+  align-content: start;
   gap: 8px;
 }
 .still {
@@ -926,7 +935,7 @@ kbd {
   border-radius: 3px;
   background: rgb(20 20 24 / 0.72);
   color: #f4f4f5;
-  font-size: clamp(0.62rem, 0.9vw, 0.76rem);
+  font-size: clamp(0.75rem, 0.9vw, 0.8rem);
   font-weight: 600;
   letter-spacing: 0.01em;
   pointer-events: none;
@@ -962,7 +971,7 @@ kbd {
   background: rgb(0 0 0 / 0.82);
   color: #fff;
   font-weight: 600;
-  font-size: clamp(0.7rem, 1.15vw, 0.98rem);
+  font-size: clamp(0.78rem, 1.15vw, 0.98rem);
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
@@ -987,7 +996,7 @@ kbd {
 }
 .cc-btn {
   right: 10px;
-  font: 800 0.66rem/1 var(--body);
+  font: 800 0.72rem/1 var(--body);
   letter-spacing: 0.04em;
 }
 .cc-btn[aria-pressed="true"] {
@@ -2056,7 +2065,7 @@ footer .logo {
   background: #0f0f12;
   color: #d4d4d8;
   box-shadow: 0 0 0 1px rgb(255 255 255 / 0.06);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 .paper pre {
@@ -2292,11 +2301,79 @@ html:not(.js) .cmp-sound {
 .credits .sign {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
 }
+@media (pointer: coarse), (max-width: 800px) {
+  .masthead {
+    margin-top: clamp(76px, 9vw, 128px);
+  }
+  .scene-pick button {
+    min-height: 44px;
+    padding-block: 0;
+  }
+  .reshuffle {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+  }
+  .switch::after {
+    content: "";
+    position: absolute;
+    inset: -13px -5px;
+  }
+  .cc-btn,
+  .voice-btn,
+  .cmp-sound,
+  .rail-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .voice-btn {
+    right: 58px;
+  }
+  .ti {
+    width: 40px;
+    height: 40px;
+  }
+  .cc {
+    bottom: max(12%, 58px);
+    max-width: 92%;
+  }
+  .credits a:not([class]) {
+    padding-block: 11px;
+  }
+  .repo-link {
+    min-height: 44px;
+  }
+}
+@media (max-width: 500px) {
+  .scene-pick {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 10px;
+  }
+  .scene-pick button {
+    font-size: 0.88rem;
+    line-height: 1.15;
+    text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .deal {
+    height: clamp(360px, 108vw, 460px);
+  }
+  .deal span {
+    font-size: calc(0.72rem + var(--s, 1) * 0.05rem);
+    line-height: 1.25;
+  }
+  .reel {
+    --fade: clamp(16px, 4vw, 48px);
+    margin-inline: calc(-1 * clamp(16px, 4vw, 48px));
+  }
+}
 </style>
 </head>
 <body>
 <div class="keylight" aria-hidden="true"></div>
-<span class="build build--top" aria-label="Build">5707938</span>
+<span class="build build--top" aria-label="Build">2573f2b</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet" id="top">
 
@@ -3559,7 +3636,7 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   let hand = []
   const draw10 = () => {
     const rest = POOL.filter((c) => !hand.includes(c))
-    hand = rest.sort(() => Math.random() - 0.5).slice(0, innerWidth < 640 ? 9 : 13)
+    hand = rest.sort(() => Math.random() - 0.5).slice(0, deal.clientWidth < 440 ? 7 : deal.clientWidth < 600 ? 9 : 13)
     for (const cv of deal.querySelectorAll('canvas')) window.PSX?.drop(cv)
     deal.replaceChildren(
       ...hand.map(([file, name], i) => {
@@ -3583,31 +3660,47 @@ Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
   const cloud = () => {
     const W = deal.clientWidth,
       H = deal.clientHeight
-    const base = Math.min(140, Math.max(78, W * 0.11))
-    const items = [...deal.children].map((li) => ({ li, w: base * parseFloat(li.style.getPropertyValue('--s')) }))
-    items.sort((a, b) => b.w - a.w)
-    const placed = []
+    const base = W < 440 ? W * 0.21 : Math.min(140, Math.max(78, W * 0.11))
+    const items = [...deal.children].map((li) => {
+      const w = base * parseFloat(li.style.getPropertyValue('--s'))
+      li.style.setProperty('--w', `${w.toFixed(0)}px`)
+      return { li, w }
+    })
     for (const it of items) {
-      const rad = it.w * 0.62
-      let best = null,
-        bestGap = -Infinity
-      for (let k = 0; k < 500; k++) {
-        const a = Math.random() * Math.PI * 2,
-          u = Math.sqrt(Math.random())
-        const x = W / 2 + Math.cos(a) * u * (W / 2 - rad),
-          y = H / 2 + Math.sin(a) * u * (H / 2 - rad)
-        let gap = Infinity
-        for (const p of placed) gap = Math.min(gap, Math.hypot(p.x - x, p.y - y) - p.rad - rad)
-        const score = Math.min(gap, 40) - u * 30
-        if (score > bestGap) {
-          bestGap = score
-          best = { x, y }
+      const label = it.li.querySelector('span')
+      it.hx = Math.min(W / 2, Math.max(it.w, it.li.offsetWidth, label ? label.scrollWidth : 0) / 2 + 4)
+      it.hy = Math.min(H / 2, Math.max(it.w, it.li.offsetHeight) / 2 + 4)
+    }
+    items.sort((a, b) => b.w - a.w)
+    let placed = []
+    for (let tries = 0; tries < 8; tries++) {
+      placed = []
+      for (const it of items) {
+        const { hx, hy } = it
+        let best = null,
+          bestGap = -Infinity,
+          bestOpen = -Infinity
+        for (let k = 0; k < 800; k++) {
+          const a = Math.random() * Math.PI * 2,
+            u = Math.sqrt(Math.random())
+          const x = W / 2 + Math.cos(a) * u * (W / 2 - hx),
+            y = H / 2 + Math.sin(a) * u * (H / 2 - hy)
+          let gap = Infinity
+          for (const p of placed) gap = Math.min(gap, Math.max(Math.abs(p.x - x) - p.hx - hx, Math.abs(p.y - y) - p.hy - hy))
+          const score = (gap < 0 ? gap - 60 : Math.min(gap, 40)) - u * 30
+          if (score > bestGap) {
+            bestGap = score
+            bestOpen = gap
+            best = { x, y }
+          }
         }
+        placed.push({ ...best, hx, hy, it, open: bestOpen >= 0 })
       }
-      placed.push({ ...best, rad })
-      it.li.style.setProperty('--x', `${best.x.toFixed(0)}px`)
-      it.li.style.setProperty('--y', `${best.y.toFixed(0)}px`)
-      it.li.style.setProperty('--w', `${it.w.toFixed(0)}px`)
+      if (placed.every((p) => p.open)) break
+    }
+    for (const p of placed) {
+      p.it.li.style.setProperty('--x', `${p.x.toFixed(0)}px`)
+      p.it.li.style.setProperty('--y', `${p.y.toFixed(0)}px`)
     }
   }
   let cloudW = 0

@@ -21,6 +21,7 @@
   --grid: rgb(15 35 64 / 0.045);
   --tape: #f2c230;
   --tape-ink: #1b1505;
+  --link: #876200;
   --shadow: 15 35 64;
   --display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -44,6 +45,7 @@
     --edge: rgb(230 236 242 / 0.12);
     --grid: rgb(150 180 220 / 0.05);
     --tape: #f5c842;
+    --link: #f5c842;
     --shadow: 0 4 12;
     --rn-edge: transparent;
     --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -59,6 +61,7 @@
   --edge: rgb(230 236 242 / 0.12);
   --grid: rgb(150 180 220 / 0.05);
   --tape: #f5c842;
+  --link: #f5c842;
   --shadow: 0 4 12;
   --rn-edge: transparent;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.6 0 0 0 -0.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -69,9 +72,9 @@
   :root { --serif: "Bodoni Moda", Didot, Georgia, serif; --sheet-max: 1240px; }
 * { box-sizing: border-box; }
 body { margin: 0; padding-inline: clamp(16px, 4vw, 48px); background: var(--paper); color: var(--ink); font: 400 1rem/1.55 var(--body); -webkit-font-smoothing: antialiased; }
-.sheet { max-width: 1240px; margin-inline: auto; padding-block: clamp(32px, 6vw, 72px) clamp(56px, 8vw, 104px); }
+.sheet { max-width: 1240px; margin-inline: auto; padding-block: clamp(72px, 8vw, 104px) clamp(56px, 8vw, 104px); }
 a { color: inherit; text-decoration: none; }
-.sheet > a.back, main a, .refs a, .texts a { color: var(--tape); transition: color 0.2s; }
+.sheet > a.back, main a, .refs a, .texts a { color: var(--link); transition: color 0.2s; }
 .sheet > a.back:hover, main a:hover, .refs a:hover, .texts a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--tape); text-decoration-thickness: 2px; text-underline-offset: 3px; }
 a:focus-visible { outline: 2px solid var(--tape); outline-offset: 3px; border-radius: 3px; }
 .back { font-size: 0.92rem; }
@@ -84,7 +87,7 @@ h3 { margin: 0 0 8px; font-size: 1.04rem; font-weight: 680; }
 .colophon p { margin: 0 0 14px; max-width: 34em; }
 .colophon p + p { color: var(--ink-2); }
 .refs { margin: 0; padding: 0; list-style: none; }
-.refs li { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.15fr) minmax(0, 0.5fr); gap: 4px clamp(20px, 3vw, 40px); align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+.refs li { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.15fr) minmax(max-content, 0.5fr); gap: 4px clamp(20px, 3vw, 40px); align-items: baseline; padding: 16px 0; border-bottom: 1px solid var(--rule); }
 .who { display: grid; gap: 2px; }
 .who cite { font-style: normal; font-weight: 680; font-size: 1.04rem; }
 .ver { margin-left: 0.4em; font-size: 0.8rem; font-weight: 500; color: var(--ink-2); }
@@ -354,16 +357,22 @@ footer .logo {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
 }
 footer { margin-top: clamp(80px, 10vw, 128px); }
-@media (max-width: 720px) {
+@media (max-width: 800px) {
   .colophon { grid-template-columns: minmax(0, 1fr); }
   .refs li { grid-template-columns: minmax(0, 1fr) auto; }
   .use { grid-column: 1 / -1; grid-row: 2; }
   .lic { grid-column: 2; grid-row: 1; }
 }
+@media (pointer: coarse), (max-width: 800px) {
+  .back, .lic a { padding-block: 14px; }
+  .who .repo { position: relative; z-index: 1; justify-self: start; padding-block: 12px; margin-block: -12px; }
+  .ti { width: 40px; height: 40px; }
+  .credits a:not([class]) { padding-block: 11px; }
+}
 </style>
 </head>
 <body>
-<span class="build build--top" aria-label="Build">5707938</span>
+<span class="build build--top" aria-label="Build">2573f2b</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet">
   <a class="back" href="./">Back to Shotwright</a>
