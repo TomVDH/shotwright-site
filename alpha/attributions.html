@@ -213,21 +213,6 @@ footer .logo {
   font-weight: 650;
   text-decoration: none;
 }
-.suz {
-  display: inline-block;
-  width: 36px;
-  height: 36px;
-  margin-left: 14px;
-  vertical-align: middle;
-  background: url("media/suzanne-turn.webp") 0 0 / auto 100% no-repeat;
-  opacity: 0.85;
-  animation: suz 3.6s steps(36) infinite;
-}
-@keyframes suz {
-  to {
-    background-position: -1296px 0;
-  }
-}
 .sign {
   font: 800 clamp(2rem, 4vw, 3rem)/0.9 var(--display);
   font-stretch: 62%;
@@ -356,6 +341,34 @@ footer .logo {
 .credits .sign {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
 }
+.fleuron {
+  display: grid;
+  place-items: center;
+  height: 72px;
+  margin: calc(-1 * clamp(24px, 4vw, 64px)) auto clamp(28px, 4vw, 48px);
+}
+.fleuron i {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background: url("media/suzanne-turn.webp") 0 0 / auto 100% no-repeat;
+  transform-origin: 50% 100%;
+  will-change: transform;
+  animation: fleuron 3.6s steps(36) infinite;
+}
+@keyframes fleuron {
+  to {
+    background-position: -1728px 0;
+  }
+}
+.fleuron.live i {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fleuron i {
+    animation: none;
+  }
+}
 footer { margin-top: clamp(80px, 10vw, 128px); }
 @media (max-width: 800px) {
   .colophon { grid-template-columns: minmax(0, 1fr); }
@@ -372,7 +385,7 @@ footer { margin-top: clamp(80px, 10vw, 128px); }
 </style>
 </head>
 <body>
-<span class="build build--top" aria-label="Build">2573f2b</span>
+<span class="build build--top" aria-label="Build">ccc7a33</span>
 <button type="button" class="theme-btn top" id="theme-btn" aria-label="Switch between light and dark"><span class="ti ti-light" aria-hidden="true">light_mode</span><span class="ti ti-dark" aria-hidden="true">dark_mode</span></button>
 <div class="sheet">
   <a class="back" href="./">Back to Shotwright</a>
@@ -419,7 +432,7 @@ footer { margin-top: clamp(80px, 10vw, 128px); }
       <li><div class="who"><cite>Bodoni Moda</cite><span class="copy">Copyright 2020 The Bodoni Moda Project Authors</span><a class="repo" href="https://github.com/indestructible-type/Bodoni">github.com/indestructible-type/Bodoni</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
       <li><div class="who"><cite>Caveat</cite><span class="copy">Copyright 2014 The Caveat Project Authors</span><a class="repo" href="https://github.com/googlefonts/caveat">github.com/googlefonts/caveat</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
       <li><div class="who"><cite>Silkscreen</cite><span class="copy">Copyright 2001 The Silkscreen Project Authors</span><a class="repo" href="https://github.com/googlefonts/silkscreen">github.com/googlefonts/silkscreen</a></div><p class="use">Typeface</p><p class="lic"><a href="#ofl">OFL 1.1</a></p></li>
-      <li><div class="who"><cite>ColorSym <span class="ver">1.0</span></cite><span class="copy">Copyright 2026 Chris Eastridge and Luis Francisco</span><a class="repo" href="https://github.com/luisfrancisco/colorsym">github.com/luisfrancisco/colorsym</a></div><p class="use">Colour symbols for colour-blind readers, vendored</p><p class="lic"><a href="#ofl">OFL 1.1</a> · <a href="#ccbysa">CC BY-SA 4.0</a></p></li>
+      <li><div class="who"><cite>ColorSym <span class="ver">1.0</span></cite><span class="copy">Copyright 2026 Chris Eastridge and Luis Francisco</span><a class="repo" href="https://github.com/luisfrancisco/colorsym">github.com/luisfrancisco/colorsym</a></div><p class="use">Colour label glyphs for colour-blind readers</p><p class="lic"><a href="#ofl">OFL 1.1</a> · <a href="#ccbysa">CC BY-SA 4.0</a></p></li>
       <li><div class="who"><cite>Material Symbols</cite><span class="copy">Copyright Google LLC</span><a class="repo" href="https://github.com/google/material-design-icons">github.com/google/material-design-icons</a></div><p class="use">Icons</p><p class="lic"><a href="#apache">Apache-2.0</a></p></li>
       <li><div class="who"><cite>GitHub mark</cite><span class="copy">GitHub, Inc.</span></div><p class="use">Logo</p><p class="lic"><a href="https://github.com/logos">GitHub logo terms</a></p></li>
     </ol>
@@ -479,11 +492,13 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTI
       <p class="aside"><svg class="curl" viewBox="0 0 120 64" aria-hidden="true"><path d="M114 16C92 2 66 6 60 24C56 38 72 44 76 32C80 20 58 16 42 28C32 36 20 42 7 44M7 44l12-9M7 44l13 6"/></svg><span>this logo's alpha too btw</span></p>
     </div>
     <div class="credits">
-      <span class="left"><span class="sign">Frame first.<span class="suz" title="Suzanne, still turning" aria-hidden="true"></span></span><a href="attributions.html">Attributions</a></span>
+      <span class="left"><span class="sign">Frame first.</span><a href="attributions.html">Attributions</a></span>
       <span class="right"><span class="collab"><span class="zs-pixel">ZenaSoft 1989 (c)</span><svg class="scrawl" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.2 4.8c3.1 3.4 7.9 9.6 13.6 14.9"/><path d="M18.6 4.1c-2.4 1.9-6.9 7.4-9.1 10.2-1.6 2-3 3.9-4.3 5.6"/></svg><img class="two-face" src="media/logos/two-face.svg" width="146" height="62" alt="Onnozelaer, the adjudant two-face mark"></span></span>
     </div>
   </footer>
+  <div class="fleuron" title="Suzanne, still turning" aria-hidden="true"><i></i></div>
 </div>
+<script src="media/fleuron.js"></script>
 <script>
 (() => {
   document.getElementById('theme-btn').addEventListener('click', () => {
