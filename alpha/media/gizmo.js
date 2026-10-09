@@ -73,6 +73,58 @@
     actor(0.8, -1.3, '#f5a524')
     box(1, 0.75, 0.7, 0.05, 0.375, -1.15, '#d9c8ad')
     box(6, 2.6, 0.15, 0, 1.3, -3, '#cfc9be')
+    const fan = new THREE.Group()
+    fan.position.set(0.75, 0.295 * 0.3, 3.25)
+    fan.rotation.y = Math.PI
+    fan.scale.setScalar(0.3)
+    scene.add(fan)
+    const fanQ0 = fan.quaternion.clone(),
+      fanQ1 = new THREE.Quaternion(),
+      fanTilt = new THREE.Quaternion()
+    let fanState = 0,
+      fanT = 0
+    const fanLoad = () => {
+      if (fanState || !THREE.GLTFLoader) return
+      fanState = 1
+      new THREE.GLTFLoader().load(
+        'media/props/suzanne.glb',
+        (g) => {
+          g.scene.traverse((o) => {
+            if (o.isMesh) o.material = new THREE.MeshLambertMaterial({ color: '#a8865c' })
+          })
+          fan.add(g.scene)
+          fanState = 2
+          kick()
+        },
+        void 0,
+        () => {}
+      )
+    }
+    const fanLook = (now) => {
+      if (fanState === 2) {
+        const c = fan.position.clone().project(lensCam)
+        const dist = fan.position.distanceTo(lensCam.position)
+        const frac = (0.41 * 0.3) / (dist * Math.tan((lensCam.fov * Math.PI) / 360))
+        const inside = c.z < 1 && Math.abs(c.x) < 0.7 && Math.abs(c.y) < 0.7
+        if (inside && frac > 0.22 && !reduce) {
+          fanState = 3
+          fanT = now
+          tmp.position.copy(fan.position)
+          tmp.quaternion.identity()
+          tmp.lookAt(lensCam.position)
+          fanQ1.copy(tmp.quaternion)
+        }
+      }
+      if (fanState !== 3) return
+      const k = Math.min(1, (now - fanT) / 800),
+        e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2
+      const w = Math.min(1, Math.max(0, (now - fanT - 900) / 500))
+      fan.quaternion.copy(fanQ0).slerp(fanQ1, e * 0.92)
+      fanTilt.setFromAxisAngle(ZV, 0.22 * Math.sin(w * Math.PI * 0.5))
+      fan.quaternion.multiply(fanTilt)
+      if (w < 1) need = Math.max(need, 2)
+      else fanState = 4
+    }
     const view = new THREE.PerspectiveCamera(42, 1, 0.05, 100)
     const cam = { ...HOME }
     const dirOf = () =>
@@ -465,9 +517,9 @@
       }
       protTicks.geometry.setFromPoints(tk)
       const n = Math.max(2, Math.ceil(Math.abs(op.total) / 3)),
-        fan = []
-      for (let i = 0; i < n; i++) fan.push(p.clone(), pt((op.total * i) / n, R * 0.97), pt((op.total * (i + 1)) / n, R * 0.97))
-      protFan.geometry.setFromPoints(fan)
+        fan2 = []
+      for (let i = 0; i < n; i++) fan2.push(p.clone(), pt((op.total * i) / n, R * 0.97), pt((op.total * (i + 1)) / n, R * 0.97))
+      protFan.geometry.setFromPoints(fan2)
       protLines.geometry.setFromPoints([p, pt(0, R * 1.26), p, pt(op.total, R * 1.34)])
       protFan.material.color.set(AXES[op.axis].c)
       protLines.material.color.set(AXES[op.axis].c)
@@ -569,6 +621,8 @@
       lensCam.rotateZ(-cam.roll)
       lensCam.fov = (2 * Math.atan(Math.tan(Math.atan(18 / cam.focal)) / (16 / 9)) * 180) / Math.PI
       lensCam.updateProjectionMatrix()
+      lensCam.updateMatrixWorld()
+      fanLook(now)
       monT.textContent = `CAM 1 · ${Math.round(cam.focal)} mm`
       const v = vals0()
       vals.textContent = `yaw ${fmt(v.yaw)}° · tilt ${fmt(v.tilt)}° · roll ${fmt(v.roll)}°`
@@ -604,6 +658,7 @@
     const io = new IntersectionObserver(([e]) => {
       seen = e.isIntersecting
       if (seen) {
+        fanLoad()
         kick()
         if (!reduce && flashT === 0) flash()
       }
