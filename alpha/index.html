@@ -3066,22 +3066,23 @@ html:not(.js) .cs-view {
         <article class="step">
           <div class="copy">
             <h3><span class="rn">III</span>Compose your packet, for humans or bots.</h3>
-            <p>One export folder: stills and the animatic for the crew, the prompt and the scene data for the model. Zip and watermark are optional.</p>
+            <p>One export folder: stills and the animatic for the crew, the prompt and the scene data for the model. Zip and labelled frames are optional.</p>
           </div>
           <div class="packet" aria-label="The files in a packet, from the Diner standoff">
             <div class="packet-col">
               <b>For humans</b>
               <ul>
                 <li><span>sequence.mp4</span><em>The animatic, 40 s</em></li>
-                <li><span>cut01.png to cut10.png</span><em>A greybox still per cut</em></li>
-                <li><span>cut05_end.png</span><em>The last frame of a moving shot</em></li>
-                <li><span>cut05.mp4</span><em>The move itself</em></li>
+                <li><span>sequence_part1.mp4, _part2</span><em>The animatic in parts that fit the model</em></li>
+                <li><span>stills/shot01_cam1.png to shot10_cam10.png</span><em>A greybox still per shot</em></li>
+                <li><span>stills/shot05_cam5_end.png</span><em>The last frame of a moving shot</em></li>
+                <li><span>clips/shot05_cam5.mp4</span><em>The move itself</em></li>
               </ul>
             </div>
             <div class="packet-col">
               <b>For bots</b>
               <ul>
-                <li><span>prompt.txt</span><em>The brief, shot by shot</em></li>
+                <li><span>prompt.md</span><em>Notes for you, and blocks to paste into the model</em></li>
                 <li><span>scene.json</span><em>The scene: cast, set, lights, cameras, cuts</em></li>
               </ul>
             </div>
@@ -3095,131 +3096,506 @@ html:not(.js) .cs-view {
           </div>
           <div class="reel" id="reel" tabindex="0" aria-label="The exported packet, file by file">
             <div class="reel-track">
-              <figure class="card text"><div class="paper"><pre>SCENE Diner standoff | 10 shots | 40.0 s | 16:9 | 24 fps
+              <figure class="card text"><div class="paper"><pre># Diner standoff: AI packet
+Getting Started · 10 shots · 40.0 s · 16:9 · 24 fps · prompt v2 · frames: clean
 
-Cast:
-- Mara, the purple figure: a police detective in her fifties, silver bob, a long charcoal trench coat
-- Dex, the amber figure: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands
-- Suzanne, the orange figure: a cheerful orange monkey head, the Blender mascot
-Set pieces:
-- Booth table, the grey box (0.8 x 1.1 x 0.74 m): a chipped formica diner table with a napkin dispenser
-- Booth seat, the grey box (0.3 x 1.2 x 1.15 m): a high-backed red vinyl booth seat
-- Facing seat, the grey box (0.3 x 1.2 x 1.15 m): the facing red vinyl booth seat, split at one seam
-- Coffee cup, the low-poly model (0.09 x 0.09 x 0.1 m): a thick white diner mug of black coffee on a saucer
-- Folded napkin, the grey box (0.12 x 0.08 x 0.01 m): a paper napkin folded over a name written in ballpoint
-- Counter, the grey box (4.5 x 0.7 x 1.05 m): a long chrome-edged lunch counter with red stools and a pie case
-Lights:
-- Fluorescent key: key light
-- Counter fill: fill light
-- Booth pendant: practical light
-- Neon sign: practical light
-- Passing headlights: back light
+Notes for you are plain text. Text for a model is in fenced blocks. Paste a block as it is.
+
+## Label legend
+- **Shot N**: the Nth shot in edit order.
+- **CAM N**: the camera that films a shot. Camera names come from the scene.
+- **[Ns-Ms]** at the start of a line in a Seedance block: the time span of that shot, in seconds from the start of its part.
+- **@Video1, @Image1 to @Image9**: Seedance upload slots. The note above each block names the file for each slot.
+- **The strip** (labelled frames only): a dark band on the bottom edge of each frame. Left: project, scene, Shot N, camera. Right: the scene timecode HH:MM:SS:FF. It counts scene time, not part time.
+
+These labels are directions. They are not content. No label may appear in the picture.
+
+**To an LLM that reads this packet:** can your target model read the [Ns-Ms] spans and the @ slots as directions and not draw them?
+If yes, paste each block as it is.
+If no, rewrite each block without them and keep the shot order.
+Say which choice you made before you continue.
+Never add shot numbers, camera names, file names or timecodes to a block.
+
+## Scene notes
+- Screen direction: Shot 8 crosses the Mara-Dex line, so screen direction flips there.
+- Cast: Mara (purple), Dex (amber), Suzanne (orange).
+- Set pieces: Booth table (0.8 x 1.1 x 0.74 m), Booth seat (0.3 x 1.2 x 1.15 m), Facing seat (0.3 x 1.2 x 1.15 m), Coffee cup (0.09 x 0.09 x 0.1 m), Folded napkin (0.12 x 0.08 x 0.01 m), Counter (4.5 x 0.7 x 1.05 m).
+- Lights: Fluorescent key (key), Counter fill (fill), Booth pendant (practical), Neon sign (practical), Passing headlights (back).
+- Missing descriptions: none.
+- Your text that a model can misread: none.
+
+## Whole scene: Seedance 2.5, 2 parts
+Seedance 2.5 takes 4 to 30 s, so the 40.0 s scene splits at shot boundaries. Join the parts in your editor.
+
+### Part 1 of 2: Shots 1 to 5, 0.0-19.5 s
+- @Video1 = `sequence_part1.mp4`. Generate 20 s. The part runs 19.5 s.
+
+```seedance
+@Video1 is a greybox animatic from a 3D blocking tool. Follow its shot order, cut timing, framing and camera moves exactly. Ignore its grey look and checker floor.
+In @Video1:
+- The purple figure is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The orange figure is Suzanne: a cheerful orange monkey head, the Blender mascot.
+- The grey box Booth table becomes a chipped formica diner table with a napkin dispenser.
+- The grey box Booth seat becomes a high-backed red vinyl booth seat.
+- The grey box Facing seat becomes the facing red vinyl booth seat, split at one seam.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+[0s-4s] Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
+[4s-7.5s] Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
+[7.5s-11s] Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
+[11s-14.5s] Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
+[14.5s-19.5s] Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
 Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
 Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
-Screen direction: shot 8 crosses the Mara-Dex line, so screen direction flips there.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
 
-=== 1. STILLS: restyle each cutNN.png with an image model ===
+### Part 2 of 2: Shots 6 to 10, 19.5-40.0 s
+- @Video1 = `sequence_part2.mp4`. Generate 21 s. The part runs 20.5 s.
+
+```seedance
+@Video1 is a greybox animatic from a 3D blocking tool. Follow its shot order, cut timing, framing and camera moves exactly. Ignore its grey look and checker floor.
+In @Video1:
+- The purple figure is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+- The grey box Counter becomes a long chrome-edged lunch counter with red stools and a pie case.
+[0s-3s] Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
+[3s-6.5s] Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
+[6.5s-11s] Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
+[11s-15.5s] Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
+[15.5s-20.5s] Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+## Shot by shot
+### Shot 1 · CAM 1 · 0.0-4.0 s (4.0 s)
+- Start frame: `stills/shot01_cam1.png`. End frame: `stills/shot01_cam1_end.png`. Clip: `clips/shot01_cam1.mp4`.
+- Higgsfield camera preset: Crane Down. Also try Dolly In.
+- Video: generate 4 s with Seedance 2.5, then use the first 4.0 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The orange figure at frame left is Suzanne: a cheerful orange monkey head, the Blender mascot.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Booth table becomes a chipped formica diner table with a napkin dispenser.
+- The grey box Booth seat becomes a high-backed red vinyl booth seat.
+- The grey box Facing seat becomes the facing red vinyl booth seat, split at one seam.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Wide two-shot of Dex and Mara; Dex in the center, high angle.
+At this moment: Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left, with a practical light in frame.
 Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
 
-=== 2. SEEDANCE 2.0: the whole scene in one generation ===
-Upload @Video1 = sequence.mp4. Optional: the restyled stills for shots 1 to 9 as @Image1 to @Image9 (Seedance takes up to 9 images).
-@Video1 is a greybox animatic of this scene. Follow its shot order, cut timing, framing and camera moves exactly. Ignore its grey look and checker floor. In @Video1, Mara is the purple figure, Dex is the amber figure and Suzanne is the orange figure.
-Shot 1 (0.0-4.0 s): Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
-Shot 2 (4.0-7.5 s): Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
-Shot 3 (7.5-11.0 s): Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
-Shot 4 (11.0-14.5 s): Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
-Shot 5 (14.5-19.5 s): Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
-Shot 6 (19.5-22.5 s): Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
-Shot 7 (22.5-26.0 s): Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
-Shot 8 (26.0-30.5 s): Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
-Shot 9 (30.5-35.0 s): Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
-Shot 10 (35.0-40.0 s): Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.
-Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass. Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+The reference video is the same shot in greybox: follow its camera move, blocking and timing exactly. Ignore its grey look and checker floor.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The orange figure at frame left is Suzanne: a cheerful orange monkey head, the Blender mascot.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Booth table becomes a chipped formica diner table with a napkin dispenser.
+- The grey box Booth seat becomes a high-backed red vinyl booth seat.
+- The grey box Facing seat becomes the facing red vinyl booth seat, split at one seam.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
 
-=== 3. SHOT BY SHOT: Seedance single shot or Higgsfield ===
-Shot 1 | CAM 1 | 4.0 s | cut01.png + cut01_end.png + cut01.mp4
-  Higgsfield camera preset: Crane Down (also try Dolly In)
-  Prompt: Wide two-shot of Dex and Mara; Dex in the center, high angle, 28mm wide lens. The camera cranes down and pushes in, slowly, easing in and out, and ends on a full shot on Mara. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara; Mara is in profile, looking frame right. Rain hammers the window of the empty diner. Mara crosses past the counter and slides into the booth across from Dex.
-Shot 2 | CAM 2 | 3.5 s | cut02.png
-  Higgsfield camera preset: Static
-  Prompt: Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
-Shot 3 | CAM 3 | 3.5 s | cut03.png
-  Higgsfield camera preset: Static
-  Prompt: Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
-Shot 4 | CAM 4 | 3.5 s | cut04.png
-  Higgsfield camera preset: Static
-  Prompt: Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
-Shot 5 | CAM 5 | 5.0 s | cut05.png + cut05_end.png + cut05.mp4
-  Higgsfield camera preset: Dolly In
-  Prompt: Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
-Shot 6 | CAM 6 | 3.0 s | cut06.png
-  Higgsfield camera preset: Static
-  Prompt: Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
-Shot 7 | CAM 7 | 3.5 s | cut07.png
-  Higgsfield camera preset: Static
-  Prompt: Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
-Shot 8 | CAM 8 | 4.5 s | cut08.png | CROSSES THE LINE
-  Higgsfield camera preset: Static
-  Prompt: Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
-Shot 9 | CAM 9 | 4.5 s | cut09.png
-  Higgsfield camera preset: Static
-  Prompt: Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
-Shot 10 | CAM 10 | 5.0 s | cut10.png + cut10_end.png + cut10.mp4
-  Higgsfield camera preset: Dolly In
-  Prompt: Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.</pre></div><figcaption>prompt.txt<span>11 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut01.webp" alt="Greybox still of cut 1" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut01.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut01.png<span>388 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut02.webp" alt="Greybox still of cut 2" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut02.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut02.png<span>252 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut03.webp" alt="Greybox still of cut 3" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut03.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut03.png<span>218 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut04.webp" alt="Greybox still of cut 4" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut04.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut04.png<span>316 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut05.webp" alt="Greybox still of cut 5" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut05.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut05.png<span>203 KB</span></figcaption></figure>
-              <figure class="card clip"><div class="frame16"><video src="media/packet/cut05.mp4" muted loop playsinline preload="none" aria-label="Cut 5, the moving shot, as exported"></video></div><figcaption>cut05.mp4<span>1.2 MB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut06.webp" alt="Greybox still of cut 6" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut06.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut06.png<span>311 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut07.webp" alt="Greybox still of cut 7" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut07.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut07.png<span>268 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut08.webp" alt="Greybox still of cut 8" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut08.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut08.png<span>215 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut09.webp" alt="Greybox still of cut 9" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut09.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut09.png<span>291 KB</span></figcaption></figure>
-              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut10.webp" alt="Greybox still of cut 10" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut10.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>cut10.png<span>185 KB</span></figcaption></figure>
+### Shot 2 · CAM 2 · 4.0-7.5 s (3.5 s)
+- Start frame: `stills/shot02_cam2.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 4 s with Seedance 2.5, then use the first 3.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle.
+At this moment: Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left, with a practical light in frame.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Medium two-shot of Mara and Dex; Mara on the left third, eye-level angle, 40mm standard lens. Static camera, locked off. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame right; Dex is turned three-quarters to the camera, looking frame left toward Mara. Mara sets down her coffee. Neither speaks. The neon sign buzzes and flickers.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 3 · CAM 3 · 7.5-11.0 s (3.5 s)
+- Start frame: `stills/shot03_cam3.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 4 s with Seedance 2.5, then use the first 3.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle.
+At this moment: Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame right.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame left is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Over-the-shoulder medium close-up on Dex, over Mara&#x27;s right shoulder; Dex in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame right. Dex faces the camera and looks just past the lens, frame left, at Mara. Dex: &quot;I told you everything I know, Mara.&quot; He will not meet her eyes.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 4 · CAM 4 · 11.0-14.5 s (3.5 s)
+- Start frame: `stills/shot04_cam4.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 4 s with Seedance 2.5, then use the first 3.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The orange figure at frame left is Suzanne: a cheerful orange monkey head, the Blender mascot.
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+Shot: Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle.
+At this moment: Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The orange figure at frame left is Suzanne: a cheerful orange monkey head, the Blender mascot.
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The amber figure at frame right is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+Shot: Over-the-shoulder medium close-up on Mara, over Dex&#x27;s left shoulder; Mara in the center, eye-level angle, 50mm normal lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Then tell it again. Slower.&quot; She does not blink.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 5 · CAM 5 · 14.5-19.5 s (5.0 s)
+- Start frame: `stills/shot05_cam5.png`. End frame: `stills/shot05_cam5_end.png`. Clip: `clips/shot05_cam5.mp4`.
+- Higgsfield camera preset: Dolly In.
+- Video: generate 5 s with Seedance 2.5, then use the first 5.0 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Medium close-up single on Dex; Dex in the center, eye-level angle.
+At this moment: Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left, with a practical light in frame.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+The reference video is the same shot in greybox: follow its camera move, blocking and timing exactly. Ignore its grey look and checker floor.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+Shot: Medium close-up single on Dex; Dex in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a close-up on Dex. Lit from frame left, with a practical light in frame. Dex is turned three-quarters to the camera, looking frame left toward Mara. Dex leans in and drops his voice as headlights sweep across the booth. Dex: &quot;The truck came in on the fourth. Somebody paid the night guard to look away.&quot;
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 6 · CAM 6 · 19.5-22.5 s (3.0 s)
+- Start frame: `stills/shot06_cam6.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 4 s with Seedance 2.5, then use the first 3.0 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+Shot: Insert on the Coffee cup, top-down overhead angle.
+At this moment: Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+Shot: Insert on the Coffee cup, top-down overhead angle, 100mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara&#x27;s fingers turn the coffee cup a slow quarter turn on its saucer. The spoon rattles.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 7 · CAM 7 · 22.5-26.0 s (3.5 s)
+- Start frame: `stills/shot07_cam7.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 4 s with Seedance 2.5, then use the first 3.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+Shot: Close-up single on Mara; Mara in the center, eye-level angle.
+At this moment: Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+Shot: Close-up single on Mara; Mara in the center, eye-level angle, 85mm short telephoto lens. Static camera, locked off. Lit from frame left. Mara faces the camera, looking frame right. Mara: &quot;Who paid him, Dex?&quot; A long beat. The neon hum fills the silence.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 8 · CAM 8 · 26.0-30.5 s (4.5 s) · crosses the Mara-Dex line
+- Start frame: `stills/shot08_cam8.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 5 s with Seedance 2.5, then use the first 4.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame left is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The purple figure at frame right is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+- The grey box Counter becomes a long chrome-edged lunch counter with red stools and a pie case.
+Shot: Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle.
+At this moment: Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame right, with a practical light in frame.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame left is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+- The purple figure at frame right is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+- The grey box Counter becomes a long chrome-edged lunch counter with red stools and a pie case.
+Shot: Medium two-shot of Mara and Dex; Mara on the right third, eye-level angle, 35mm standard lens. Static camera, locked off. Lit from frame right, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left; Dex is in profile, looking frame right toward Mara. Seen from the wet street through the glass: Dex glances at the door, then back at Mara. Dex: &quot;You don&#x27;t want that name.&quot;
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 9 · CAM 9 · 30.5-35.0 s (4.5 s)
+- Start frame: `stills/shot09_cam9.png`.
+- Higgsfield camera preset: Static.
+- Video: generate 5 s with Seedance 2.5, then use the first 4.5 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+Shot: Extreme close-up single on Dex; Dex in the center, eye-level angle.
+At this moment: Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame right.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The amber figure at frame center is Dex: a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands.
+Shot: Extreme close-up single on Dex; Dex in the center, eye-level angle, 160mm long telephoto lens. Static camera, locked off. Lit from frame right. Dex is turned three-quarters to the camera, looking frame right toward Mara. Dex, barely a whisper: &quot;Kessler.&quot; He slides a folded napkin across the table, stands and walks out of frame.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+### Shot 10 · CAM 10 · 35.0-40.0 s (5.0 s)
+- Start frame: `stills/shot10_cam10.png`. End frame: `stills/shot10_cam10_end.png`. Clip: `clips/shot10_cam10.mp4`.
+- Higgsfield camera preset: Dolly In.
+- Video: generate 5 s with Seedance 2.5, then use the first 5.0 s.
+
+Restyle the still with an image model:
+```image-edit
+Render this greybox frame from a 3D blocking tool as one finished film still.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+- The grey box Counter becomes a long chrome-edged lunch counter with red stools and a pie case.
+Shot: Medium shot single on Mara; Mara in the center, eye-level angle.
+At this moment: Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Light: Lit from frame left, with a practical light in frame.
+Keep the exact composition, camera angle and lens. Keep every figure at the same place and size, facing the same way. Replace the grey stand-ins and the checker floor with the cast and the scene. Use the same style for every still.
+Preserve the exact layout, proportions, perspective, framing and every figure&#x27;s position, size and facing.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```
+
+Animate the shot with a video model:
+```video-shot
+Turn this greybox previs from a 3D blocking tool into one finished film shot. The start image is its first frame.
+The reference video is the same shot in greybox: follow its camera move, blocking and timing exactly. Ignore its grey look and checker floor.
+Replace the grey stand-ins and the checker floor with the cast and the set:
+- The purple figure at frame center is Mara: a police detective in her fifties, silver bob, a long charcoal trench coat.
+- The low-poly model Coffee cup becomes a thick white diner mug of black coffee on a saucer.
+- The grey box Folded napkin becomes a paper napkin folded over a name written in ballpoint.
+- The grey box Counter becomes a long chrome-edged lunch counter with red stools and a pie case.
+Shot: Medium shot single on Mara; Mara in the center, eye-level angle, 50mm normal lens. The camera pushes in, very slowly, easing in and out, and ends on a medium close-up on Mara. Lit from frame left, with a practical light in frame. Mara is turned three-quarters to the camera, looking frame left. Through the rain-streaked glass, Mara sits alone in the booth and unfolds the napkin. Her face hardens.
+Scene: An all-night roadside diner at 3 a.m.: a red vinyl booth against a rain-streaked window, a chrome counter behind, a neon OPEN sign buzzing in the glass.
+Style: 35mm anamorphic, sodium-vapour night outside, cool fluorescent spill inside, wet asphalt reflections, slow tension.
+Keep the framing, the lens and every figure&#x27;s place, size and facing of the start image. One continuous shot, no cuts.
+Add no captions, labels, numbers, timecodes, logo or watermark. Add no extra people.
+```</pre></div><figcaption>prompt.md<span>40 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut01.webp" alt="Greybox still of cut 1" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut01.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot01_cam1.png<span>388 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut02.webp" alt="Greybox still of cut 2" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut02.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot02_cam2.png<span>252 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut03.webp" alt="Greybox still of cut 3" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut03.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot03_cam3.png<span>218 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut04.webp" alt="Greybox still of cut 4" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut04.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot04_cam4.png<span>316 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut05.webp" alt="Greybox still of cut 5" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut05.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot05_cam5.png<span>203 KB</span></figcaption></figure>
+              <figure class="card clip"><div class="frame16"><video src="media/packet/cut05.mp4" muted loop playsinline preload="none" aria-label="Cut 5, the moving shot, as exported"></video></div><figcaption>clips/shot05_cam5.mp4<span>1.2 MB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut06.webp" alt="Greybox still of cut 6" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut06.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot06_cam6.png<span>311 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut07.webp" alt="Greybox still of cut 7" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut07.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot07_cam7.png<span>268 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut08.webp" alt="Greybox still of cut 8" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut08.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot08_cam8.png<span>215 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut09.webp" alt="Greybox still of cut 9" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut09.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot09_cam9.png<span>291 KB</span></figcaption></figure>
+              <figure class="card pk-still"><div class="frame16"><img src="media/packet/grey-cut10.webp" alt="Greybox still of cut 10" width="960" height="540" loading="lazy"><img class="d" src="media/packet/depth-cut10.webp" alt="" width="960" height="540" loading="lazy"></div><figcaption>stills/shot10_cam10.png<span>185 KB</span></figcaption></figure>
               <figure class="card text"><div class="paper"><pre>{
+  &quot;promptVersion&quot;: 2,
+  &quot;packet&quot;: {
+    &quot;ext&quot;: &quot;mp4&quot;,
+    &quot;frames&quot;: &quot;clean&quot;,
+    &quot;wholeScene&quot;: {
+      &quot;model&quot;: &quot;seedance_2_5&quot;,
+      &quot;mode&quot;: &quot;split&quot;
+    },
+    &quot;parts&quot;: [
+      {
+        &quot;file&quot;: &quot;sequence_part1.mp4&quot;,
+        &quot;shots&quot;: [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        &quot;start&quot;: 0,
+        &quot;end&quot;: 19.5,
+        &quot;seconds&quot;: 20
+      },
+      {
+        &quot;file&quot;: &quot;sequence_part2.mp4&quot;,
+        &quot;shots&quot;: [
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        &quot;start&quot;: 19.5,
+        &quot;end&quot;: 40,
+        &quot;seconds&quot;: 21
+      }
+    ],
+    &quot;takes&quot;: []
+  },
   &quot;project&quot;: {
     &quot;version&quot;: 1,
     &quot;name&quot;: &quot;Getting Started&quot;,
     &quot;fps&quot;: 24,
     &quot;aspect&quot;: &quot;16:9&quot;,
-    &quot;cast&quot;: [
-      {
-        &quot;id&quot;: &quot;mAna&quot;,
-        &quot;name&quot;: &quot;Ana&quot;,
-        &quot;desc&quot;: &quot;a woman in her thirties, dark curly hair, a mustard wool coat over a cardigan&quot;,
-        &quot;color&quot;: &quot;#c8564b&quot;,
-        &quot;colorName&quot;: &quot;red&quot;,
-        &quot;height&quot;: 1.65
-      },
-      {
-        &quot;id&quot;: &quot;mBen&quot;,
-        &quot;name&quot;: &quot;Ben&quot;,
-        &quot;desc&quot;: &quot;a tall man in his forties, grey stubble, a navy work jacket with the collar up&quot;,
-        &quot;color&quot;: &quot;#4f7fc4&quot;,
-        &quot;colorName&quot;: &quot;blue&quot;,
-        &quot;height&quot;: 1.82
-      },
-      {
-        &quot;id&quot;: &quot;mCleo&quot;,
-        &quot;name&quot;: &quot;Cleo&quot;,
-        &quot;desc&quot;: &quot;a lean young woman, short bleached hair, a green raincoat, running shoes&quot;,
-        &quot;color&quot;: &quot;#59a15a&quot;,
-        &quot;colorName&quot;: &quot;green&quot;,
-        &quot;height&quot;: 1.72,
-        &quot;glb&quot;: &quot;assets/stand-in.glb&quot;
-      },
-      {
-        &quot;id&quot;: &quot;mDex&quot;,
-        &quot;name&quot;: &quot;Dex&quot;,
-        &quot;desc&quot;: &quot;a wiry man in his twenties, shaved head, a scuffed amber bomber jacket, restless hands&quot;,
-        &quot;color&quot;: &quot;#d29b3a&quot;,
-        &quot;colorName&quot;: &quot;amber&quot;,
-        &quot;height&quot;: 1.76
-      },
-</pre></div><figcaption>scene.json<span>134 KB</span></figcaption></figure>
-              <figure class="card zip"><div class="paper"><b>diner-standoff-packet.zip</b><ul><li>cut01.mp4</li><li>cut01.png</li><li>cut01_end.png</li><li>cut02.png</li><li>cut03.png</li><li>cut04.png</li><li>cut05.mp4</li><li>cut05.png</li><li>cut05_end.png</li><li>cut06.png</li><li>cut07.png</li><li>cut08.png</li><li>cut09.png</li><li>cut10.mp4</li><li>cut10.png</li><li>cut10_end.png</li><li>prompt.txt</li><li>scene.json</li><li>sequence.mp4</li></ul></div><figcaption>One zip<span>17.7 MB</span></figcaption></figure>
+</pre></div><figcaption>scene.json<span>135 KB</span></figcaption></figure>
+              <figure class="card zip"><div class="paper"><b>diner-standoff-packet.zip</b><ul><li>clips/shot01_cam1.mp4</li><li>clips/shot05_cam5.mp4</li><li>clips/shot10_cam10.mp4</li><li>prompt.md</li><li>scene.json</li><li>sequence.mp4</li><li>sequence_part1.mp4</li><li>sequence_part2.mp4</li><li>stills/shot01_cam1.png</li><li>stills/shot01_cam1_end.png</li><li>stills/shot02_cam2.png</li><li>stills/shot03_cam3.png</li><li>stills/shot04_cam4.png</li><li>stills/shot05_cam5.png</li><li>stills/shot05_cam5_end.png</li><li>stills/shot06_cam6.png</li><li>stills/shot07_cam7.png</li><li>stills/shot08_cam8.png</li><li>stills/shot09_cam9.png</li><li>stills/shot10_cam10.png</li><li>stills/shot10_cam10_end.png</li></ul></div><figcaption>One zip<span>17.7 MB</span></figcaption></figure>
             </div>
           </div>
         </article>
